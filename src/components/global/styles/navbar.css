@@ -1,0 +1,42 @@
+.navbar {
+    width: 100%;
+    background: black;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2d2d2d;
+}
+
+.nav-logo {
+    font-family: var(--font-cinzel-decorative);
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-links a:hover {
+    color: #ccc;
+}
+
+.btn-outline {
+    border: 1px solid #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+    color: white;
+}
