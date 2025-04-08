@@ -1,0 +1,250 @@
+.register-container {
+    min-height: 100vh;
+    background: #040b14;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-header {
+    background: black;
+    border-bottom: 1px solid #2e2e2e;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.register-nav a {
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-outline {
+    border: 1px solid #3b82f6;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+}
+
+.btn-solid {
+    background: #3b82f6;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+}
+
+.register-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: calc(100vh - 120px);
+    /* ajusta para caber header e footer */
+}
+
+.register-box {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1100px;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0a1929;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.register-left {
+    flex: 1;
+    position: relative;
+    display: none;
+    min-height: 100%;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #041527, #04152770);
+    z-index: 1;
+}
+
+.left-text {
+    position: absolute;
+    inset: 0;
+    padding: 2rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.left-text h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.left-text p {
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.left-text ul {
+    list-style: none;
+    padding: 0;
+}
+
+.left-text li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.register-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.register-footer {
+    text-align: center;
+    padding: 1rem;
+    background: black;
+    color: #ccc;
+    font-size: 0.875rem;
+}
+
+.register-form {
+    background: #0a1929;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.form-header h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+.form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background: #0d2137;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 4px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px #3b82f680;
+}
+
+.form-note {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 0.2rem;
+}
+
+.form-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+.form-checkbox input {
+    margin-top: 0.2rem;
+}
+
+.form-checkbox a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.form-submit {
+    margin-top: 1rem;
+    background: #3b82f6;
+    border: none;
+    color: white;
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.form-submit:hover {
+    background: #2563eb;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.form-footer a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+@media screen and (min-width: 768px) {
+    .register-left {
+        display: block;
+    }
+}
