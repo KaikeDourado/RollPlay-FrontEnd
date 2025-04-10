@@ -1,4 +1,4 @@
-import { FaDiceD20 } from "react-icons/fa";
+import { GiDiceTwentyFacesTwenty } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import "./styles/loginForm.css";
 
@@ -7,7 +7,7 @@ export default function LoginForm() {
         <div className="login-form">
             <div className="login-form-header">
                 <div className="login-form-icon">
-                    <FaDiceD20 size={48} color="#3b82f6" />
+                    <GiDiceTwentyFacesTwenty size={48} color="#3b82f6" />
                 </div>
                 <h1>Bem-vindo de volta!</h1>
                 <p>Entre para continuar sua aventura</p>
