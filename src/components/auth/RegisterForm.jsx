@@ -1,4 +1,4 @@
-import { GiDiceTwentyFacesTwenty } from "react-icons/gi";
+import { FaDiceD20 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./styles/registerForm.css";
 
@@ -7,7 +7,7 @@ export default function RegisterForm() {
     <div className="register-form">
       <div className="register-form-header">
         <div className="register-form-icon">
-          <GiDiceTwentyFacesTwenty size={48} color="#3b82f6" />
+          <FaDiceD20 size={48} color="#3b82f6" />
         </div>
         <h1>Crie sua conta</h1>
         <p className="register-subtitle">Junte-se a milhares de jogadores de RPG</p>
