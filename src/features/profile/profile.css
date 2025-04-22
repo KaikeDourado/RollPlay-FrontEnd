@@ -1,17 +1,21 @@
 .profile-container {
     background-color: #131525;
     color: #ffffff;
-    font-family: var(--font-exo2);
     line-height: 1.6;
 }
-.profile-main h1, h2, h3, h4, h5, h6 {
+
+.profile-main h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 700;
     margin-bottom: 1rem;
 }
 
 .profile-button {
     cursor: pointer;
-    font-family: var(--font-league-gothic);
 }
 
 /* Main Container */
@@ -70,19 +74,19 @@
 }
 
 .profile-name {
-    font-family: var(--font-exo2);
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
 }
 
 .profile-title {
-    font-family: var(--font-exo2);
     color: #8D8D95;
     margin-bottom: 1.5rem;
 }
-.profile-bio{
+
+.profile-bio {
     text-align: initial;
 }
+
 .profile-bio-text {
     width: 100%;
     background-color: #020717;
@@ -91,9 +95,6 @@
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: left;
-}
-.profile-bio-text p{
-    font-family: var(--font-exo2);
 }
 
 .profile-bio h3 {
@@ -122,7 +123,8 @@
     gap: 1rem;
 }
 
-.profile-btn-edit, .profile-btn-logout {
+.profile-btn-edit,
+.profile-btn-logout {
     width: 100%;
     padding: 0.75rem;
     border-radius: 8px;
@@ -162,7 +164,9 @@
     gap: 2rem;
 }
 
-.profile-campaigns-section, .profile-characters-section, .profile-sessions-section {
+.profile-campaigns-section,
+.profile-characters-section,
+.profile-sessions-section {
     background-color: #020717;
     border-radius: 8px;
     padding: 2rem;
@@ -204,13 +208,11 @@
 }
 
 .profile-campaign-info h3 {
-    font-family: var(--font-exo2);
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
 .profile-campaign-info p {
-    font-family: var(--font-exo2);
     font-size: 0.8rem;
     color: #8D8D95;
     margin-bottom: 0.25rem;
@@ -268,13 +270,11 @@
 }
 
 .profile-character-info h3 {
-    font-family: var(--font-exo2);
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
 .profile-character-info p {
-    font-family: var(--font-exo2);
     font-size: 0.8rem;
     color: #8D8D95;
     margin-bottom: 0.25rem;
@@ -315,26 +315,22 @@
 }
 
 .profile-date-number {
-    font-family: var(--font-exo2);
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
 }
 
 .profile-date-month {
-    font-family: var(--font-exo2);
     font-size: 0.9rem;
     font-weight: 600;
 }
 
 .profile-session-info h3 {
-    font-family: var(--font-exo2);
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
 }
 
 .profile-session-info p {
-    font-family: var(--font-exo2);
     font-size: 0.9rem;
     color: #8D8D95;
     margin-bottom: 1rem;
@@ -360,7 +356,6 @@
     align-items: center;
     justify-content: center;
     font-size: 0.7rem;
-    font-family: var(--font-exo2);
     margin-right: -8px;
     border: 2px solid #020717;
 }
@@ -370,7 +365,7 @@
     .profile-main {
         flex-direction: column;
     }
-    
+
     .profile-sidebar {
         flex: 0 0 auto;
         width: 100%;
@@ -378,27 +373,28 @@
 }
 
 @media (max-width: 768px) {
-    .profile-campaigns-grid, .profile-characters-grid {
+
+    .profile-campaigns-grid,
+    .profile-characters-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .profile-session-card {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-    
+
     .profile-players-confirmed {
         justify-content: center;
     }
 }
 
 @media (max-width: 576px) {
-    .profile-container {
-        padding: 1rem;
-    }
-    
-    .profile-campaigns-section, .profile-characters-section, .profile-sessions-section {
+
+    .profile-campaigns-section,
+    .profile-characters-section,
+    .profile-sessions-section {
         padding: 1.5rem;
     }
 }

@@ -9,7 +9,7 @@ export default function ProfilePage() {
             <main className="profile-main">
                 <section className="profile-sidebar">
                     <div className="profile-image-container">
-                        <img src="https://placeholder.svg?height=200&width=200" alt="Foto de perfil" className="profile-image"/>
+                        <img src="/imagens/indoali.jfif" alt="Foto de perfil" className="profile-image"/>
                             <button className="profile-button edit-profile-image">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                             </button>
@@ -59,7 +59,7 @@ export default function ProfilePage() {
                         <div className="profile-campaigns-grid">
                             <div className="profile-campaign-card">
                                 <div className="profile-campaign-image">
-                                    <img src="https://placeholder.svg?height=80&width=80" alt="Mina Perdida da Rocinha"/>
+                                    <img src="/imagens/rocinha.jfif" alt="Mina Perdida da Rocinha"/>
                                 </div>
                                 <div className="profile-campaign-info">
                                     <h3>MINA PERDIDA DA ROCINHA</h3>
@@ -78,7 +78,7 @@ export default function ProfilePage() {
                         <div className="profile-characters-grid">
                             <div className="profile-character-card">
                                 <div className="profile-character-image">
-                                    <img src="https://placeholder.svg?height=100&width=100" alt="Lady Bug"/>
+                                    <img src="/imagens/ladybug.jpg" alt="Lady Bug"/>
                                 </div>
                                 <div className="profile-character-info">
                                     <h3>LADY BUG</h3>

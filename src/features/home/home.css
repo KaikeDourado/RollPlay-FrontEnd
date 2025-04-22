@@ -1,11 +1,15 @@
 .home-main {
-    font-family: 'Poppins', sans-serif;
     background-color: #0a0e1a;
     color: #ffffff;
     line-height: 1.6;
 }
 
-.home-main h1, h2, h3, h4, h5, h6 {
+.home-main h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 700;
     margin-bottom: 1rem;
 }
@@ -13,7 +17,7 @@
 /* Hero Section */
 .home-hero {
     background-color: #020717;
-    display: flex ;
+    display: flex;
     padding: 4rem 2rem;
     position: relative;
     overflow: hidden;
@@ -35,7 +39,6 @@
 }
 
 .home-hero p {
-    font-family: var(--font-exo2);
     margin-bottom: 2rem;
     opacity: 0.9;
 }
@@ -53,6 +56,7 @@
     color: white;
     font-weight: 600;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
 .home-btn-primary:hover {
@@ -64,9 +68,10 @@
     padding: 0.75rem 2rem;
     border: 1px solid #4a4dff;
     border-radius: 4px;
-    color: #4a4dff;
+    color: #fff;
     font-weight: 600;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
 .home-btn-secondary:hover {
@@ -98,7 +103,6 @@
 }
 
 .home-features-subtitle {
-    font-family: var(--font-exo2);
     max-width: 800px;
     margin: 0 auto 3rem;
     opacity: 0.9;
@@ -140,13 +144,11 @@
 }
 
 .home-feature-card h3 {
-    font-family: var(--font-exo2);
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
 
 .home-feature-card p {
-    font-family: var(--font-exo2);
     opacity: 0.8;
     font-size: 0.9rem;
 }
@@ -157,9 +159,11 @@
     display: flex;
     gap: 4rem;
     background-color: #020717;
+    align-items: center;
 }
 
-.home-about-content, .home-about-features {
+.home-about-content,
+.home-about-features {
     flex: 1;
 }
 
@@ -170,7 +174,7 @@
 }
 
 .home-about p {
-    font-family: var(--font-exo2);
+    font-size: 17px;
     margin-bottom: 1.5rem;
     opacity: 0.9;
 }
@@ -187,12 +191,29 @@
 
 .home-about-list {
     margin-bottom: 2rem;
-    list-style-image: url(../../../public/imagens/security2.png);
+    list-style: none;
+    /* remove o list-style padrão */
+    padding-left: 0;
+    /* remove o espaçamento padrão */
 }
+
 .home-about-list li {
-    font-family: var(--font-exo2);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     margin-bottom: 1rem;
     position: relative;
+}
+
+.home-about-list li::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url(../../../public/imagens/security2.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
 }
 
 /* FAQ Section */
@@ -239,13 +260,11 @@
 }
 
 .home-faq-item h3 {
-    font-family: var(--font-exo2);
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
 
 .home-faq-item p {
-    font-family: var(--font-exo2);
     opacity: 0.9;
     font-size: 0.9rem;
 }
@@ -264,7 +283,6 @@
 }
 
 .home-cta p {
-    font-family: var(--font-exo2);
     max-width: 700px;
     margin: 0 auto 2rem;
     opacity: 0.9;
@@ -281,12 +299,12 @@
     .home-hero {
         flex-direction: column;
     }
-    
+
     .home-hero-content {
         max-width: 100%;
         margin-bottom: 2rem;
     }
-    
+
     .home-about {
         flex-direction: column;
     }
@@ -296,12 +314,13 @@
     .home-features-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .home-faq-grid {
         grid-template-columns: 1fr;
     }
-    
-    .home-hero-buttons, .home-cta-buttons {
+
+    .home-hero-buttons,
+    .home-cta-buttons {
         flex-direction: column;
     }
 }
@@ -310,7 +329,7 @@
     .home-hero h2 {
         font-size: 2rem;
     }
-    
+
     .home-cta h2 {
         font-size: 2rem;
     }
