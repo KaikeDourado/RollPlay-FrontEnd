@@ -1,0 +1,78 @@
+.atributos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.atributo-card {
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.atributo-header {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3b82f6;
+  margin-bottom: 5px;
+}
+
+.atributo-nome {
+  font-size: 12px;
+  color: #a0aec0;
+  margin-bottom: 10px;
+}
+
+.atributo-valor {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.atributo-valor input {
+  width: 60px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 0;
+  height: 40px;
+}
+
+.atributo-modificador {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 15px;
+  padding: 2px 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.atributos-derivados {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.derivado-card {
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+}
+
+.derivado-label {
+  font-size: 12px;
+  color: #a0aec0;
+  margin-bottom: 5px;
+}
+
+.derivado-valor {
+  font-size: 20px;
+  font-weight: 600;
+}
