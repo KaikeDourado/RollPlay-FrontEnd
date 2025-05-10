@@ -1,0 +1,117 @@
+.navbar {
+    width: 100%;
+    background: black;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2d2d2d;
+    position: relative;
+    z-index: 999;
+}
+
+.nav-logo {
+    font-family: var(--font-cinzel-decorative);
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    z-index: 998
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-links a:hover {
+    color: #ccc;
+}
+
+.btn-outline {
+    border: 1px solid #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+    color: white;
+}
+
+/* Botão hambúrguer */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px 0;
+    transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: black;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 2rem;
+        gap: 0.75rem;
+        display: none;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        margin: 0.25rem 0;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a:not(.btn-outline):not(.btn-primary) {
+        background-color: rgba(255, 255, 255, 0.05);
+        /* leve background */
+    }
+
+    .btn-outline,
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-outline {
+        display: block;
+    }
+
+    .btn-primary {
+        display: block;
+    }
+}

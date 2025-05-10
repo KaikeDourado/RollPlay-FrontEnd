@@ -1,0 +1,37 @@
+.visao-geral-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.visao-geral-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-group label {
+  font-size: 12px;
+  color: #a0aec0;
+  text-transform: uppercase;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 0;
+}
+
+@media (max-width: 768px) {
+  .visao-geral-section {
+    grid-template-columns: 1fr;
+  }
+}

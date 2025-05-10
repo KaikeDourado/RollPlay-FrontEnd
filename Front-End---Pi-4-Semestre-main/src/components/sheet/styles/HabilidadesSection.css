@@ -1,0 +1,49 @@
+.habilidades-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.habilidades-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.habilidade-card {
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.habilidade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.habilidade-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #3b82f6;
+}
+
+.habilidade-descricao {
+  font-size: 14px;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.add-habilidade-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
