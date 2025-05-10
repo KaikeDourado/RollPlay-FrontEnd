@@ -1,0 +1,135 @@
+.maps-tab-profileSession {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-header-profileSession {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tab-title-profileSession {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.add-map-button-profileSession {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.add-map-button-profileSession:hover {
+  background-color: #2980b9;
+}
+
+.maps-grid-profileSession {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.map-card-profileSession {
+  background-color: #0f1424;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #1a2035;
+}
+
+.map-image-container-profileSession {
+  height: 150px;
+  overflow: hidden;
+}
+
+.map-thumbnail-profileSession {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map-info-profileSession {
+  padding: 15px;
+}
+
+.map-title-profileSession {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.map-description-profileSession {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 15px;
+}
+
+.map-actions-profileSession {
+  display: flex;
+  gap: 10px;
+  padding: 0 15px 15px;
+}
+
+.view-map-button-profileSession,
+.edit-map-button-profileSession {
+  flex: 1;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-map-button-profileSession:hover,
+.edit-map-button-profileSession:hover {
+  background-color: #2980b9;
+}
+
+.edit-map-button-profileSession {
+  background-color: transparent;
+  border: 1px solid #3498db;
+  color: #3498db;
+}
+
+.edit-map-button-profileSession:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .maps-grid-profileSession {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .map-title-profileSession {
+    font-size: 16px;
+  }
+  
+  .map-description-profileSession {
+    font-size: 13px;
+  }
+  
+  .map-actions-profileSession {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .maps-grid-profileSession {
+    grid-template-columns: 1fr;
+  }
+}

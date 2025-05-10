@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import "./profile.css";
@@ -57,7 +58,7 @@ export default function ProfilePage() {
                         <div className="profile-section-divider"></div>
 
                         <div className="profile-campaigns-grid">
-                            <div className="profile-campaign-card">
+                            <Link  to={'../profile-session'} className="profile-campaign-card">
                                 <div className="profile-campaign-image">
                                     <img src="/imagens/rocinha.jfif" alt="Mina Perdida da Rocinha"/>
                                 </div>
@@ -66,7 +67,7 @@ export default function ProfilePage() {
                                     <p>SISTEMA: D&D 5E</p>
                                     <p>5 JOGADORES • ATIVA</p>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                         <button className="profile-btn-create-campaign">CRIAR NOVA CAMPANHA</button>
                     </section>
@@ -76,7 +77,7 @@ export default function ProfilePage() {
                         <div className="profile-section-divider"></div>
 
                         <div className="profile-characters-grid">
-                            <div className="profile-character-card">
+                            <Link to={'../sheet'} className="profile-character-card">
                                 <div className="profile-character-image">
                                     <img src="/imagens/ladybug.jpg" alt="Lady Bug"/>
                                 </div>
@@ -85,7 +86,7 @@ export default function ProfilePage() {
                                     <p>HUMANO DRUIDA</p>
                                     <p>NÍVEL 7</p>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     </section>
 
