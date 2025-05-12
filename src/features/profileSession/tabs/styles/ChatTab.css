@@ -94,3 +94,61 @@
 .send-button:hover {
     background-color: #0056b3;
 }
+
+@media (max-width: 1024px) {
+    .chat-tab-container {
+        height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+  .chat-tab-container {
+    padding: 0.5rem;
+    height: 800px;
+  }
+
+  .dice-buttons {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .dice-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dice-icon {
+    font-size: 1.2rem;
+  }
+
+  .dice-label {
+    font-size: 0.65rem;
+  }
+
+  .chat-input {
+    font-size: 0.9rem;
+  }
+
+  .send-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-tab-container {
+    height: 700px;
+  }
+ 
+    .chat-input-container {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .send-button {
+    width: 100%;
+  }
+  .dice-label{
+    display: none;
+  }
+}
