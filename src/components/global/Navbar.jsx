@@ -45,8 +45,7 @@ export default function Navbar() {
         {/* Botão para abrir o modal de criação de sessão */}
         <button
           onClick={() => {
-            openModal;
-            setMenuOpen(false);
+            openModal();
           }}
         >
           Criar Sessão
