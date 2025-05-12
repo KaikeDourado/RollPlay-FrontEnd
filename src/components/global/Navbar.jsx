@@ -1,9 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles/navbar.css";
+import SessionModal from "../forms/sessionModal";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  // Estado para controlar o modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Função para lidar com o envio do formulário
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <header className="navbar">
@@ -16,8 +24,35 @@ export default function Navbar() {
       </button>
 
       <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-        <Link to="/perfil" onClick={() => setMenuOpen(false)}>Perfil</Link>
+        <button
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/");
+          }}
+        >
+          Home
+        </button>
+
+        <button
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/perfil");
+          }}
+        >
+          Perfil
+        </button>
+
+        {/* Botão para abrir o modal de criação de sessão */}
+        <button
+          onClick={() => {
+            openModal;
+            setMenuOpen(false);
+          }}
+        >
+          Criar Sessão
+        </button>
+        <SessionModal isOpen={isModalOpen} onClose={closeModal} />
+
         <Link to="/entrar" className="btn-outline" onClick={() => setMenuOpen(false)}>Entrar</Link>
         <Link to="/registrar" className="btn-primary" onClick={() => setMenuOpen(false)}>Registrar</Link>
       </nav>
