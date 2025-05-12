@@ -22,7 +22,7 @@ export default function HomePage() {
                 </section>
                 <section className="home-features">
                     <h2>TUDO QUE VOCÊ PRECISA PARA SUAS AVENTURAS</h2>
-                    <p className="home-features-subtitle">A roll & play é um sistema que se propõe a facilitar a criação e a administração de campanhas de rpg, oferecendo diversas ferramentas para auxiliar a vida de players e mestres.</p>
+                    <p className="home-features-subtitle">A Roll & Play é um sistema que se propõe a facilitar a criação e a administração de campanhas de rpg, oferecendo diversas ferramentas para auxiliar a vida de players e mestres.</p>
 
                     <div className="home-features-grid">
                         <div className="home-feature-card">

@@ -1,0 +1,49 @@
+.tabs-navigation-profileSession {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #1a2035;
+    background-color: #0a0e1a;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .tabs-navigation-profileSession::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  
+  .tab-button-profileSession {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+  }
+  
+  .tab-button-profileSession.active {
+    background-color: #1a2035;
+    border-bottom: 3px solid #3498db;
+  }
+  
+  .tab-button-profileSession:hover:not(.active) {
+    background-color: #1a2035;
+    opacity: 0.8;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .tab-button-profileSession {
+      padding: 12px 15px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tab-button-profileSession {
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+  }

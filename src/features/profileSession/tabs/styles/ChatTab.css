@@ -1,0 +1,96 @@
+.chat-tab-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #141b2d;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #fff;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #1f2937;
+    border-radius: 8px;
+}
+
+.message {
+    margin-bottom: 0.5rem;
+}
+
+.player-name {
+    font-weight: bold;
+    color: #18b8f8;
+}
+
+.message-content {
+    margin-left: 0.5rem;
+}
+
+.dice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.dice-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #4c82af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dice-button:hover {
+    background-color: #264f70;
+}
+
+.dice-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.1rem;
+}
+
+.dice-label {
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.chat-input-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.send-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
