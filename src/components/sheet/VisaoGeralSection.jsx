@@ -2,13 +2,26 @@
 
 import "./styles/VisaoGeralSection.css"
 
-const VisaoGeralSection = ({ data, editMode, onSave }) => {
+const VisaoGeralSection = ({ data, atributos, editMode, onSave }) => {
   const handleChange = (e) => {
     if (editMode) {
       const { name, value } = e.target
       const updatedData = { ...data, [name]: value }
       onSave(updatedData)
     }
+  }
+
+  const toggleInspiracao = () => {
+    const updatedData = { ...data, inspiracao: !data.inspiracao }
+    onSave(updatedData)
+  }
+
+  const calcModificador = (valor) => {
+    return Math.floor((valor - 10) / 2)
+  }
+
+  const formatModificador = (mod) => {
+    return mod >= 0 ? `+${mod}` : `${mod}`
   }
 
   return (
@@ -18,7 +31,7 @@ const VisaoGeralSection = ({ data, editMode, onSave }) => {
         <h2>Visão Geral</h2>
       </div>
 
-      <div className="visao-geral-content"> {/* NOVO container com grid */}
+      <div className="visao-geral-content">
         <div className="visao-geral-grid">
           <div className="info-group">
             <label>Nome</label>
@@ -72,6 +85,43 @@ const VisaoGeralSection = ({ data, editMode, onSave }) => {
             ) : (
               <div className="info-value">{data.experiencia}</div>
             )}
+          </div>
+
+          <div className="info-group">
+            <label>Antecedente</label>
+            {editMode ? (
+              <input type="text" name="antecedente" value={data.antecedente} onChange={handleChange} />
+            ) : (
+              <div className="info-value">{data.antecedente}</div>
+            )}
+          </div>
+        </div>
+
+        {/* Checkbox de Inspiração */}
+        <div className="inspiracao-container">
+          <label>Inspiração</label>
+          <button
+            className={`inspiracao-button ${data.inspiracao ? "inspirado" : ""}`}
+            onClick={toggleInspiracao}
+          >
+            {data.inspiracao ? "☀️" : ""}
+          </button>
+        </div>
+
+        <div className="atributos-derivados">
+          <div className="derivado-card">
+            <div className="derivado-label">Classe de Armadura</div>
+            <div className="derivado-valor">{10 + calcModificador(data.atributos.destreza)}</div>
+          </div>
+
+          <div className="derivado-card">
+            <div className="derivado-label">Iniciativa</div>
+            <div className="derivado-valor">{formatModificador(calcModificador(data.atributos.destreza))}</div>
+          </div>
+
+          <div className="derivado-card">
+            <div className="derivado-label">Deslocamento</div>
+            <div className="derivado-valor">9m</div>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import InventarioSection from "@/components/sheet/InventarioSection"
 import HabilidadesSection from "@/components/sheet/HabilidadesSection"
 import PersonalidadeSection from "@/components/sheet/PersonalidadeSection"
 import AnotacoesSection from "@/components/sheet/AnotacoesSection"
+import Navbar from "@/components/global/Navbar";
 import "./styles/SheetPage.css"
 
 const FichaPage = () => {
@@ -23,6 +24,11 @@ const FichaPage = () => {
     nivel: 5,
     alinhamento: "Leal e Bom",
     experiencia: 6500,
+    antecedente: "Soldado",
+    inspiration: true,
+    pvTotal: 45,
+    pvAtual: 45,
+    pvTemp: 0,
     atributos: {
       forca: 16,
       destreza: 12,
@@ -77,8 +83,13 @@ const FichaPage = () => {
       { nome: "Treinamento em Combate", descricao: "Você tem proficiência com armas marciais." },
       { nome: "Segunda Investida", descricao: "Você pode atacar duas vezes quando usa a ação Atacar no seu turno." },
     ],
-    personalidade:
-      "Cabra bão",
+    personalidade: {
+      tracos: "Humilde e determinado, Thorin é um líder natural que inspira seus companheiros.",
+      ideais: "Querer recuperar o tesouro de sua família e restaurar a honra dos anões.",
+      ligacoes: "Meu irmão, Fili, é meu maior aliado e amigo. Juntos, enfrentamos qualquer desafio.",
+      defeitos: "Sou teimoso e muitas vezes não confio em estranhos. Isso pode me levar a problemas.",
+      historia: "Nasci em uma pequena aldeia anã nas Montanhas Sombrias. Desde jovem, fui ensinado a lutar e a valorizar a honra da minha família. Após o ataque do dragão Smaug, minha vida mudou para sempre. Agora, busco recuperar o tesouro perdido e restaurar a glória dos anões.",
+    },
     anotacoes:
       "Thorin é um guerreiro anão que busca recuperar o tesouro de sua família que foi roubado por um dragão. Ele é teimoso e desconfiado de estranhos, mas extremamente leal aos seus companheiros.",
   })
@@ -104,9 +115,14 @@ const FichaPage = () => {
 
   return (
     <div className="ficha-page">
+      <Navbar />
+
       <FichaHeader
         characterName={characterData.nome}
         characterClass={`${characterData.raca} ${characterData.classe} ${characterData.nivel}`}
+        pvAtual={characterData.pvAtual}
+        pvTotal={characterData.pvTotal}
+        pvTemp={characterData.pvTemp}
         onEditToggle={handleEditToggle}
         editMode={editMode}
       />
@@ -158,8 +174,11 @@ const FichaPage = () => {
         {activeTab === "atributos" && (
           <AtributosSection
             atributos={characterData.atributos}
+            pericias={characterData.pericias}
+            nivel={characterData.nivel}
             editMode={editMode}
-            onSave={(atributos) => handleSaveCharacter({ atributos })}
+            onSaveAtributos={(atributos) => handleSaveCharacter({ atributos })}
+            onSavePericias={(pericias) => handleSaveCharacter({ pericias })}
           />
         )}
 

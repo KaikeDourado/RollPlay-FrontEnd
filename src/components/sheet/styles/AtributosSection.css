@@ -1,3 +1,4 @@
+/* Estilos de Atributos */
 .atributos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -52,27 +53,93 @@
   font-weight: 600;
 }
 
-.atributos-derivados {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
+/* Estilos de Perícias e Proficiências */
+.pericias-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.derivado-card {
+.bonus-proficiencia {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bonus-valor {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.pericias-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.pericia-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
   background-color: #2d3748;
-  border-radius: 8px;
-  padding: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pericia-item:hover {
+  background-color: #4a5568;
+}
+
+.pericia-item.proficiente {
+  border-left: 3px solid #3b82f6;
+}
+
+.pericia-proficiente {
+  font-size: 18px;
+  color: #3b82f6;
+  width: 20px;
   text-align: center;
 }
 
-.derivado-label {
-  font-size: 12px;
-  color: #a0aec0;
-  margin-bottom: 5px;
+.pericia-bonus {
+  font-weight: 600;
+  width: 30px;
+  text-align: center;
 }
 
-.derivado-valor {
-  font-size: 20px;
-  font-weight: 600;
+.pericia-nome {
+  flex-grow: 1;
+}
+
+.pericia-atributo {
+  color: #a0aec0;
+  font-size: 12px;
+}
+
+.outras-proficiencias {
+  margin-top: 20px;
+}
+
+.outras-proficiencias h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #3b82f6;
+}
+
+.proficiencias-content {
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.proficiencias-text p {
+  margin: 5px 0;
+}
+
+.proficiencias-content textarea {
+  min-height: 120px;
+  resize: vertical;
 }

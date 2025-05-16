@@ -5,14 +5,29 @@
 }
 
 .personalidade-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Dois blocos por linha */
+    gap: 20px;
+}
+
+.personalidade-block {
     background-color: #2d3748;
     border-radius: 8px;
     padding: 15px;
-    min-height: 300px;
+    border: 1px solid #4a5568;
+    /* Adiciona borda para separar os blocos */
+}
+
+.personalidade-block h3 {
+    font-size: 16px;
+    color: #3b82f6;
+    margin-bottom: 10px;
 }
 
 .personalidade-textarea {
-    min-height: 300px;
+    min-height: 150px;
+    /* Altura menor para os blocos pequenos */
     resize: vertical;
     width: 100%;
     background-color: transparent;
@@ -26,4 +41,28 @@
     font-size: 14px;
     line-height: 1.6;
     white-space: pre-wrap;
+}
+
+.historia-textarea {
+    min-height: 400px;
+    /* Bloco maior para a história */
+}
+
+/* Bloco de história ocupa toda a largura */
+.historia-block {
+    grid-column: span 2;
+    /* Ocupa as duas colunas */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .personalidade-content {
+        grid-template-columns: 1fr;
+        /* Um bloco por linha em telas menores */
+    }
+
+    .historia-block {
+        grid-column: span 1;
+        /* Ocupa apenas uma coluna em telas menores */
+    }
 }
