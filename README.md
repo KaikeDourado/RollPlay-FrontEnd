@@ -1,12 +1,39 @@
-# React + Vite
+# Front-End - PI 4º Semestre
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é um site tabletop que atua como gerenciador de mesas e fichas de RPG, com um enfoque educacional. Seu objetivo é auxiliar na educação de maneira geral, proporcionando mesas educacionais e outras funcionalidades voltadas para o aprendizado.
 
-Currently, two official plugins are available:
+## 🎯 Objetivos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Gerenciar mesas e fichas de RPG de forma eficiente.
+- Oferecer recursos educacionais integrados ao sistema de RPG.
+- Facilitar a criação e administração de campanhas educativas.
 
-## Expanding the ESLint configuration
+## 🚀 Tecnologias Utilizadas
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React**: Biblioteca JavaScript para construção de interfaces de usuário.
+- **Vite**: Ferramenta de build rápida para projetos front-end.
+- **ESLint**: Ferramenta para análise de código e manutenção de padrões de codificação.
+
+## 📂 Estrutura do Projeto
+
+- `public/`: Arquivos estáticos acessíveis publicamente.
+- `src/`: Código-fonte principal do aplicativo.
+- `index.html`: Arquivo HTML principal.
+- `package.json`: Gerenciamento de dependências e scripts do projeto.
+- `vite.config.js`: Configurações específicas do Vite.
+
+## 🧠 Contribuições Educacionais
+
+O projeto visa integrar elementos educacionais nas campanhas de RPG, permitindo que mestres e jogadores explorem conteúdos pedagógicos de forma lúdica e interativa. Essa abordagem busca enriquecer o processo de ensino-aprendizagem por meio da gamificação.
+
+## 👥 Colaboradores
+
+- [Sérgio Reis](https://github.com/serbiow)
+
+## 📄 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
+
+Para mais informações, acesse o repositório oficial: [Front-End - PI 4º Semestre](https://github.com/KaikeDourado/Front-End---Pi-4-Semestre)
