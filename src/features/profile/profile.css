@@ -65,7 +65,10 @@ h6 {
     align-items: center;
     justify-content: center;
     color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 2;
 }
 
 .edit-profile-image:hover {
@@ -95,6 +98,9 @@ h6 {
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: left;
+    max-height: 200px;
+    overflow: auto;         
+    word-break: break-word; 
 }
 
 .profile-bio h3 {
@@ -235,6 +241,29 @@ h6 {
     transform: translateY(-2px);
 }
 
+.profile-btn-enter-session {
+    background-color: #60A5FA;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    z-index: 2;
+    box-shadow: 0 2px 8px 0 #0002;
+    cursor: pointer;
+}
+
+.profile-btn-enter-session:hover {
+    background-color: #3a3dff;
+    transform: translateY(-2px);
+}
+
+/* Para garantir que o botão fique no topo da section */
+.profile-campaigns-section {
+    position: relative;
+}
+
 /* Characters Grid */
 .profile-characters-grid {
     display: grid;
@@ -360,6 +389,53 @@ h6 {
     border: 2px solid #020717;
 }
 
+/* Inputs e textarea para edição do perfil */
+.profile-input{
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    border: 2px solid #60A5FA;
+    background: #131525;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    resize: none;
+}
+.profile-bio-text textarea{
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    border: 2px solid #60A5FA;
+    background: #131525;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.profile-input:focus,
+.profile-bio-text textarea:focus {
+    border-color: #3a3dff;
+    box-shadow: 0 0 0 2px #3a3dff33;
+}
+
+.profile-bio-text textarea {
+    min-height: 80px;
+    max-height: 200px;
+    font-family: inherit;
+}
+
+/* Remove margin-bottom do último input */
+.profile-info .profile-input:last-child {
+    margin-bottom: 0;
+}
+
 /* Responsividade */
 @media (max-width: 1200px) {
     .profile-main {
@@ -373,6 +449,11 @@ h6 {
 }
 
 @media (max-width: 768px) {
+
+    .profile-main {
+        padding: 1rem;
+        gap: 1rem;
+    }
 
     .profile-campaigns-grid,
     .profile-characters-grid {
@@ -388,6 +469,22 @@ h6 {
     .profile-players-confirmed {
         justify-content: center;
     }
+
+    .profile-sidebar {
+        padding: 1rem;
+    }
+
+    .profile-campaigns-section,
+    .profile-characters-section,
+    .profile-sessions-section {
+        padding: 1rem;
+    }
+
+    .profile-input,
+    .profile-bio-text textarea {
+        font-size: 0.95rem;
+        padding: 0.6rem 0.8rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -395,6 +492,12 @@ h6 {
     .profile-campaigns-section,
     .profile-characters-section,
     .profile-sessions-section {
-        padding: 1.5rem;
+        padding: 0.7rem;
+    }
+
+    .profile-input,
+    .profile-bio-text textarea {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.6rem;
     }
 }

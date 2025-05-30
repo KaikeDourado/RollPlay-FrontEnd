@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
+import SessionModal from "@/components/forms/SessionModal";
+import EnterSessionModal from "@/components/forms/EnterSessionModal";
 import "./profile.css";
 
 export default function ProfilePage() {
@@ -10,6 +12,9 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
+  const [isEnterSessionModalOpen, setIsEnterSessionModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -47,12 +52,48 @@ export default function ProfilePage() {
     fetchUser();
   }, [navigate]);
 
+  // Dados estáticos para teste(remover depois)
+  // Comente o useEffect e os useState para usar os dados estáticos
+  /*const [user, setUser] = useState({
+    displayName: "Kaike Teste",
+    title: "MESTRE DE RPG",
+    bio: "Sou um mestre experiente em D&D!",
+    photoURL: "",
+    campaignsCount: 2,
+    charactersCount: 5,
+    createdAt: "2022-01-01T00:00:00.000Z"
+  });
+  
+  const loading = false;
+  const error = "";*/
+
   if (loading) {
     return <div className="profile-loading">Carregando perfil...</div>;
   }
   if (error) {
     return <div className="profile-error">{error}</div>;
   }
+
+  // Estado para edição do perfil
+  // Usado para controlar se o usuário está editando as informações do perfil
+  const [editing, setEditing] = useState(false);
+
+  const [editData, setEditData] = useState(user);
+
+  const handleEditClick = () => {
+    setEditData(user); // Preenche os inputs com os dados atuais
+    setEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    setUser(editData); // Salva as alterações
+    setEditing(false);
+  };
+
+  // Função para lidar com mudanças nos inputs de edição
+  const handleChange = (e) => {
+    setEditData({ ...editData, [e.target.name]: e.target.value });
+  };
 
   // Dados estáticos ou placeholders para contagens
   const campaignsCount = user.campaignsCount ?? 0;
@@ -71,20 +112,72 @@ export default function ProfilePage() {
               alt="Foto de perfil"
               className="profile-image"
             />
-            <button className="profile-button edit-profile-image">
-              ✎
-            </button>
+            {editing && (
+              <>
+                <label htmlFor="profile-image-upload" className="edit-profile-image" title="Alterar foto">
+                  ✎
+                </label>
+                <input
+                  id="profile-image-upload"
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={e => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        setEditData({ ...editData, photoURL: ev.target.result });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+              </>
+            )}
           </div>
-
           <div className="profile-info">
-            <h2 className="profile-name">{user.displayName}</h2>
-            <p className="profile-title">{user.title || "MESTRE DE RPG"}</p>
+            {editing ? (
+              <>
+                <input
+                  type="text"
+                  name="displayName"
+                  value={editData.displayName}
+                  onChange={handleChange}
+                  className="profile-input"
+                  placeholder="Nome"
+                />
+                <input
+                  type="text"
+                  name="title"
+                  value={editData.title}
+                  onChange={handleChange}
+                  className="profile-input"
+                  placeholder="Título"
+                />
+              </>
+            ) : (
+              <>
+                <h2 className="profile-name">{user.displayName}</h2>
+                <p className="profile-title">{user.title || "MESTRE DE RPG"}</p>
+              </>
+            )}
           </div>
 
           <div className="profile-bio">
             <h3>BIO</h3>
             <div className="profile-bio-text">
-              <p>{user.bio || "Nenhuma biografia cadastrada."}</p>
+              {editing ? (
+                <textarea
+                  name="bio"
+                  value={editData.bio}
+                  onChange={handleChange}
+                  placeholder="Biografia"
+                  rows={3}
+                />
+              ) : (
+                <p>{user.bio || "Nenhuma biografia cadastrada."}</p>
+              )}
             </div>
           </div>
 
@@ -101,7 +194,15 @@ export default function ProfilePage() {
           </div>
 
           <div className="profile-actions">
-            <button className="profile-btn-edit">EDITAR INFORMAÇÕES</button>
+            {editing ? (
+              <button className="profile-btn-edit" onClick={handleSaveClick}>
+                SALVAR
+              </button>
+            ) : (
+              <button className="profile-btn-edit" onClick={handleEditClick}>
+                EDITAR INFORMAÇÕES
+              </button>
+            )}
             <button
               className="profile-btn-logout"
               onClick={() => {
@@ -118,6 +219,14 @@ export default function ProfilePage() {
         <div className="profile-content">
           <section className="profile-campaigns-section">
             <h2>SUAS CAMPANHAS</h2>
+            <button
+              className="profile-btn-enter-session"
+              style={{ position: "absolute", top: "2rem", right: "2rem" }}
+              onClick={() => setIsEnterSessionModalOpen(true)}
+            >
+              ENTRAR EM UMA SESSÃO
+            </button> 
+            
             <div className="profile-section-divider"></div>
             <div className="profile-campaigns-grid">
               {/* TODO: mapear campanhas do user */}
@@ -132,7 +241,10 @@ export default function ProfilePage() {
                 </div>
               </Link>
             </div>
-            <button className="profile-btn-create-campaign">
+            <button
+              className="profile-btn-create-campaign"
+              onClick={() => setIsSessionModalOpen(true)}
+            >
               CRIAR NOVA CAMPANHA
             </button>
           </section>
@@ -184,6 +296,18 @@ export default function ProfilePage() {
         </div>
       </main>
       <Footer />
+      <SessionModal
+        isOpen={isSessionModalOpen}
+        onClose={() => setIsSessionModalOpen(false)}
+      />
+      <EnterSessionModal
+        isOpen={isEnterSessionModalOpen}
+        onClose={() => setIsEnterSessionModalOpen(false)}
+        onSubmit={(code) => {
+          // ação ao enviar código
+          setIsEnterSessionModalOpen(false);
+        }}
+      />
     </div>
   );
 }
