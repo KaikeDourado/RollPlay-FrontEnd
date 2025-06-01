@@ -1,4 +1,6 @@
+// SessionModal.jsx
 import { useState } from 'react';
+import axios from 'axios';
 import './styles/SessionModal.css';
 
 const SessionModal = ({ isOpen, onClose }) => {
@@ -6,8 +8,9 @@ const SessionModal = ({ isOpen, onClose }) => {
     sessionName: '',
     system: 'D&D 5e',
     description: '',
-    maxPlayers: 4, // valor padrão
+    maxPlayers: 4,
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,11 +20,46 @@ const SessionModal = ({ isOpen, onClose }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Session Data:', formData);
-    // lógica de envio…
-    onClose();
+    setError('');
+
+    try {
+      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+      if (!token) {
+        setError('Você precisa estar logado para criar uma campanha.');
+        return;
+      }
+
+      // 1) Envia para o API Gateway
+      const res = await axios.post(
+        'http://localhost:5000/api/campaign/create',
+        {
+          sessionName:  formData.sessionName,
+          system:       formData.system,
+          description:  formData.description,
+          maxPlayers:   formData.maxPlayers
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      // 2) Verifica resposta
+      if (res.data.success) {
+        // opcional: redirecionar para a página da nova campanha
+        console.log('Campanha criada:', res.data.data);
+        onClose();
+      } else {
+        setError(res.data.message || 'Erro ao criar campanha.');
+      }
+    } catch (err) {
+      console.error('Erro no request:', err);
+      setError(
+        err.response?.data?.message ||
+        'Falha na conexão ao criar campanha.'
+      );
+    }
   };
 
   if (!isOpen) return null;
@@ -31,6 +69,7 @@ const SessionModal = ({ isOpen, onClose }) => {
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>&times;</button>
         <form onSubmit={handleSubmit} className="session-form">
+          {/* … inputs iguais ao que você já tinha … */}
           <div>
             <label htmlFor="sessionName">Nome da Sessão:</label>
             <input
@@ -76,10 +115,12 @@ const SessionModal = ({ isOpen, onClose }) => {
               value={formData.maxPlayers}
               onChange={handleChange}
               min={1}
-              max={20}       // ajuste o máximo que fizer sentido
+              max={20}
               required
             />
           </div>
+
+          {error && <p className="session-error">{error}</p>}
 
           <button type="submit">Criar Sessão</button>
         </form>
