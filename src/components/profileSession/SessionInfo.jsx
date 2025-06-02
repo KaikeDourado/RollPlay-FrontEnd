@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/SessionInfo.css';
 
-const SessionInfo = ({ sessionData }) => {
+const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
+  const [showCode, setShowCode] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(sessionData.title);
+  const [description, setDescription] = useState(sessionData.description);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(sessionData.roomCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  const handleEditClick = () => setIsEditing(true);
+
+  const handleSaveClick = () => {
+    if (onUpdateSessionData) {
+      onUpdateSessionData({ title, description });
+    }
+    setIsEditing(false);
+  };
+
+  // Atualiza os campos locais se sessionData mudar (opcional, para manter sincronizado)
+  React.useEffect(() => {
+    setTitle(sessionData.title);
+    setDescription(sessionData.description);
+  }, [sessionData.title, sessionData.description]);
+
     return (
       <div className="session-info-profileSession">
         <div className="map-container-profileSession">
@@ -19,36 +47,85 @@ const SessionInfo = ({ sessionData }) => {
             </button>
         </div>
         
+      {isEditing ? (
+        <input
+          className="session-title-profileSession"
+          style={{textAlign: "center", fontWeight: "bold", fontSize: 24, marginBottom: 5, textTransform: "uppercase"}}
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+        />
+      ) : (
         <h1 className="session-title-profileSession">{sessionData.title}</h1>
-        <div className="system-info-profileSession">SISTEMA: {sessionData.system}</div>
-        
-        <div className="stats-profileSession">
-          <div className="stat-item-profileSession">
-            <i className="stat-icon-profileSession">👥</i>
-            <span>{sessionData.playerCount} JOGADORES</span>
-          </div>
-          <div className="stat-item-profileSession">
-            <i className="stat-icon-profileSession">📅</i>
-            <span>{sessionData.sessionCount} SESSÕES REALIZADAS</span>
-          </div>
-          <div className="stat-item-profileSession">
-            <i className="stat-icon-profileSession">🗓️</i>
-            <span>CRIADA EM {sessionData.createdAt}</span>
-          </div>
+      )}
+
+      <div className="system-info-profileSession">SISTEMA: {sessionData.system}</div>
+      
+      <div className="stats-profileSession">
+        <div className="room-code-section-profileSession">
+          <span className="room-code-label-profileSession">CÓDIGO:</span>
+          <span className="room-code-value-profileSession">
+            {showCode ? sessionData.roomCode : '************'}
+          </span>
+          <button
+            className="room-code-btn-profileSession"
+            onClick={() => setShowCode((prev) => !prev)}
+            title={showCode ? "Ocultar código" : "Mostrar código"}
+          >
+            <img
+              src={showCode ? "../../../public/imagens/olho-fechado.png" : "../../../public/imagens/olho-aberto.png"}
+              alt={showCode ? "Ocultar código" : "Mostrar código"}
+            />
+          </button>
+          <button
+            className="room-code-btn-profileSession"
+            onClick={handleCopy}
+            title="Copiar código"
+          >
+            <img
+              src={copied ? "../../../public/imagens/copiado.png" : "../../../public/imagens/copiar.png"}
+              alt={copied ? "Código copiado" : "Copiar código"}
+            />
+          </button>
         </div>
-        
-        <div className="description-section-profileSession">
-          <h2 className="description-title-profileSession">DESCRIÇÃO</h2>
+        <div className="stat-item-profileSession">
+          <i className="stat-icon-profileSession">👥</i>
+          <span>{sessionData.playerCount} JOGADORES</span>
+        </div>
+        <div className="stat-item-profileSession">
+          <i className="stat-icon-profileSession">📅</i>
+          <span>{sessionData.sessionCount} SESSÕES REALIZADAS</span>
+        </div>
+        <div className="stat-item-profileSession">
+          <i className="stat-icon-profileSession">🗓️</i>
+          <span>CRIADA EM {sessionData.createdAt}</span>
+        </div>
+      </div>
+      
+      <div className="description-section-profileSession">
+        <h2 className="description-title-profileSession">DESCRIÇÃO</h2>
+        {isEditing ? (
+          <textarea
+            className="description-content-profileSession"
+            style={{width: "100%", minHeight: 130, resize: "vertical"}}
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+        ) : (
           <div className="description-content-profileSession">
             {sessionData.description}
           </div>
-        </div>
-        
-        <button className="edit-campaign-button-profileSession">
-          <i className="edit-icon-profileSession">📝</i> EDITAR CAMPANHA
-        </button>
+        )}
       </div>
-    );
-  };
-  
-  export default SessionInfo;
+      
+      <button
+        className="edit-campaign-button-profileSession"
+        onClick={isEditing ? handleSaveClick : handleEditClick}
+      >
+        <i className="edit-icon-profileSession">{isEditing ? "💾" : "📝"}</i>
+        {isEditing ? "SALVAR" : "EDITAR CAMPANHA"}
+      </button>
+    </div>
+  );
+};
+
+export default SessionInfo;

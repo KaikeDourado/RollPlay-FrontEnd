@@ -47,6 +47,7 @@
 }
 
 .map-image-container-profileSession {
+  position: relative;
   height: 150px;
   overflow: hidden;
 }

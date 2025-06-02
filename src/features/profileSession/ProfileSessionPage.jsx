@@ -14,13 +14,18 @@ import "./ProfileSession.css";
 const ProfileSession = () => {
   const [activeTab, setActiveTab] = useState('CHAT');
 
-  const sessionData = {
+  const [sessionData, setSessionData] = useState({
     title: 'MINA PERDIDA DA ROCINHA',
     system: 'D&D 5E',
     playerCount: 6,
     sessionCount: 12,
     createdAt: 'SETEMBRO DE 2023',
-    description: 'UMA AVENTURA ÉPICA NAS PROFUNDEZAS DA ROCINHA, ONDE OS AVENTUREIROS PRECISAM ENCONTRAR A MINA PERDIDA E SEUS TESOUROS. PREPARE-SE PARA ENFRENTAR PERIGOS, MONSTROS E DESVENDAR MISTÉRIOS ANTIGOS NESTA CAMPANHA CHEIA DE AÇÃO E INTRIGA.'
+    description: 'UMA AVENTURA ÉPICA NAS PROFUNDEZAS DA ROCINHA, ONDE OS AVENTUREIROS PRECISAM ENCONTRAR A MINA PERDIDA E SEUS TESOUROS. PREPARE-SE PARA ENFRENTAR PERIGOS, MONSTROS E DESVENDAR MISTÉRIOS ANTIGOS NESTA CAMPANHA CHEIA DE AÇÃO E INTRIGA.',
+    roomCode: 'ABCD1234EF3K'
+  });
+  // Função para atualizar sessionData
+  const handleUpdateSessionData = (newData) => {
+    setSessionData(prev => ({ ...prev, ...newData }));
   };
 
   const renderTabContent = () => {
@@ -47,7 +52,7 @@ const ProfileSession = () => {
       <Navbar />
       <div className="content-profileSession">
         <div className="sidebar-profileSession">
-          <SessionInfo sessionData={sessionData} />
+          <SessionInfo sessionData={sessionData} onUpdateSessionData={handleUpdateSessionData} />
         </div>
         <div className="main-profileSession">
           <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />

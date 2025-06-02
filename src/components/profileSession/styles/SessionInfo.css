@@ -130,6 +130,69 @@
   .edit-campaign-button-profileSession:hover .edit-icon-profileSession {
     transform: rotate(-10deg);
   }
+
+.room-code-section-profileSession {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  background: #1a2035;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.room-code-label-profileSession {
+  font-weight: bold;
+  color: #3498db;
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+.room-code-value-profileSession {
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1.5px;
+  background: #0f1424;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #fff;
+  min-width: 120px;
+  text-align: center;
+  user-select: all;
+}
+
+.room-code-btn-profileSession {
+  background: #232a45;
+  border: none;
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  height: 28px;
+}
+
+.room-code-btn-profileSession:hover {
+  background: #3498db;
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.room-code-btn-profileSession img{
+  width: 20px;
+  height: 20px;
+}
   
   /* Responsividade */
   @media (max-width: 768px) {
@@ -184,5 +247,13 @@
     
     .edit-map-button-profileSession span {
       display: none;
+    }
+    @media (max-width: 350px) {
+      .room-code-label-profileSession{
+        font-size: 12px;
+      }
+      .room-code-value-profileSession{
+        font-size: 13px;
+      }
     }
   }

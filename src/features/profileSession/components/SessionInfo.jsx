@@ -1,4 +1,5 @@
 import React from 'react';
+import React, { useState } from 'react';
 import './styles/SessionInfo.css';
 
 const SessionInfo = ({ sessionData }) => {
@@ -21,7 +22,6 @@ const SessionInfo = ({ sessionData }) => {
         
         <h1 className="session-title-profileSession">{sessionData.title}</h1>
         <div className="system-info-profileSession">SISTEMA: {sessionData.system}</div>
-        
         <div className="stats-profileSession">
           <div className="stat-item-profileSession">
             <i className="stat-icon-profileSession">👥</i>
