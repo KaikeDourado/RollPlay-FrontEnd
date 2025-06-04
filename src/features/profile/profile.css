@@ -99,8 +99,8 @@ h6 {
     margin-bottom: 1.5rem;
     text-align: left;
     max-height: 200px;
-    overflow: auto;         
-    word-break: break-word; 
+    overflow: auto;
+    word-break: break-word;
 }
 
 .profile-bio h3 {
@@ -390,7 +390,7 @@ h6 {
 }
 
 /* Inputs e textarea para edição do perfil */
-.profile-input{
+.profile-input {
     width: 100%;
     padding: 0.7rem 1rem;
     border-radius: 8px;
@@ -404,7 +404,8 @@ h6 {
     box-sizing: border-box;
     resize: none;
 }
-.profile-bio-text textarea{
+
+.profile-bio-text textarea {
     width: 100%;
     padding: 0.7rem 1rem;
     border-radius: 8px;
@@ -500,4 +501,32 @@ h6 {
         font-size: 0.9rem;
         padding: 0.5rem 0.6rem;
     }
+
+    /* Spinner centralizado */
+    .profile-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        /* ocupa toda a altura disponível */
+    }
+
+    /* O círculo girando */
+    .spinner {
+        width: 48px;
+        height: 48px;
+        border: 6px solid rgb(255, 255, 255);
+        border-top-color: #3b82f6;
+        /* cor do spinner */
+        border-radius: 50%;
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    /* Animação de giro */
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
 }

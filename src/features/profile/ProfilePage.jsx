@@ -10,6 +10,7 @@ import "./profile.css";
 export default function ProfilePage() {
   // ─────────────── Hooks de estado ───────────────
   const [user, setUser] = useState(null);
+  const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -22,25 +23,44 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  // ───────────── UseEffect para buscar usuário ─────────────
+  // ───────────── UseEffect para buscar usuário e campanhas ─────────────
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
       try {
         const token =
           localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+        if (!token) {
+          navigate("/entrar");
+          return;
+        }
 
-        const res = await axios.get(`http://localhost:5000/api/user/uid`, {
+        // 1) Busca dados do usuário
+        const resUser = await axios.get(`http://localhost:5000/api/user/uid`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (res.data.success) {
-          setUser(res.data.data);
-          setEditData(res.data.data);
+        if (resUser.data.success) {
+          setUser(resUser.data.data);
+          setEditData(resUser.data.data);
         } else {
-          setError(res.data.message || "Falha ao carregar usuário.");
+          setError(resUser.data.message || "Falha ao carregar usuário.");
+          setLoading(false);
+          return;
+        }
+
+        // 2) Busca campanhas do usuário
+        const resCampaigns = await axios.get(
+          "http://localhost:5000/api/campaign/userCampaigns",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (resCampaigns.data.success) {
+          setCampaigns(resCampaigns.data.data);
+        } else {
+          console.error("Falha ao buscar campanhas:", resCampaigns.data.message);
         }
       } catch (err) {
-        console.error("Erro ao buscar perfil:", err);
+        console.error("Erro ao buscar perfil ou campanhas:", err);
         setError(
           err.response?.data?.message || "Erro de conexão. Tente novamente mais tarde."
         );
@@ -52,12 +72,16 @@ export default function ProfilePage() {
       }
     };
 
-    fetchUser();
+    fetchData();
   }, [navigate]);
 
   // ─────────────── Retornos condicionais ───────────────
   if (loading) {
-    return <div className="profile-loading">Carregando perfil...</div>;
+    return (
+      <div className="profile-loading">
+        <div className="spinner"></div>
+      </div>
+    );
   }
   if (error && !editing) {
     return <div className="profile-error">{error}</div>;
@@ -67,7 +91,7 @@ export default function ProfilePage() {
   }
 
   // ─────────────── Helpers e contagens ───────────────
-  const campaignsCount = user.campaignsCount ?? 0;
+  const campaignsCount = campaigns.length;
   const charactersCount = user.charactersCount ?? 0;
   const memberYear = new Date(user.createdAt).getFullYear();
 
@@ -90,7 +114,6 @@ export default function ProfilePage() {
 
   const handleSaveClick = async () => {
     setError("");
-    // Validações básicas
     if (!editData.displayName || editData.displayName.trim().length < 3) {
       setError("O nome deve ter ao menos 3 caracteres.");
       return;
@@ -101,12 +124,11 @@ export default function ProfilePage() {
       const token =
         localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
 
-      // Prepara payload; ajuste se seu backend espera campos diferentes
       const payload = {
         displayName: editData.displayName,
-        title:       editData.title,
-        bio:         editData.bio,
-        photoURL:    editData.photoURL,
+        title: editData.title,
+        bio: editData.bio,
+        photoURL: editData.photoURL,
       };
 
       const res = await axios.put(
@@ -146,8 +168,8 @@ export default function ProfilePage() {
             <img
               src={
                 editing
-                  ? editData.photoURL ?? "/imagens/default-profile.png"
-                  : user.photoURL || "/imagens/default-profile.png"
+                  ? editData.photoURL ?? "/imagens/default-profile-img.png"
+                  : user.photoURL || "/imagens/default-profile-img.png"
               }
               alt="Foto de perfil"
               className="profile-image"
@@ -240,13 +262,22 @@ export default function ProfilePage() {
 
           <div className="profile-actions">
             {editing ? (
-              <button
-                className="profile-btn-edit"
-                onClick={handleSaveClick}
-                disabled={saving}
-              >
-                {saving ? "SALVANDO..." : "SALVAR"}
-              </button>
+              <>
+                <button
+                  className="profile-btn-edit"
+                  onClick={handleSaveClick}
+                  disabled={saving}
+                >
+                  {saving ? "SALVANDO..." : "SALVAR"}
+                </button>
+                <button
+                  className="profile-btn-edit"
+                  onClick={handleCancelClick}
+                  style={{ marginLeft: "0.5rem" }}
+                >
+                  CANCELAR
+                </button>
+              </>
             ) : (
               <button
                 className="profile-btn-edit"
@@ -275,6 +306,7 @@ export default function ProfilePage() {
         </section>
 
         <div className="profile-content">
+          {/* ─── SUAS CAMPANHAS ─── */}
           <section className="profile-campaigns-section">
             <h2>SUAS CAMPANHAS</h2>
             <button
@@ -286,22 +318,36 @@ export default function ProfilePage() {
             </button>
 
             <div className="profile-section-divider"></div>
+
             <div className="profile-campaigns-grid">
-              {/* TODO: mapear campanhas do user */}
-              <Link to="../profile-session" className="profile-campaign-card">
-                <div className="profile-campaign-image">
-                  <img
-                    src="/imagens/rocinha.jfif"
-                    alt="Mina Perdida da Rocinha"
-                  />
-                </div>
-                <div className="profile-campaign-info">
-                  <h3>MINA PERDIDA DA ROCINHA</h3>
-                  <p>SISTEMA: D&D 5E</p>
-                  <p>5 JOGADORES • ATIVA</p>
-                </div>
-              </Link>
+              {campaigns.length === 0 ? (
+                <p>Você ainda não criou nenhuma campanha.</p>
+              ) : (
+                campaigns.map((c) => (
+                  <Link
+                    key={c.id}
+                    to={`/profile-session/${c.id}`}
+                    className="profile-campaign-card"
+                  >
+                    <div className="profile-campaign-image">
+                      <img
+                        src={c.imageUrl || "/imagens/default-campaign-img.png"}
+                        alt={c.sessionName}
+                      />
+                    </div>
+                    <div className="profile-campaign-info">
+                      <h3>{c.sessionName}</h3>
+                      <p>SISTEMA: {c.system}</p>
+                      <p>
+                        {c.playersCount} / {c.maxPlayers} JOGADORES •{" "}
+                        {c.isActive ? "ATIVA" : "INATIVA"}
+                      </p>
+                    </div>
+                  </Link>
+                ))
+              )}
             </div>
+
             <button
               className="profile-btn-create-campaign"
               onClick={() => setIsSessionModalOpen(true)}
@@ -310,6 +356,7 @@ export default function ProfilePage() {
             </button>
           </section>
 
+          {/* ─── SEUS PERSONAGENS ─── */}
           <section className="profile-characters-section">
             <h2>SEUS PERSONAGENS</h2>
             <div className="profile-section-divider"></div>
@@ -328,6 +375,7 @@ export default function ProfilePage() {
             </div>
           </section>
 
+          {/* ─── PRÓXIMAS SESSÕES ─── */}
           <section className="profile-sessions-section">
             <h2>PRÓXIMAS SESSÕES</h2>
             <div className="profile-section-divider"></div>
@@ -356,7 +404,9 @@ export default function ProfilePage() {
           </section>
         </div>
       </main>
+
       <Footer />
+
       <SessionModal
         isOpen={isSessionModalOpen}
         onClose={() => setIsSessionModalOpen(false)}
