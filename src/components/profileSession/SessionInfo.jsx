@@ -17,7 +17,7 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
   }, [sessionData.title, sessionData.description]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(sessionData.roomCode);
+    navigator.clipboard.writeText(sessionData.id);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -33,12 +33,21 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
         return;
       }
 
-      // 1) Envia para o back-end (altere a URL conforme seu endpoint real)
-      const res = await axios.put(
-        `http://localhost:5000/api/campaign/update/${sessionData.campaignId}`,
-        { title, description },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+     // Certificando-se de que o 'uid' da campanha está sendo enviado junto com os dados
+    const updatedData = {
+      uid: localStorage.getItem('campaignUid'), 
+      title,
+      description,
+    };
+
+    console.log(updatedData)
+
+    // Envia para o back-end (ajuste a URL para o seu endpoint real)
+    const res = await axios.put(
+      `http://localhost:5000/api/campaign/update`,
+      updatedData, 
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
       if (res.data.success) {
         // 2) Atualiza estado em ProfileSession para refletir as mudanças 

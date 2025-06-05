@@ -18,6 +18,7 @@ import "./ProfileSession.css";
 export default function ProfileSession() {
   // 1) Lê o "uid" da campanha a partir dos params
   const { campaignUid } = useParams();
+  localStorage.setItem('campaignUid', campaignUid)
   const navigate = useNavigate();
 
   // 2) Estado para os dados da sessão carregados do back-end
@@ -41,9 +42,11 @@ export default function ProfileSession() {
           return;
         }
 
+        console.log(campaignUid)
+
         // 4.2) faz GET para /api/campaign/:uid (aqui campaignUid)
         const res = await axios.get(
-          `http://localhost:5000/api/campaign/${campaignUid}`,
+          `http://localhost:5000/api/campaign/info/${campaignUid}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
