@@ -48,6 +48,7 @@ export default function RegisterForm() {
       );
 
       if (response.status === 201) {
+        alert('Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
         navigate('/entrar');
       } else {
         setError(response.data.message || 'Erro ao criar conta');
