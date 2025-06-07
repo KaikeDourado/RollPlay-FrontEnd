@@ -33,21 +33,20 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
         return;
       }
 
-     // Certificando-se de que o 'uid' da campanha está sendo enviado junto com os dados
-    const updatedData = {
-      uid: localStorage.getItem('campaignUid'), 
-      title,
-      description,
-    };
+      // Certificando-se de que o 'uid' da campanha está sendo enviado junto com os dados
+      const updatedData = {
+        uid: localStorage.getItem('campaignUid'),
+        title,
+        description,
+      };
 
-    console.log(updatedData)
 
-    // Envia para o back-end (ajuste a URL para o seu endpoint real)
-    const res = await axios.put(
-      `http://localhost:5000/api/campaign/update`,
-      updatedData, 
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+      // Envia para o back-end (ajuste a URL para o seu endpoint real)
+      const res = await axios.put(
+        `http://localhost:5000/api/campaign/update`,
+        updatedData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       if (res.data.success) {
         // 2) Atualiza estado em ProfileSession para refletir as mudanças 
@@ -123,7 +122,7 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
         <div className="room-code-section-profileSession">
           <span className="room-code-label-profileSession">CÓDIGO:</span>
           <span className="room-code-value-profileSession">
-            {showCode ? sessionData.roomCode : "************"}
+            {showCode ? sessionData.id : "************"}
           </span>
           <button
             className="room-code-btn-profileSession"
@@ -163,11 +162,13 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
           <i className="stat-icon-profileSession">🗓️</i>
           <span>
             CRIADA EM{" "}
-            {new Date(sessionData.createdAt).toLocaleDateString("pt-BR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            }).toUpperCase()}
+            {isNaN(new Date(sessionData.createdAt.seconds * 1000))
+              ? "Data inválida"
+              : new Date(sessionData.createdAt.seconds * 1000).toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              }).toUpperCase()}
           </span>
         </div>
       </div>

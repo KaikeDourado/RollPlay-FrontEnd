@@ -157,6 +157,30 @@ export default function ProfilePage() {
     }
   };
 
+  const handleCreateCharacter = async () => {
+    try {
+      const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+      if (!token) {
+        navigate("/entrar");
+        return;
+      }
+
+      const res = await axios.post("http://localhost:5000/api/character/create", {
+        headers: { Authorization: `Bearer ${token}` },
+      }); 
+
+      if (res.data.success && res.data.character) {
+        const newCharacterId = res.data.character.id || res.data.character._id;
+        navigate(`/sheet/${newCharacterId}`);
+      } else {
+        alert("Erro ao criar personagem.");
+      }
+    } catch (err) {
+      console.error("Erro ao criar personagem:", err);
+      alert("Erro de conexão. Tente novamente mais tarde.");
+    }
+  };
+
   // ─────────────── Renderização ───────────────
   return (
     <div className="profile-container">
@@ -362,6 +386,12 @@ export default function ProfilePage() {
             <div className="profile-section-divider"></div>
             <div className="profile-characters-grid">
               {/* TODO: mapear personagens do user */}
+              <button
+                className="profile-btn-create-character"
+                onClick={handleCreateCharacter}
+              >
+                CRIAR NOVO PERSONAGEM
+              </button>
               <Link to="../sheet" className="profile-character-card">
                 <div className="profile-character-image">
                   <img src="/imagens/ladybug.jpg" alt="Lady Bug" />
