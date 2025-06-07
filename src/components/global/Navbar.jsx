@@ -7,11 +7,12 @@ import EnterSessionModal from "../forms/EnterSessionModal";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  // Estado para controlar o modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
 
-  // Função para lidar com o envio do formulário
+  // Verifica se o usuário está logado (ajuste conforme sua lógica real)
+  const isLoggedIn = !!localStorage.getItem('token');
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -44,30 +45,39 @@ export default function Navbar() {
           Perfil
         </button>
 
-        {/* Botão para abrir o modal de criação de sessão */}
-        <button
-          onClick={() => {
-            openModal();
-          }}
-        >
-          Criar Sessão
-        </button>
-        <SessionModal isOpen={isModalOpen} onClose={closeModal} />
+        {/* Botões só aparecem se estiver logado */}
+        {isLoggedIn && (
+          <>
+            <button
+              onClick={() => {
+                openModal();
+              }}
+            >
+              Criar Sessão
+            </button>
+            <SessionModal isOpen={isModalOpen} onClose={closeModal} />
 
-        <button onClick={() => setIsEnterModalOpen(true)}>
-          Entrar na Sessão
-        </button>
-        <EnterSessionModal
-        isOpen={isEnterModalOpen}
-        onClose={() => setIsEnterModalOpen(false)}
-        onSubmit={(code) => {
-          console.log("código da sessão:", code);
-          setIsEnterModalOpen(false);
-        }}
-        />
+            <button onClick={() => setIsEnterModalOpen(true)}>
+              Entrar na Sessão
+            </button>
+            <EnterSessionModal
+              isOpen={isEnterModalOpen}
+              onClose={() => setIsEnterModalOpen(false)}
+              onSubmit={(code) => {
+                console.log("código da sessão:", code);
+                setIsEnterModalOpen(false);
+              }}
+            />
+          </>
+        )}
 
-        <Link to="/entrar" className="btn-outline" onClick={() => setMenuOpen(false)}>Entrar</Link>
-        <Link to="/registrar" className="btn-primary" onClick={() => setMenuOpen(false)}>Registrar</Link>
+        {/* Botões de autenticação só aparecem se NÃO estiver logado */}
+        {!isLoggedIn && (
+          <>
+            <Link to="/entrar" className="btn-outline" onClick={() => setMenuOpen(false)}>Entrar</Link>
+            <Link to="/registrar" className="btn-primary" onClick={() => setMenuOpen(false)}>Registrar</Link>
+          </>
+        )}
       </nav>
     </header>
   );

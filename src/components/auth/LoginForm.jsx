@@ -72,7 +72,7 @@ export default function LoginForm() {
       </div>
 
       <form className="login-form-body" onSubmit={handleSubmit}>
-        <label htmlFor="identifier">Email ou nome de usuário</label>
+        <label htmlFor="identifier">Email</label>
         <input
           id="identifier"
           name="identifier"

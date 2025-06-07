@@ -47,7 +47,7 @@ export default function EnterSessionModal({ isOpen, onClose }) {
       // exibe mensagem de erro que veio do servidor ou genérica
       setError(
         err.response?.data?.message ||
-          "Não foi possível conectar. Tente novamente."
+        "Não foi possível conectar. Tente novamente."
       );
     }
   };
@@ -67,6 +67,16 @@ export default function EnterSessionModal({ isOpen, onClose }) {
             onChange={(e) => setCode(e.target.value)}
             required
           />
+
+          {/* Dropdown de fichas */}
+          <label htmlFor="characterSheet">Escolha sua ficha:</label>
+          <select id="characterSheet" name="characterSheet">
+            <option value="">Selecione uma ficha</option>
+            <option value="ficha1">Ficha 1</option>
+            <option value="ficha2">Ficha 2</option>
+            <option value="ficha3">Ficha 3</option>
+          </select>
+          
           {error && <p className="enter-session-error">{error}</p>}
           <button type="submit" className="enter-session-btn-primary">
             Entrar
