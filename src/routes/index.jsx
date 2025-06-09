@@ -13,7 +13,7 @@ function AppRoutes() {
       <Route path="/registrar" element={<RegisterPage />} />
       <Route path="/entrar" element={<LoginPage />} />
       <Route path="/perfil" element={<ProfilePage />} />
-      <Route path="/sheet" element={<SheetPage />} />
+      <Route path="/sheet/:id" element={<SheetPage />} />
       <Route path="/profile-session/:campaignUid" element={<ProfileSessionPage />} />
     </Routes>
   );

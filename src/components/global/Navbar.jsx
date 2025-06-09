@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
 
   // Verifica se o usuário está logado (ajuste conforme sua lógica real)
-  const isLoggedIn = !!localStorage.getItem('token');
+  const isLoggedIn = !!sessionStorage.getItem('authToken');
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -63,10 +63,10 @@ export default function Navbar() {
             <EnterSessionModal
               isOpen={isEnterModalOpen}
               onClose={() => setIsEnterModalOpen(false)}
-              onSubmit={(code) => {
-                console.log("código da sessão:", code);
-                setIsEnterModalOpen(false);
-              }}
+              // onSubmit={(code) => {
+              //   console.log("código da sessão:", code);
+              //   setIsEnterModalOpen(false);
+              // }}
             />
           </>
         )}

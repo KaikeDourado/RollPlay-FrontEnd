@@ -46,6 +46,7 @@ export default function LoginForm() {
       if (!token) throw new Error('Token não encontrado na resposta.');
       if (form.remember) {
         localStorage.setItem('authToken', token);
+        sessionStorage.setItem('authToken', token);
       } else {
         sessionStorage.setItem('authToken', token);
       }

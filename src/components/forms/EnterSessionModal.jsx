@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./styles/EnterSessionModal.css";
 
 export default function EnterSessionModal({ isOpen, onClose }) {
   const [code, setCode] = useState("");
+  const [characters, setCharacters] = useState([]);
+  const [selectedCharacter, setSelectedCharacter] = useState("");
   const [error, setError] = useState("");
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const fetchCharacters = async () => {
+      try {
+        const token =
+          localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+        if (!token) return;
+
+        const res = await axios.get("http://localhost:5000/api/character/userSheets", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.data?.result) {
+          setCharacters(res.data.result);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar personagens:", err);
+      }
+    };
+
+    fetchCharacters();
+  }, [isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    if (!code || !selectedCharacter) {
+      setError("Informe o código da sessão e selecione uma ficha.");
+      return;
+    }
+
     try {
-      // 1) Recupera token salvo no storage
       const token =
         localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
       if (!token) {
@@ -21,36 +49,31 @@ export default function EnterSessionModal({ isOpen, onClose }) {
         return;
       }
 
-      // 2) Chama a rota /api/campaign/join via API Gateway
       const res = await axios.post(
         "http://localhost:5000/api/campaign/join",
-        { code }, // corpo com o código informado
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          code,
+          characterId: selectedCharacter,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // 3) Verifica resposta do servidor
       if (res.data.success) {
-        // por exemplo, pode querer armazenar algum dado retornado ou redirecionar
-        console.log("Entrou na sessão:", res.data.data);
-        // limpa e fecha o modal
-        setCode("");
-        onClose();
+        onClose(); // Agora sim, fecha só depois do sucesso
       } else {
         setError(res.data.message || "Falha ao entrar na sessão.");
       }
     } catch (err) {
       console.error("Erro ao entrar na sessão:", err);
-      // exibe mensagem de erro que veio do servidor ou genérica
       setError(
-        err.response?.data?.message ||
-        "Não foi possível conectar. Tente novamente."
+        err.response?.data?.message || "Não foi possível conectar. Tente novamente."
       );
     }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="enter-session-modal-overlay">
@@ -68,16 +91,24 @@ export default function EnterSessionModal({ isOpen, onClose }) {
             required
           />
 
-          {/* Dropdown de fichas */}
           <label htmlFor="characterSheet">Escolha sua ficha:</label>
-          <select id="characterSheet" name="characterSheet">
+          <select
+            id="characterSheet"
+            name="characterSheet"
+            value={selectedCharacter}
+            onChange={(e) => setSelectedCharacter(e.target.value)}
+            required
+          >
             <option value="">Selecione uma ficha</option>
-            <option value="ficha1">Ficha 1</option>
-            <option value="ficha2">Ficha 2</option>
-            <option value="ficha3">Ficha 3</option>
+            {characters.map((char) => (
+              <option key={char.id } value={char.id }>
+                {char.nome || "Sem Nome"}
+              </option>
+            ))}
           </select>
-          
+
           {error && <p className="enter-session-error">{error}</p>}
+
           <button type="submit" className="enter-session-btn-primary">
             Entrar
           </button>

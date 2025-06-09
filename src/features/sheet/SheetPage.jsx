@@ -1,106 +1,90 @@
-import { useState } from "react"
-import FichaHeader from "@/components/sheet/FichaHeader"
-import VisaoGeralSection from "@/components/sheet/VisaoGeralSection"
-import AtributosSection from "@/components/sheet/AtributosSection"
-import PericiasProficienciasSection from "@/components/sheet/PericiasProficienciasSection"
-import AtaquesMagiasSection from "@/components/sheet/AtaquesMagiasSection"
-import InventarioSection from "@/components/sheet/InventarioSection"
-import HabilidadesSection from "@/components/sheet/HabilidadesSection"
-import PersonalidadeSection from "@/components/sheet/PersonalidadeSection"
-import AnotacoesSection from "@/components/sheet/AnotacoesSection"
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import FichaHeader from "@/components/sheet/FichaHeader";
+import VisaoGeralSection from "@/components/sheet/VisaoGeralSection";
+import AtributosSection from "@/components/sheet/AtributosSection";
+import PericiasProficienciasSection from "@/components/sheet/PericiasProficienciasSection";
+import AtaquesMagiasSection from "@/components/sheet/AtaquesMagiasSection";
+import InventarioSection from "@/components/sheet/InventarioSection";
+import HabilidadesSection from "@/components/sheet/HabilidadesSection";
+import PersonalidadeSection from "@/components/sheet/PersonalidadeSection";
+import AnotacoesSection from "@/components/sheet/AnotacoesSection";
 import Navbar from "@/components/global/Navbar";
-import "./styles/SheetPage.css"
+import "./styles/SheetPage.css";
 
 const FichaPage = () => {
-  const [editMode, setEditMode] = useState(false)
-  const [activeTab, setActiveTab] = useState("visao-geral")
-  const [mobileTabsOpen, setMobileTabsOpen] = useState(false)
+  const { id } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState("visao-geral");
+  const [mobileTabsOpen, setMobileTabsOpen] = useState(false);
+  const [characterData, setCharacterData] = useState(null);
 
-  // Dados do personagem (em uma aplicação real, viriam de uma API ou estado global)
-  const [characterData, setCharacterData] = useState({
-    nome: "Thorin Escudo de Carvalho",
-    raca: "Anão da Montanha",
-    classe: "Guerreiro",
-    nivel: 5,
-    alinhamento: "Leal e Bom",
-    experiencia: 6500,
-    antecedente: "Soldado",
-    inspiration: true,
-    pvTotal: 45,
-    pvAtual: 45,
-    pvTemp: 0,
-    atributos: {
-      forca: 16,
-      destreza: 12,
-      constituicao: 18,
-      inteligencia: 10,
-      sabedoria: 14,
-      carisma: 8,
-    },
-    pericias: {
-      acrobacia: false,
-      arcanismo: false,
-      atletismo: true,
-      atuacao: false,
-      enganacao: false,
-      furtividade: false,
-      historia: true,
-      intimidacao: true,
-      intuicao: false,
-      investigacao: false,
-      lidarComAnimais: false,
-      medicina: false,
-      natureza: false,
-      percepcao: true,
-      persuasao: false,
-      prestidigitacao: false,
-      religiao: false,
-      sobrevivencia: true,
-    },
-    ataques: [
-      { nome: "Machado de Batalha", bonus: "+6", dano: "1d8+3", tipo: "Cortante" },
-      { nome: "Besta Leve", bonus: "+4", dano: "1d8+1", tipo: "Perfurante" },
-    ],
-    magias: [],
-    inventario: [
-      { nome: "Machado de Batalha", quantidade: 1, peso: 4 },
-      { nome: "Besta Leve", quantidade: 1, peso: 5 },
-      { nome: "Virotes", quantidade: 20, peso: 1.5 },
-      { nome: "Cota de Malha", quantidade: 1, peso: 55 },
-      { nome: "Mochila", quantidade: 1, peso: 5 },
-      { nome: "Rações", quantidade: 10, peso: 20 },
-      { nome: "Cantil", quantidade: 1, peso: 5 },
-      { nome: "Pederneira", quantidade: 1, peso: 0 },
-      { nome: "Tocha", quantidade: 10, peso: 10 },
-      { nome: "Poções de Cura", quantidade: 3, peso: 1.5 },
-    ],
-    habilidades: [
-      {
-        nome: "Resistência Anã",
-        descricao: "Vantagem em salvaguardas contra veneno e resistência contra dano de veneno.",
-      },
-      { nome: "Visão no Escuro", descricao: "Você pode ver na escuridão até 18 metros." },
-      { nome: "Treinamento em Combate", descricao: "Você tem proficiência com armas marciais." },
-      { nome: "Segunda Investida", descricao: "Você pode atacar duas vezes quando usa a ação Atacar no seu turno." },
-    ],
-    personalidade: {
-      tracos: "Humilde e determinado, Thorin é um líder natural que inspira seus companheiros.",
-      ideais: "Querer recuperar o tesouro de sua família e restaurar a honra dos anões.",
-      ligacoes: "Meu irmão, Fili, é meu maior aliado e amigo. Juntos, enfrentamos qualquer desafio.",
-      defeitos: "Sou teimoso e muitas vezes não confio em estranhos. Isso pode me levar a problemas.",
-      historia: "Nasci em uma pequena aldeia anã nas Montanhas Sombrias. Desde jovem, fui ensinado a lutar e a valorizar a honra da minha família. Após o ataque do dragão Smaug, minha vida mudou para sempre. Agora, busco recuperar o tesouro perdido e restaurar a glória dos anões.",
-    },
-    anotacoes:
-      "Thorin é um guerreiro anão que busca recuperar o tesouro de sua família que foi roubado por um dragão. Ele é teimoso e desconfiado de estranhos, mas extremamente leal aos seus companheiros.",
-  })
+  useEffect(() => {
+    const fetchCharacter = async () => {
+      try {
+        const token =
+          localStorage.getItem("authToken") ||
+          sessionStorage.getItem("authToken");
+        if (!token) return;
+
+        const res = await axios.get(
+          `http://localhost:5000/api/character/sheet/${id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (res.status === 200 && res.data.result) {
+          setCharacterData(res.data.result);
+        } else {
+          console.error("Erro ao carregar ficha.");
+        }
+      } catch (err) {
+        console.error("Erro na requisição da ficha:", err);
+      }
+    };
+
+    fetchCharacter();
+  }, [id]);
 
   const handleEditToggle = () => {
-    setEditMode(!editMode)
-  }
+    if (editMode) {
+      updateCharacterOnServer(characterData);
+    }
+    setEditMode(!editMode);
+  };
 
-  const handleSaveCharacter = (updatedData) => {
-    setCharacterData({ ...characterData, ...updatedData })
-  }
+  const handleLocalUpdate = (updatedData) => {
+    setCharacterData((prev) => ({ ...prev, ...updatedData }));
+  };
+
+  const updateCharacterOnServer = async (dataToSend) => {
+    try {
+      const token =
+        localStorage.getItem("authToken") ||
+        sessionStorage.getItem("authToken");
+      if (!token) return;
+
+      const payload = {
+        id: characterData.id,
+        ...dataToSend,
+      };
+
+      const res = await axios.put(
+        "http://localhost:5000/api/character/update",
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.status === 200 || res.status === 204) {
+        console.log("Ficha atualizada com sucesso.");
+        setEditMode(false);
+      } else {
+        console.warn("Falha ao atualizar ficha.");
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar ficha:", err);
+    }
+  };
 
   const tabs = [
     { id: "visao-geral", label: "Visão Geral", icon: "📋" },
@@ -111,7 +95,11 @@ const FichaPage = () => {
     { id: "habilidades", label: "Habilidades", icon: "✨" },
     { id: "personalidade", label: "Traços & Origem", icon: "🎭" },
     { id: "anotacoes", label: "Anotações", icon: "📝" },
-  ]
+  ];
+
+  if (!characterData) {
+    return <div className="ficha-loading">Carregando ficha...</div>;
+  }
 
   return (
     <div className="ficha-page">
@@ -127,7 +115,8 @@ const FichaPage = () => {
         editMode={editMode}
       />
 
-      {/* Tabs Desktop */}
+
+
       <div className="ficha-tabs desktop-tabs">
         {tabs.map((tab) => (
           <button
@@ -141,7 +130,6 @@ const FichaPage = () => {
         ))}
       </div>
 
-      {/* FAB Menu (Mobile Only) */}
       <div className={`fab-container ${mobileTabsOpen ? "open" : ""}`}>
         {tabs.map((tab, index) => (
           <button
@@ -149,8 +137,8 @@ const FichaPage = () => {
             className="fab-item"
             style={{ transitionDelay: `${index * 50}ms` }}
             onClick={() => {
-              setActiveTab(tab.id)
-              setMobileTabsOpen(false)
+              setActiveTab(tab.id);
+              setMobileTabsOpen(false);
             }}
           >
             <span className="fab-icon">{tab.icon}</span>
@@ -168,7 +156,11 @@ const FichaPage = () => {
 
       <div className="ficha-content">
         {activeTab === "visao-geral" && (
-          <VisaoGeralSection data={characterData} editMode={editMode} onSave={handleSaveCharacter} />
+          <VisaoGeralSection
+            data={characterData}
+            editMode={editMode}
+            onSave={handleLocalUpdate}
+          />
         )}
 
         {activeTab === "atributos" && (
@@ -177,8 +169,12 @@ const FichaPage = () => {
             pericias={characterData.pericias}
             nivel={characterData.nivel}
             editMode={editMode}
-            onSaveAtributos={(atributos) => handleSaveCharacter({ atributos })}
-            onSavePericias={(pericias) => handleSaveCharacter({ pericias })}
+            onSaveAtributos={(atributos) =>
+              handleLocalUpdate({ atributos })
+            }
+            onSavePericias={(pericias) =>
+              handleLocalUpdate({ pericias })
+            }
           />
         )}
 
@@ -188,7 +184,7 @@ const FichaPage = () => {
             atributos={characterData.atributos}
             nivel={characterData.nivel}
             editMode={editMode}
-            onSave={(pericias) => handleSaveCharacter({ pericias })}
+            onSave={(pericias) => handleLocalUpdate({ pericias })}
           />
         )}
 
@@ -197,7 +193,7 @@ const FichaPage = () => {
             ataques={characterData.ataques}
             magias={characterData.magias}
             editMode={editMode}
-            onSave={(data) => handleSaveCharacter(data)}
+            onSave={(data) => handleLocalUpdate(data)}
           />
         )}
 
@@ -205,7 +201,7 @@ const FichaPage = () => {
           <InventarioSection
             inventario={characterData.inventario}
             editMode={editMode}
-            onSave={(inventario) => handleSaveCharacter({ inventario })}
+            onSave={(inventario) => handleLocalUpdate({ inventario })}
           />
         )}
 
@@ -213,7 +209,7 @@ const FichaPage = () => {
           <HabilidadesSection
             habilidades={characterData.habilidades}
             editMode={editMode}
-            onSave={(habilidades) => handleSaveCharacter({ habilidades })}
+            onSave={(habilidades) => handleLocalUpdate({ habilidades })}
           />
         )}
 
@@ -221,7 +217,9 @@ const FichaPage = () => {
           <PersonalidadeSection
             personalidade={characterData.personalidade}
             editMode={editMode}
-            onSave={(personalidade) => handleSaveCharacter({ personalidade })}
+            onSave={(personalidade) =>
+              handleLocalUpdate({ personalidade })
+            }
           />
         )}
 
@@ -229,12 +227,12 @@ const FichaPage = () => {
           <AnotacoesSection
             anotacoes={characterData.anotacoes}
             editMode={editMode}
-            onSave={(anotacoes) => handleSaveCharacter({ anotacoes })}
+            onSave={(anotacoes) => handleLocalUpdate({ anotacoes })}
           />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FichaPage
+export default FichaPage;

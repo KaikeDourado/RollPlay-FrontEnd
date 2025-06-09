@@ -437,6 +437,24 @@ h6 {
     margin-bottom: 0;
 }
 
+.profile-btn-create-character {
+  background-color: #60A5FA;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.profile-btn-create-character:hover {
+  background-color: #3a3dff;
+  transform: translateY(-2px);
+}
+    
 /* Responsividade */
 @media (max-width: 1200px) {
     .profile-main {
@@ -502,6 +520,8 @@ h6 {
     .profile-btn-create-character:hover {
         background-color: #357ab8;
     }
+
+    
 
 }
 

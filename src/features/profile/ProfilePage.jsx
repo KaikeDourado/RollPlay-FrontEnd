@@ -14,6 +14,10 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [characters, setCharacters] = useState([]);
+  const [loadingCharacters, setLoadingCharacters] = useState(true);
+  const [errorCharacters, setErrorCharacters] = useState("");
+
   const navigate = useNavigate();
 
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
@@ -26,16 +30,15 @@ export default function ProfilePage() {
   // ───────────── UseEffect para buscar usuário e campanhas ─────────────
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const token =
-          localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
-        if (!token) {
-          navigate("/entrar");
-          return;
-        }
+      const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+      if (!token) {
+        navigate("/entrar");
+        return;
+      }
 
-        // 1) Busca dados do usuário
-        const resUser = await axios.get(`http://localhost:5000/api/user/uid`, {
+      try {
+        // 1) Busca usuário
+        const resUser = await axios.get("http://localhost:5000/api/user/uid", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (resUser.data.success) {
@@ -43,24 +46,36 @@ export default function ProfilePage() {
           setEditData(resUser.data.data);
         } else {
           setError(resUser.data.message || "Falha ao carregar usuário.");
-          setLoading(false);
           return;
         }
 
-        // 2) Busca campanhas do usuário
+        // 2) Busca campanhas
         const resCampaigns = await axios.get(
           "http://localhost:5000/api/campaign/userCampaigns",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         if (resCampaigns.data.success) {
           setCampaigns(resCampaigns.data.data);
         } else {
           console.error("Falha ao buscar campanhas:", resCampaigns.data.message);
         }
+
+        // ✅ 3) Busca personagens — AGORA NO LUGAR CERTO
+        const resCharacters = await axios.get(
+          "http://localhost:5000/api/character/userSheets",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        console.log("✅ resCharacters:", resCharacters.data);
+
+        if (resCharacters.status === 200 && Array.isArray(resCharacters.data.result)) {
+          setCharacters(resCharacters.data.result);
+        } else {
+          setErrorCharacters("Erro ao carregar personagens.");
+        }
+
       } catch (err) {
-        console.error("Erro ao buscar perfil ou campanhas:", err);
+        console.error("Erro ao buscar dados:", err);
         setError(
           err.response?.data?.message || "Erro de conexão. Tente novamente mais tarde."
         );
@@ -69,11 +84,13 @@ export default function ProfilePage() {
         }
       } finally {
         setLoading(false);
+        setLoadingCharacters(false);
       }
     };
 
     fetchData();
   }, [navigate]);
+
 
   // ─────────────── Retornos condicionais ───────────────
   if (loading) {
@@ -165,12 +182,14 @@ export default function ProfilePage() {
         return;
       }
 
-      const res = await axios.post("http://localhost:5000/api/character/create", {
+      const res = await axios.post("http://localhost:5000/api/character/create", {} ,{
         headers: { Authorization: `Bearer ${token}` },
-      }); 
+      });
 
-      if (res.data.success && res.data.character) {
-        const newCharacterId = res.data.character.id || res.data.character._id;
+      console.log(res.data)
+
+      if (res.data.success === true) {
+        const newCharacterId = res.data.id;
         navigate(`/sheet/${newCharacterId}`);
       } else {
         alert("Erro ao criar personagem.");
@@ -384,25 +403,49 @@ export default function ProfilePage() {
           <section className="profile-characters-section">
             <h2>SEUS PERSONAGENS</h2>
             <div className="profile-section-divider"></div>
-            <div className="profile-characters-grid">
-              {/* TODO: mapear personagens do user */}
-              <button
-                className="profile-btn-create-character"
-                onClick={handleCreateCharacter}
-              >
-                CRIAR NOVO PERSONAGEM
-              </button>
-              <Link to="../sheet" className="profile-character-card">
-                <div className="profile-character-image">
-                  <img src="/imagens/ladybug.jpg" alt="Lady Bug" />
+
+            {loadingCharacters ? (
+              <div className="profile-loading">
+                <div className="spinner"></div>
+              </div>
+            ) : errorCharacters ? (
+              <p className="profile-error">{errorCharacters}</p>
+            ) : (
+              <>
+                <div className="profile-characters-grid">
+                  {characters.length === 0 ? (
+                    <p>Você ainda não criou nenhum personagem.</p>
+                  ) : (
+                    characters.map((char) => (
+                      <Link
+                        key={char.id}
+                        to={`/sheet/${char.id}`}
+                        className="profile-character-card"
+                      >
+                        <div className="profile-character-image">
+                          <img
+                            src={char.imageUrl || "/imagens/sheet-generic-img.png"}
+                            alt={char.name || "Personagem"}
+                          />
+                        </div>
+                        <div className="profile-character-info">
+                          <h3>{char.nome || "SEM NOME"}</h3>
+                          <p>{(char.raca || "RAÇA")} {char.class || "CLASSE"}</p>
+                          <p>NÍVEL {char.level || 1}</p>
+                        </div>
+                      </Link>
+                    ))
+                  )}
                 </div>
-                <div className="profile-character-info">
-                  <h3>LADY BUG</h3>
-                  <p>HUMANO DRUIDA</p>
-                  <p>NÍVEL 7</p>
-                </div>
-              </Link>
-            </div>
+
+                <button
+                  className="profile-btn-create-character"
+                  onClick={handleCreateCharacter}
+                >
+                  CRIAR NOVO PERSONAGEM
+                </button>
+              </>
+            )}
           </section>
 
           {/* ─── PRÓXIMAS SESSÕES ─── */}
