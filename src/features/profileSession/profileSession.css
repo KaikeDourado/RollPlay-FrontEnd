@@ -11,6 +11,7 @@
     display: flex;
     flex: 1;
     flex-direction: row;
+    margin: 80px 0px;
   }
   
   .sidebar-profileSession {
