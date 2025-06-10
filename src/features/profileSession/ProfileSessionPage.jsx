@@ -53,19 +53,7 @@ export default function ProfileSession() {
         );
 
         if (res.data.success) {
-          // Supondo que res.data.data contenha exatamente:
-          // {
-          //   campaignUid: "...",
-          //   title: "...",
-          //   system: "...",
-          //   description: "...",
-          //   maxPlayers: Number,
-          //   playersCount: Number,
-          //   sessionCount: Number,
-          //   createdAt: "2025-05-20T13:02:13.695Z",
-          //   roomCode: "ABCD1234EF3K",
-          //   // ...talvez mais campos
-          // }
+         
           setSessionData(res.data.data);
         } else {
           setError(res.data.message || "Falha ao carregar dados da sessão.");
