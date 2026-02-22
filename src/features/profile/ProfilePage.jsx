@@ -5,6 +5,8 @@ import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import SessionModal from "@/components/forms/SessionModal";
 import EnterSessionModal from "@/components/forms/EnterSessionModal";
+import { authApi } from "@/lib/auth";
+import { fetchSecure } from "@/lib/fetchSecure";
 import "./profile.css";
 
 export default function ProfilePage() {
@@ -30,61 +32,59 @@ export default function ProfilePage() {
   // ───────────── UseEffect para buscar usuário e campanhas ─────────────
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
-      if (!token) {
-        navigate("/entrar");
-        return;
-      }
-
+      setLoading(true);
+      setError('');
       try {
-        // 1) Busca usuário
-        const resUser = await axios.get("http://localhost:5000/api/user/uid", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (resUser.data.success) {
-          setUser(resUser.data.data);
-          setEditData(resUser.data.data);
-        } else {
-          setError(resUser.data.message || "Falha ao carregar usuário.");
-          return;
+        const currentUser = authApi.getCurrentUser();
+
+        if (!currentUser) {
+          throw new Error('Usuário não autenticado');
         }
 
-        // 2) Busca campanhas
-        const resCampaigns = await axios.get(
-          "http://localhost:5000/api/campaign/userCampaigns",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        if (resCampaigns.data.success) {
-          setCampaigns(resCampaigns.data.data);
-        } else {
-          console.error("Falha ao buscar campanhas:", resCampaigns.data.message);
-        }
+        // Buscar dados completos do usuário no backend
+        const userRes = await fetchSecure(
+          `http://localhost:5000/users/token`,
+          {
+            method: 'GET',
+          }
+        )
+        const response = await userRes.json();
 
-        // ✅ 3) Busca personagens — AGORA NO LUGAR CERTO
-        const resCharacters = await axios.get(
-          "http://localhost:5000/api/character/userSheets",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        // Os dados do usuário estão dentro de response.data
+        const userDataFromBackend = response.data || {};
+        console.log('Dados do usuário obtidos do backend:', userDataFromBackend);
 
-        console.log("✅ resCharacters:", resCharacters.data);
+        // Mesclar dados do Firebase com dados do backend
+        const userData = {
+          uid: currentUser.uid,
+          displayName: userDataFromBackend.displayName || currentUser.displayName,
+          email: userDataFromBackend.email || currentUser.email,
+          title: userDataFromBackend.title || '',
+          bio: userDataFromBackend.bio || '',
+          userPhoto: userDataFromBackend.userPhoto || currentUser.userPhoto,
+          createdAt: new Date(currentUser.metadata?.creationTime).toISOString() || new Date().toISOString(),
+        };
 
-        if (resCharacters.status === 200 && Array.isArray(resCharacters.data.result)) {
-          setCharacters(resCharacters.data.result);
-        } else {
-          setErrorCharacters("Erro ao carregar personagens.");
-        }
+        setUser(userData);
+        console.log('User data loaded:', userData);
+        setEditData(userData);
+
+        // Buscar campanhas
+        const campaignsRes = await fetchSecure(`http://localhost:5000/campaigns/user/${userData.uid}`);
+        const campaignsData = await campaignsRes.json();
+        setCampaigns(Array.isArray(campaignsData) ? campaignsData : campaignsData.campaigns || []);
+
+        // Buscar personagens
+        const charactersRes = await fetchSecure(`http://localhost:5000/sheets/user/${userData.uid}`);
+        const charactersData = await charactersRes.json();
+        setCharacters(Array.isArray(charactersData) ? charactersData : charactersData.sheets || []);
 
       } catch (err) {
-        console.error("Erro ao buscar dados:", err);
-        setError(
-          err.response?.data?.message || "Erro de conexão. Tente novamente mais tarde."
-        );
-        if ([401, 403].includes(err.response?.status)) {
-          navigate("/entrar");
-        }
+        console.error('Erro ao buscar dados do usuário:', err.message);
+        setError('Não foi possível carregar os dados do usuário.');
+
       } finally {
         setLoading(false);
-        setLoadingCharacters(false);
       }
     };
 
@@ -104,12 +104,12 @@ export default function ProfilePage() {
     return <div className="profile-error">{error}</div>;
   }
   if (!user) {
-    return null;
+    return <div className="profile-error">Usuário não encontrado</div>;
   }
 
   // ─────────────── Helpers e contagens ───────────────
   const campaignsCount = campaigns.length;
-  const charactersCount = user.charactersCount ?? 0;
+  const charactersCount = user.characters.length;
   const memberYear = new Date(user.createdAt).getFullYear();
 
   // ─────────────── Handlers de edição ───────────────
@@ -125,8 +125,8 @@ export default function ProfilePage() {
     setEditData(user);
   };
 
-  const handleChange = (e) => {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
+  const handleChange = (name, value) => {
+    setEditData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSaveClick = async () => {
@@ -136,41 +136,34 @@ export default function ProfilePage() {
       return;
     }
 
+    setSaving(true);
+
     try {
-      setSaving(true);
-      const token =
-        localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
-
-      const payload = {
-        displayName: editData.displayName,
-        title: editData.title,
-        bio: editData.bio,
-        photoURL: editData.photoURL,
-      };
-
-      const res = await axios.put(
-        "http://localhost:5000/api/user/update",
-        payload,
+      const response = await fetchSecure(
+        `http://localhost:5000/users/${user.uid}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          method: 'PUT',
+          body: JSON.stringify(editData)
         }
       );
+      const result = await response.json();
 
-      if (res.data.success) {
-        setUser(res.data.data);
-        setEditing(false);
-        window.location.reload();
-      } else {
-        setError(res.data.message || "Falha ao salvar dados.");
-      }
+      setUser(editData);
+      setEditing(false);
+      Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
     } catch (err) {
-      console.error("Erro ao atualizar usuário:", err);
-      const msg =
-        err.response?.data?.message ||
-        "Falha ao salvar. Tente novamente mais tarde.";
-      setError(msg);
+      setError('Erro ao salvar perfil: ' + err.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      Alert.alert('Erro', 'Falha ao sair. Tente novamente.');
+      console.error('Logout error:', err);
     }
   };
 
@@ -350,7 +343,7 @@ export default function ProfilePage() {
 
         <div className="profile-content">
           {/* ─── SUAS CAMPANHAS ─── */}
-          <section className="profile-campaigns-section">
+          {/* <section className="profile-campaigns-section">
             <h2>SUAS CAMPANHAS</h2>
             <button
               className="profile-btn-enter-session"
@@ -397,10 +390,10 @@ export default function ProfilePage() {
             >
               CRIAR NOVA CAMPANHA
             </button>
-          </section>
+          </section> */}
 
           {/* ─── SEUS PERSONAGENS ─── */}
-          <section className="profile-characters-section">
+          {/* <section className="profile-characters-section">
             <h2>SEUS PERSONAGENS</h2>
             <div className="profile-section-divider"></div>
 
@@ -446,14 +439,14 @@ export default function ProfilePage() {
                 </button>
               </>
             )}
-          </section>
+          </section> */}
 
           {/* ─── PRÓXIMAS SESSÕES ─── */}
-          <section className="profile-sessions-section">
+          {/* TODO: mapear sessões do user */}
+          {/* <section className="profile-sessions-section">
             <h2>PRÓXIMAS SESSÕES</h2>
             <div className="profile-section-divider"></div>
             <div className="profile-sessions-list">
-              {/* TODO: mapear sessões do user */}
               <div className="profile-session-card">
                 <div className="profile-session-date">
                   <div className="profile-date-number">28</div>
@@ -474,7 +467,7 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
-          </section>
+          </section> */}
         </div>
       </main>
 

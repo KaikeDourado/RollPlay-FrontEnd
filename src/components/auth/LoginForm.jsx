@@ -1,66 +1,38 @@
 import { useState } from 'react';
 import { FaDiceD20 } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { authApi } from '../../lib/auth';
 import './styles/loginForm.css';
 
 //TODO: O usuário só faz login com email verificado, fazer um alert para avisar caso 
 //back end retorne o erro de email
 
 export default function LoginForm() {
-  const [form, setForm] = useState({
-    identifier: '',   // email ou nome de usuário
-    password: '',
-    remember: false
-  });
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  function handleChange(e) {
-    const { name, type, value, checked } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setError('');
+    setLoading(true);
+
+    if (!identifier || !password) {
+      setLoading(false);
+      return setError('Preencha email e senha');
+    }
 
     try {
-      const payload = {
-        email: form.identifier,    // backend espera "email", mas você pode ajustar para "username" se for o caso
-        password: form.password
-      };
-
-      const res = await axios.post(
-        'http://localhost:5000/api/auth/signin',
-        payload,
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-
-      console.log(res)
-      // Exemplo: armazenar token retornado e respeitar "remember me"
-      const token  = res.data.response?.userData?.token;
-      if (!token) throw new Error('Token não encontrado na resposta.');
-      if (form.remember) {
-        localStorage.setItem('authToken', token);
-        sessionStorage.setItem('authToken', token);
-      } else {
-        sessionStorage.setItem('authToken', token);
-      }
-
-      // redireciona para dashboard ou página inicial
-      navigate('/');
+      const result = await authApi.signInEmail(identifier, password);
+      console.log('signIn result:', result);
     } catch (err) {
-      // exibe mensagem de erro do servidor ou genérica
-      const msg =
-        err.response?.data?.message ||
-        'Falha ao entrar. Verifique suas credenciais.';
-      setError(msg);
+      console.error('Login error:', err);
+      setError(err?.message || 'Falha no login. Verifique suas credenciais.');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="login-form">
@@ -80,8 +52,8 @@ export default function LoginForm() {
           type="text"
           placeholder="seu.email@exemplo.com"
           required
-          value={form.identifier}
-          onChange={handleChange}
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
         />
 
         <label className="login-label-senha" htmlFor="password">
@@ -94,8 +66,8 @@ export default function LoginForm() {
           type="password"
           placeholder="••••••••"
           required
-          value={form.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <div className="remember-me">
@@ -103,16 +75,16 @@ export default function LoginForm() {
             id="remember"
             name="remember"
             type="checkbox"
-            checked={form.remember}
-            onChange={handleChange}
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
           />
           <label htmlFor="remember">Lembrar de mim</label>
         </div>
 
         {error && <p className="login-form-error">{error}</p>}
 
-        <button className="login-btn-entrar" type="submit">
-          Entrar
+        <button className="login-btn-entrar" disabled={loading} type="submit" onClick={handleSubmit}>
+          {loading ? 'Entrando...' : 'Entrar'}
         </button>
       </form>
 
