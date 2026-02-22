@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./styles/navbar.css";
 import SessionModal from "../forms/sessionModal";
 import EnterSessionModal from "../forms/EnterSessionModal";
+import { authApi } from "../../lib/auth";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,7 +12,7 @@ export default function Navbar() {
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
 
   // Verifica se o usuário está logado (ajuste conforme sua lógica real)
-  const isLoggedIn = !!sessionStorage.getItem('authToken');
+  const isLoggedIn = !!authApi.getCurrentUser();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
