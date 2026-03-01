@@ -1,0 +1,179 @@
+.legal-page {
+    min-height: 100vh;
+    background: #0a1929;
+    color: #e0e0e0;
+    padding: 2rem 1rem;
+}
+
+.legal-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.legal-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.legal-back-btn:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.legal-content {
+    background: rgba(13, 33, 55, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.legal-content h1 {
+    font-family: var(--font-cinzel), serif;
+    font-size: 2.5rem;
+    color: #3b82f6;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.legal-updated {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.legal-section {
+    margin-bottom: 2rem;
+}
+
+.legal-section h2 {
+    font-family: var(--font-cinzel), serif;
+    font-size: 1.4rem;
+    color: #60a5fa;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+.legal-section p {
+    line-height: 1.8;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.legal-section ul {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+}
+
+.legal-section li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+    color: #d1d5db;
+}
+
+.legal-section li:before {
+    content: "⚔";
+    position: absolute;
+    left: 0;
+    color: #3b82f6;
+}
+
+.legal-section strong {
+    color: #60a5fa;
+}
+
+/* Responsivo para Tablets */
+@media (max-width: 768px) {
+    .legal-page {
+        padding: 1.5rem 1rem;
+    }
+
+    .legal-content {
+        padding: 1.5rem;
+    }
+
+    .legal-content h1 {
+        font-size: 2rem;
+    }
+
+    .legal-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .legal-section p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsivo para Mobile */
+@media (max-width: 480px) {
+    .legal-page {
+        padding: 1rem;
+    }
+
+    .legal-container {
+        padding: 0;
+    }
+
+    .legal-content {
+        padding: 1.25rem;
+        border-radius: 6px;
+    }
+
+    .legal-content h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .legal-updated {
+        font-size: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .legal-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .legal-section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .legal-section p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
+
+    .legal-section ul {
+        padding-left: 1rem;
+    }
+
+    .legal-section li {
+        padding-left: 1.2rem;
+        margin-bottom: 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .legal-back-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+    }
+}
