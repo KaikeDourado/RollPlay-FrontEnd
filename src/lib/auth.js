@@ -1,9 +1,8 @@
 import { app, auth } from '../config/firebase';
-import { 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged,
-  getIdTokenResult
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
 } from 'firebase/auth';
 
 export const authApi = {
@@ -34,28 +33,11 @@ export const authApi = {
       if (!user) {
         throw new Error('Nenhum usuário autenticado');
       }
-      
+
       const token = await user.getIdToken(forceRefresh);
-      const tokenResult = await getIdTokenResult(user, forceRefresh);
-      
-      const now = new Date();
-      const expirationTime = new Date(tokenResult.expirationTime);
-      
-      console.log('Token válido até:', expirationTime);
-      
-      // Se o token está expirado
-      if (now >= expirationTime) {
-        console.warn('Token expirado, realizando logout automático');
-        await signOut(auth);
-        throw new Error('Token expirado');
-      }
-      
       return token;
     } catch (error) {
       console.error('Erro ao obter token:', error);
-      if (error.message.includes('expirado')) {
-        await signOut(auth);
-      }
       throw error;
     }
   },

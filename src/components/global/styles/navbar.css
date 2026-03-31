@@ -31,6 +31,10 @@
     font-size: 1rem;
 }
 
+.nav-links a:hover {
+    color: #ccc;
+}
+
 .nav-links button {
     padding: 0.5rem 0.5rem;
     background: none;
@@ -40,8 +44,21 @@
     font-size: 1rem;
 }
 
-.nav-links a:hover {
+.nav-links button:hover {
     color: #ccc;
+    padding-top: 0.15rem;
+}
+
+.nav-links .btn-logout:hover {
+    color: #ff5252;
+    padding-top: 0.15rem;
+}
+
+.user-email {
+    padding: 0 0 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    margin-right: 0.5rem;
 }
 
 .btn-outline {

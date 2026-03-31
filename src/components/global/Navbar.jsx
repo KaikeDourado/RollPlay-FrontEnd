@@ -4,6 +4,7 @@ import "./styles/navbar.css";
 import SessionModal from "../forms/sessionModal";
 import EnterSessionModal from "../forms/EnterSessionModal";
 import { authApi } from "../../lib/auth";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,11 +12,27 @@ export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
 
-  // Verifica se o usuário está logado (ajuste conforme sua lógica real)
-  const isLoggedIn = !!authApi.getCurrentUser();
+  // Usar o contexto para verificar autenticação em tempo real
+  const { user, loading } = useAuth();
+  const isLoggedIn = !!user;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handleLogout = async () => {
+    try {
+      await authApi.signOut();
+      navigate("/");
+      setMenuOpen(false);
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
+
+  // Enquanto está carregando, não renderizar nada ou renderizar um placeholder
+  if (loading) {
+    return <header className="navbar"><Link to="/" className="nav-logo">Roll & Play</Link></header>;
+  }
 
   return (
     <header className="navbar">
@@ -37,18 +54,19 @@ export default function Navbar() {
           Home
         </button>
 
-        <button
-          onClick={() => {
-            setMenuOpen(false);
-            navigate("/perfil");
-          }}
-        >
-          Perfil
-        </button>
-
-        {/* Botões só aparecem se estiver logado */}
-        {isLoggedIn && (
+        {/* Se estiver logado */}
+        {isLoggedIn ? (
           <>
+            <button
+              className="btn-primary"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/perfil");
+              }}
+            >
+              Perfil
+            </button>
+
             <button
               onClick={() => {
                 openModal();
@@ -64,19 +82,22 @@ export default function Navbar() {
             <EnterSessionModal
               isOpen={isEnterModalOpen}
               onClose={() => setIsEnterModalOpen(false)}
-              // onSubmit={(code) => {
-              //   console.log("código da sessão:", code);
-              //   setIsEnterModalOpen(false);
-              // }}
             />
-          </>
-        )}
 
-        {/* Botões de autenticação só aparecem se NÃO estiver logado */}
-        {!isLoggedIn && (
+            <span className="user-email">{user?.email}</span>
+            <button className="btn-logout" onClick={handleLogout}>
+              Sair
+            </button>
+          </>
+        ) : (
           <>
-            <Link to="/entrar" className="btn-outline" onClick={() => setMenuOpen(false)}>Entrar</Link>
-            <Link to="/registrar" className="btn-primary" onClick={() => setMenuOpen(false)}>Registrar</Link>
+            {/* Se NÃO estiver logado */}
+            <Link to="/entrar" className="btn-outline" onClick={() => setMenuOpen(false)}>
+              Entrar
+            </Link>
+            <Link to="/registrar" className="btn-primary" onClick={() => setMenuOpen(false)}>
+              Registrar
+            </Link>
           </>
         )}
       </nav>
