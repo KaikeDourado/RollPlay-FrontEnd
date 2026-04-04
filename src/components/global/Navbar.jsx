@@ -84,7 +84,9 @@ export default function Navbar() {
               onClose={() => setIsEnterModalOpen(false)}
             />
 
-            <span className="user-email">{user?.email}</span>
+            {/* TODO: Talvez colocar o nome do usuário ou algo assim */}
+            {/* <span className="user-email">{user?.email}</span> */}
+            
             <button className="btn-logout" onClick={handleLogout}>
               Sair
             </button>

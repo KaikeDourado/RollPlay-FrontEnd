@@ -54,12 +54,13 @@
     padding-top: 0.15rem;
 }
 
-.user-email {
+/* TODO: Talvez colocar o nome do usuário ou algo assim */
+/* .user-email {
     padding: 0 0 0.25rem 0.5rem;
     font-size: 0.9rem;
     color: #666;
     margin-right: 0.5rem;
-}
+} */
 
 .btn-outline {
     border: 1px solid #3b82f6;

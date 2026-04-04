@@ -26,10 +26,12 @@ export default function LoginForm() {
     try {
       const result = await authApi.signInEmail(identifier, password);
       console.log('signIn result:', result);
+      setLoading(false);
+      // Redirecionar para a página principal
+      window.location.href = '/';
     } catch (err) {
       console.error('Login error:', err);
       setError(err?.message || 'Falha no login. Verifique suas credenciais.');
-    } finally {
       setLoading(false);
     }
   };
