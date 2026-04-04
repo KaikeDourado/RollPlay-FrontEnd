@@ -70,12 +70,12 @@ export default function ProfilePage() {
         setEditData(userData);
 
         // Buscar campanhas
-        const campaignsRes = await fetchSecure(`http://localhost:5000/campaigns/user/${userData.uid}`);
+        const campaignsRes = await fetchSecure(`http://localhost:5000/campaigns/user/token`);
         const campaignsData = await campaignsRes.json();
         setCampaigns(Array.isArray(campaignsData) ? campaignsData : campaignsData.campaigns || []);
 
         // Buscar personagens
-        const charactersRes = await fetchSecure(`http://localhost:5000/sheets/user/${userData.uid}`);
+        const charactersRes = await fetchSecure(`http://localhost:5000/sheets/user/token`);
         const charactersData = await charactersRes.json();
         setCharacters(Array.isArray(charactersData) ? charactersData : charactersData.sheets || []);
 
@@ -109,7 +109,7 @@ export default function ProfilePage() {
 
   // ─────────────── Helpers e contagens ───────────────
   const campaignsCount = campaigns.length;
-  const charactersCount = user.characters.length;
+  const charactersCount = characters.length;
   const memberYear = new Date(user.createdAt).getFullYear();
 
   // ─────────────── Handlers de edição ───────────────
@@ -160,10 +160,11 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     try {
-      await logout();
-    } catch (err) {
-      Alert.alert('Erro', 'Falha ao sair. Tente novamente.');
-      console.error('Logout error:', err);
+      await authApi.signOut();
+      navigate("/");
+      setMenuOpen(false);
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
     }
   };
 
@@ -175,7 +176,7 @@ export default function ProfilePage() {
         return;
       }
 
-      const res = await axios.post("http://localhost:5000/api/character/create", {} ,{
+      const res = await axios.post("http://localhost:5000/api/character/create", {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -324,11 +325,7 @@ export default function ProfilePage() {
             )}
             <button
               className="profile-btn-logout"
-              onClick={() => {
-                localStorage.clear();
-                sessionStorage.clear();
-                navigate("/entrar");
-              }}
+              onClick={handleLogout}
             >
               SAIR DA CONTA
             </button>
@@ -361,8 +358,8 @@ export default function ProfilePage() {
               ) : (
                 campaigns.map((c) => (
                   <Link
-                    key={c.id}
-                    to={`/profile-session/${c.id}`}
+                    key={c.uid}
+                    to={`/profile-session/${c.uid}`}
                     className="profile-campaign-card"
                   >
                     <div className="profile-campaign-image">
