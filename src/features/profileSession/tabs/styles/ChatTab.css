@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 520px;
+    max-height: 100%;
     background-color: #141b2d;
     border-radius: 8px;
     padding: 1rem;
@@ -9,7 +11,8 @@
 }
 
 .chat-messages {
-    flex: 1;
+    flex: 1 1 0;
+    min-height: 0;
     overflow-y: auto;
     margin-bottom: 1rem;
     padding: 0.5rem;
@@ -18,16 +21,43 @@
 }
 
 .message {
-    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: rgba(30, 41, 59, 0.9);
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    width: 100%;
+    position: relative;
+}
+
+.message-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .player-name {
-    font-weight: bold;
-    color: #18b8f8;
+    font-weight: 700;
+    color: #38bdf8;
+    flex-shrink: 0;
 }
 
 .message-content {
-    margin-left: 0.5rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    flex: 1 1 auto;
+    word-break: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.message-time {
+    align-self: flex-end;
+    color: #94a3b8;
+    font-size: 0.75rem;
 }
 
 .dice-buttons {
@@ -151,4 +181,24 @@
   .dice-label{
     display: none;
   }
+}
+
+.message-time {
+  display: inline-block;
+  margin-left: 0.75rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.chat-error {
+  color: #ff9b9b;
+  margin-bottom: 0.75rem;
+}
+
+.chat-messages {
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

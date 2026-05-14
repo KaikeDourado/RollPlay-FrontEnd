@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import RegisterForm from "@/components/auth/RegisterForm";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
@@ -5,6 +8,19 @@ import { Check } from "lucide-react";
 import "../styles/register.css";
 
 export default function RegisterPage() {
+    const { user, loading } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loading && user) {
+            navigate("/perfil");
+        }
+    }, [loading, user, navigate]);
+
+    if (loading) {
+      return <div className="register-loading"><div className="spinner"></div></div>;
+    }
+
     return (
         <div className="register-container">
             <Navbar />

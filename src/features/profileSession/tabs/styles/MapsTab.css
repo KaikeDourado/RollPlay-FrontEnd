@@ -107,6 +107,21 @@
   color: white;
 }
 
+.delete-map-button-profileSession {
+  flex: 1;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-map-button-profileSession:hover {
+  background-color: #c0392b;
+}
+
 /* Responsividade */
 @media (max-width: 1200px) {
   .maps-grid-profileSession {
@@ -133,4 +148,83 @@
   .maps-grid-profileSession {
     grid-template-columns: 1fr;
   }
+}
+
+.map-form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 15, 35, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.map-form {
+  width: min(100%, 540px);
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.4);
+}
+
+.map-form h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #e2e8f0;
+}
+
+.map-form input,
+.map-form textarea {
+  width: 100%;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  background: #020617;
+  color: #f8fafc;
+  padding: 0.95rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.map-form input:focus,
+.map-form textarea:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14);
+}
+
+.map-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.map-form .form-actions button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.map-form .form-actions button:first-of-type {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+.map-form .form-actions button:first-of-type:hover {
+  background: #22d3ee;
+}
+
+.map-form .form-actions button:last-of-type {
+  background: transparent;
+  border: 1px solid #64748b;
+  color: #cbd5e1;
+}
+
+.map-form .form-actions button:last-of-type:hover {
+  background: rgba(100, 116, 139, 0.2);
 }

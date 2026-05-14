@@ -1,8 +1,7 @@
-// src/features/profileSession/ProfileSession.jsx
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "@/contexts/AuthContext";
+import { fetchSecure } from "@/lib/fetchSecure";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import SessionInfo from "@/components/profileSession/SessionInfo";
@@ -29,34 +28,30 @@ export default function ProfileSession() {
   // 3) Estado para a aba ativa
   const [activeTab, setActiveTab] = useState("CHAT");
 
+  const { user, loading: authLoading } = useAuth();
+
   // 4) useEffect para buscar os dados da campanha assim que o componente montar
   useEffect(() => {
+    if (authLoading) {
+      return;
+    }
+
+    if (!user) {
+      navigate("/entrar");
+      return;
+    }
+
     const fetchSession = async () => {
       try {
-        // 4.1) recupera token do storage
-        const token =
-          localStorage.getItem("authToken") ||
-          sessionStorage.getItem("authToken");
-        if (!token) {
-          navigate("/entrar");
-          return;
-        }
-
-        console.log(campaignUid)
-
-        // 4.2) faz GET para /api/campaign/:uid (aqui campaignUid)
-        const res = await axios.get(
-          `http://localhost:5000/api/campaign/info/${campaignUid}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+        const res = await fetchSecure(
+          `http://localhost:5000/campaigns/${campaignUid}`
         );
 
-        if (res.data.success) {
-         
-          setSessionData(res.data.data);
+        const data = await res.json();
+        if (res.ok && data.campaign) {
+          setSessionData(data.campaign);
         } else {
-          setError(res.data.message || "Falha ao carregar dados da sessão.");
+          setError(data.message || "Falha ao carregar dados da sessão.");
         }
       } catch (err) {
         console.error("Erro ao buscar campanha:", err);
@@ -65,7 +60,6 @@ export default function ProfileSession() {
             "Erro de conexão. Tente novamente mais tarde."
         );
         if ([401, 403].includes(err.response?.status)) {
-          // se token inválido ou expirado, redireciona para login
           navigate("/entrar");
         }
       } finally {
@@ -74,7 +68,7 @@ export default function ProfileSession() {
     };
 
     fetchSession();
-  }, [campaignUid, navigate]);
+  }, [campaignUid, navigate, user, authLoading]);
 
   // 5) Enquanto carrega, exibe spinner
   if (loading) {
@@ -106,7 +100,7 @@ export default function ProfileSession() {
       case "CHAT":
         return <ChatTab campaignUid={campaignUid} />;
       case "JOGADORES":
-        return <PlayersTab campaignUid={campaignUid} />;
+        return <PlayersTab campaignUid={campaignUid} players={sessionData?.players || []} />;
       case "SESSÕES":
         return <SessionsTab campaignUid={campaignUid} />;
       case "NOTAS":

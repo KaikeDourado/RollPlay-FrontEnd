@@ -86,3 +86,48 @@
 .session-form button:hover {
     background-color: #0056b3;
 }
+
+.session-form button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.session-form button:disabled:hover {
+    background-color: #6c757d;
+}
+
+.session-error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.session-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: bold;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

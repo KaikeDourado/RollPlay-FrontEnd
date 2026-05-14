@@ -7,8 +7,11 @@ const SessionModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     sessionName: '',
     description: '',
+    system: 'D&D 5e',
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +24,8 @@ const SessionModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
+    setLoading(true);
 
     console.log('Enviando dados para criar campanha:', formData);
 
@@ -33,18 +38,24 @@ const SessionModal = ({ isOpen, onClose }) => {
           body: JSON.stringify({
             name: formData.sessionName,
             description: formData.description,
+            system: formData.system,
           })
         }
       );
 
       // 2) Verifica resposta
       const data = await res.json();
-      
+
       if (res.ok && data.campaign) {
         console.log('Campanha criada:', data.campaign);
-        // Redireciona para a página da campanha criada
-        // window.location.href = `/campaigns/${data.campaign.uid}`;
-        onClose();
+        setSuccess('✓ Sessão criada com sucesso!');
+        setFormData({ sessionName: '', description: '', system: 'D&D 5e' });
+
+        // Fecha o modal após 2 segundos
+        setTimeout(() => {
+          onClose();
+          setSuccess('');
+        }, 2000);
       } else {
         setError(data.message || 'Erro ao criar campanha.');
       }
@@ -54,6 +65,8 @@ const SessionModal = ({ isOpen, onClose }) => {
         err.message ||
         'Falha na conexão ao criar campanha.'
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,7 +75,7 @@ const SessionModal = ({ isOpen, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <button className="close-button" onClick={onClose}>&times;</button>
+        <button className="close-button" onClick={onClose} disabled={loading}>&times;</button>
         <form onSubmit={handleSubmit} className="session-form">
 
           <div>
@@ -74,6 +87,7 @@ const SessionModal = ({ isOpen, onClose }) => {
               value={formData.sessionName}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
 
@@ -85,12 +99,31 @@ const SessionModal = ({ isOpen, onClose }) => {
               value={formData.description}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
 
-          {error && <p className="session-error">{error}</p>}
+          <div>
+            <label htmlFor="system">Sistema de RPG:</label>
+            <select
+              id="system"
+              name="system"
+              value={formData.system}
+              onChange={handleChange}
+              required
+              disabled={loading}
+            >
+              <option value="D&D 5e">D&D 5e</option>
+              <option value="D&D 5.5e">D&D 5.5e</option>
+            </select>
+          </div>
 
-          <button type="submit">Criar Sessão</button>
+          {error && <p className="session-error">{error}</p>}
+          {success && <p className="session-success">{success}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Criando...' : 'Criar Sessão'}
+          </button>
         </form>
       </div>
     </div>
