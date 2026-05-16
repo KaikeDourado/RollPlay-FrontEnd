@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/TabNavigation.css';
 
 const TabNavigation = ({ activeTab, setActiveTab }) => {
-  const tabs = ['CHAT', 'JOGADORES', 'SESSÕES', 'NOTAS', 'MAPAS', 'NPCS'];
+  const tabs = ['CHAT', 'JOGADORES', 'FICHAS', 'SESSÕES', 'NOTAS', 'MAPAS', 'NPCS'];
   
   return (
     <div className="tabs-navigation-profileSession">

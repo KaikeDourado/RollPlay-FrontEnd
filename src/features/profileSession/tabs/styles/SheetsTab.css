@@ -1,0 +1,130 @@
+.sheets-tab-profileSession {
+  width: 100%;
+  padding: 2rem;
+}
+
+.tab-header-profileSession {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.tab-title-profileSession {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.sheets-info-profileSession {
+  color: #8D8D95;
+  font-size: 0.95rem;
+}
+
+.sheets-grid-profileSession {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.sheet-card-profileSession {
+  background-color: #020717;
+  border: 2px solid #60A5FA;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sheet-card-profileSession:hover {
+  border-color: #3a3dff;
+  background-color: #0a0e1f;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(96, 165, 250, 0.2);
+}
+
+.sheet-card-content-profileSession {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sheet-name-profileSession {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.sheet-details-profileSession {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.sheet-class-profileSession {
+  color: #60A5FA;
+  font-weight: 600;
+}
+
+.sheet-level-profileSession {
+  color: #8D8D95;
+  font-size: 0.85rem;
+}
+
+.sheet-owner-profileSession {
+  font-size: 0.8rem;
+  color: #8D8D95;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #60A5FA;
+}
+
+.view-sheet-button-profileSession {
+  background-color: #60A5FA;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.view-sheet-button-profileSession:hover {
+  background-color: #3a3dff;
+  transform: scale(1.02);
+}
+
+.view-sheet-button-profileSession:active {
+  transform: scale(0.98);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sheets-grid-profileSession {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-header-profileSession {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .sheet-card-profileSession {
+    padding: 1rem;
+  }
+
+  .sheet-name-profileSession {
+    font-size: 1.1rem;
+  }
+}

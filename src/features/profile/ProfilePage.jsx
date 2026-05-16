@@ -7,6 +7,7 @@ import SessionModal from "@/components/forms/SessionModal";
 import EnterSessionModal from "@/components/forms/EnterSessionModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchSecure } from "@/lib/fetchSecure";
+import { authApi } from "@/lib/auth";
 import "./profile.css";
 
 export default function ProfilePage() {
@@ -127,7 +128,8 @@ export default function ProfilePage() {
     setEditData(user);
   };
 
-  const handleChange = (name, value) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setEditData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -148,12 +150,18 @@ export default function ProfilePage() {
           body: JSON.stringify(editData)
         }
       );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Erro ao salvar: ${response.statusText}`);
+      }
+
       const result = await response.json();
 
       setUser(editData);
       setEditing(false);
-      Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
     } catch (err) {
+      console.error('Erro ao salvar:', err);
       setError('Erro ao salvar perfil: ' + err.message);
     } finally {
       setSaving(false);
@@ -164,7 +172,6 @@ export default function ProfilePage() {
     try {
       await authApi.signOut();
       navigate("/");
-      setMenuOpen(false);
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
     }
@@ -207,8 +214,8 @@ export default function ProfilePage() {
             <img
               src={
                 editing
-                  ? editData.photoURL ?? "/imagens/default-profile-img.png"
-                  : user.photoURL || "/imagens/default-profile-img.png"
+                  ? editData.userPhoto ?? "/imagens/default-profile-img.png"
+                  : user.userPhoto || "/imagens/default-profile-img.png"
               }
               alt="Foto de perfil"
               className="profile-image"
@@ -232,7 +239,7 @@ export default function ProfilePage() {
                     if (file) {
                       const reader = new FileReader();
                       reader.onload = (ev) => {
-                        setEditData({ ...editData, photoURL: ev.target.result });
+                        setEditData({ ...editData, userPhoto: ev.target.result });
                       };
                       reader.readAsDataURL(file);
                     }
@@ -312,7 +319,6 @@ export default function ProfilePage() {
                 <button
                   className="profile-btn-edit"
                   onClick={handleCancelClick}
-                  style={{ marginLeft: "0.5rem" }}
                 >
                   CANCELAR
                 </button>

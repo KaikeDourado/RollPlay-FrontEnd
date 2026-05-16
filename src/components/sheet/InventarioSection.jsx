@@ -4,146 +4,262 @@ import { useState } from "react"
 import "./styles/InventarioSection.css"
 
 const InventarioSection = ({ inventario, editMode, onSave }) => {
-  const [novoItem, setNovoItem] = useState({ nome: "", quantidade: 1, peso: 0 })
+
+  const equipment = inventario?.equipment || []
+  const coins = inventario?.coins || {
+    cp: 0,
+    sp: 0,
+    ep: 0,
+    gp: 0,
+    pp: 0,
+  }
+
+  const [novoItem, setNovoItem] = useState({
+    name: "",
+    quantity: 1,
+    weight: 0,
+    description: "",
+  })
 
   const calcularPesoTotal = () => {
-    return inventario.reduce((total, item) => total + item.peso * item.quantidade, 0)
+    return equipment.reduce(
+      (total, item) =>
+        total + (item.weight || 0) * (item.quantity || 0),
+      0
+    )
   }
 
   const handleAddItem = () => {
-    if (novoItem.nome) {
-      const updatedInventario = [
+    if (novoItem.name.trim() !== "") {
+
+      const updatedInventory = {
         ...inventario,
-        {
-          ...novoItem,
-          quantidade: Number.parseInt(novoItem.quantidade) || 1,
-          peso: Number.parseFloat(novoItem.peso) || 0,
-        },
-      ]
-      onSave(updatedInventario)
-      setNovoItem({ nome: "", quantidade: 1, peso: 0 })
+
+        equipment: [
+          ...equipment,
+          {
+            ...novoItem,
+            quantity: Number.parseInt(novoItem.quantity) || 1,
+            weight: Number.parseFloat(novoItem.weight) || 0,
+          },
+        ],
+      }
+
+      onSave(updatedInventory)
+
+      setNovoItem({
+        name: "",
+        quantity: 1,
+        weight: 0,
+        description: "",
+      })
     }
   }
 
   const handleRemoveItem = (index) => {
-    const updatedInventario = inventario.filter((_, i) => i !== index)
-    onSave(updatedInventario)
+
+    const updatedInventory = {
+      ...inventario,
+
+      equipment: equipment.filter((_, i) => i !== index),
+    }
+
+    onSave(updatedInventory)
   }
 
   const handleItemChange = (e) => {
     const { name, value } = e.target
-    setNovoItem({ ...novoItem, [name]: value })
+
+    setNovoItem({
+      ...novoItem,
+      [name]: value,
+    })
   }
 
   const handleQuantidadeChange = (index, newQuantidade) => {
-    if (editMode) {
-      const updatedInventario = [...inventario]
-      updatedInventario[index].quantidade = Number.parseInt(newQuantidade) || 1
-      onSave(updatedInventario)
+
+    if (!editMode) return
+
+    const updatedEquipment = [...equipment]
+
+    updatedEquipment[index].quantity =
+      Number.parseInt(newQuantidade) || 1
+
+    const updatedInventory = {
+      ...inventario,
+      equipment: updatedEquipment,
     }
+
+    onSave(updatedInventory)
   }
 
   return (
     <div className="section-card inventario-section">
+
       <div className="section-header">
         <span className="section-icon">🎒</span>
         <h2>Inventário</h2>
       </div>
 
       <div className="inventario-summary">
+
         <div className="peso-total">
           <span>Peso Total: </span>
-          <span className="peso-valor">{calcularPesoTotal().toFixed(1)} kg</span>
+
+          <span className="peso-valor">
+            {calcularPesoTotal().toFixed(1)} kg
+          </span>
         </div>
+
         <div className="moedas">
+
           <div className="moeda">
             <span className="moeda-icon">🥇</span>
-            <span className="moeda-label">PO: </span>
-            <span className="moeda-valor">75</span>
+            <span className="moeda-label">PP: </span>
+            <span className="moeda-valor">{coins.pp}</span>
           </div>
+
+          <div className="moeda">
+            <span className="moeda-icon">🟡</span>
+            <span className="moeda-label">PO: </span>
+            <span className="moeda-valor">{coins.gp}</span>
+          </div>
+
+          <div className="moeda">
+            <span className="moeda-icon">⚪</span>
+            <span className="moeda-label">PE: </span>
+            <span className="moeda-valor">{coins.ep}</span>
+          </div>
+
           <div className="moeda">
             <span className="moeda-icon">🥈</span>
             <span className="moeda-label">PP: </span>
-            <span className="moeda-valor">32</span>
+            <span className="moeda-valor">{coins.sp}</span>
           </div>
+
           <div className="moeda">
             <span className="moeda-icon">🥉</span>
             <span className="moeda-label">PC: </span>
-            <span className="moeda-valor">15</span>
+            <span className="moeda-valor">{coins.cp}</span>
           </div>
+
         </div>
       </div>
 
       <div className="inventario-list">
+
         <table className="inventario-table">
+
           <thead>
             <tr>
               <th>Item</th>
               <th>Qtd</th>
               <th>Peso</th>
+
               {editMode && <th>Ações</th>}
             </tr>
           </thead>
+
           <tbody>
-            {inventario.map((item, index) => (
-              <tr key={index}>
-                <td>{item.nome}</td>
-                <td>
-                  {editMode ? (
-                    <input
-                      type="number"
-                      value={item.quantidade}
-                      min="1"
-                      onChange={(e) => handleQuantidadeChange(index, e.target.value)}
-                      className="quantidade-input"
-                    />
-                  ) : (
-                    item.quantidade
-                  )}
+
+            {equipment.length === 0 ? (
+              <tr>
+                <td colSpan={editMode ? 4 : 3}>
+                  Nenhum item no inventário.
                 </td>
-                <td>{item.peso} kg</td>
-                {editMode && (
-                  <td>
-                    <button className="remove-btn" onClick={() => handleRemoveItem(index)}>
-                      ✕
-                    </button>
-                  </td>
-                )}
               </tr>
-            ))}
+            ) : (
+              equipment.map((item, index) => (
+                <tr key={index}>
+
+                  <td>{item?.name}</td>
+
+                  <td>
+                    {editMode ? (
+                      <input
+                        type="number"
+                        value={item?.quantity || 1}
+                        min="1"
+                        onChange={(e) =>
+                          handleQuantidadeChange(
+                            index,
+                            e.target.value
+                          )
+                        }
+                        className="quantidade-input"
+                      />
+                    ) : (
+                      item?.quantity
+                    )}
+                  </td>
+
+                  <td>{item?.weight || 0} kg</td>
+
+                  {editMode && (
+                    <td>
+                      <button
+                        className="remove-btn"
+                        onClick={() => handleRemoveItem(index)}
+                      >
+                        ✕
+                      </button>
+                    </td>
+                  )}
+
+                </tr>
+              ))
+            )}
+
           </tbody>
         </table>
       </div>
 
       {editMode && (
         <div className="add-item-form">
+
           <h3>Adicionar Item</h3>
+
           <div className="form-row">
+
             <input
               type="text"
-              name="nome"
+              name="name"
               placeholder="Nome do Item"
-              value={novoItem.nome}
+              value={novoItem.name}
               onChange={handleItemChange}
             />
+
             <input
               type="number"
-              name="quantidade"
+              name="quantity"
               placeholder="Qtd"
-              value={novoItem.quantidade}
+              value={novoItem.quantity}
               onChange={handleItemChange}
               min="1"
             />
+
             <input
               type="number"
-              name="peso"
+              name="weight"
               placeholder="Peso (kg)"
-              value={novoItem.peso}
+              value={novoItem.weight}
               onChange={handleItemChange}
               step="0.1"
               min="0"
             />
-            <button className="add-btn" onClick={handleAddItem}>
+
+            <input
+              type="text"
+              name="description"
+              placeholder="Descrição"
+              value={novoItem.description}
+              onChange={handleItemChange}
+            />
+
+            <button
+              className="add-btn"
+              onClick={handleAddItem}
+            >
               Adicionar
             </button>
           </div>

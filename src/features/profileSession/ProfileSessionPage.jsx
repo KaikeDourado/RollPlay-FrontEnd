@@ -7,6 +7,7 @@ import Footer from "@/components/global/Footer";
 import SessionInfo from "@/components/profileSession/SessionInfo";
 import TabNavigation from "@/components/profileSession/TabNavigation";
 import PlayersTab from "./tabs/PlayersTab";
+import SheetsTab from "./tabs/SheetsTab";
 import SessionsTab from "./tabs/SessionsTab";
 import NotesTab from "./tabs/NotesTab";
 import MapsTab from "./tabs/MapsTab";
@@ -27,6 +28,13 @@ export default function ProfileSession() {
 
   // 3) Estado para a aba ativa
   const [activeTab, setActiveTab] = useState("CHAT");
+
+  // 4) Trigger para recarregar fichas após criar uma nova
+  const [sheetsRefreshTrigger, setSheetsRefreshTrigger] = useState(0);
+
+  const handleSheetCreated = () => {
+    setSheetsRefreshTrigger(prev => prev + 1);
+  };
 
   const { user, loading: authLoading } = useAuth();
 
@@ -100,7 +108,9 @@ export default function ProfileSession() {
       case "CHAT":
         return <ChatTab campaignUid={campaignUid} />;
       case "JOGADORES":
-        return <PlayersTab campaignUid={campaignUid} players={sessionData?.players || []} />;
+        return <PlayersTab campaignUid={campaignUid} sessionData={sessionData} onSheetCreated={handleSheetCreated} />;
+      case "FICHAS":
+        return <SheetsTab campaignUid={campaignUid} sessionData={sessionData} refreshTrigger={sheetsRefreshTrigger} />;
       case "SESSÕES":
         return <SessionsTab campaignUid={campaignUid} />;
       case "NOTAS":
@@ -110,7 +120,7 @@ export default function ProfileSession() {
       case "NPCS":
         return <NPCsTab campaignUid={campaignUid} />;
       default:
-        return <PlayersTab campaignUid={campaignUid} />;
+        return <ChatTab campaignUid={campaignUid} />;
     }
   };
 

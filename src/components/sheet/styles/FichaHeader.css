@@ -122,7 +122,55 @@
   font-weight: 700;
   color: #3b82f6;
 }
+.death-saves-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #15202b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+}
 
+.death-saves-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.death-saves-line {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.death-save-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #4a5568;
+  background-color: transparent;
+}
+
+.death-save-dot.success.filled {
+  background-color: #48bb78;
+  border-color: #48bb78;
+}
+
+.death-save-dot.failure.filled {
+  background-color: #f56565;
+  border-color: #f56565;
+}
+
+.death-save-dot.success {
+  background-color: transparent;
+}
+
+.death-save-dot.failure {
+  background-color: transparent;
+}
 /* Estilos para o retrato e título */
 .character-portrait {
   display: flex;

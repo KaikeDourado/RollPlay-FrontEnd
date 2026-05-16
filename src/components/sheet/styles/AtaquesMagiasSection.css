@@ -7,88 +7,371 @@
 .ataques-tabs {
   display: flex;
   gap: 10px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
-.ataques-table,
-.inventario-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+.ataques-tabs .tab-button {
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
 }
 
-.ataques-table th,
-.ataques-table td,
-.inventario-table th,
-.inventario-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #4a5568;
+.ataques-tabs .tab-button.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
 }
 
-.ataques-table th,
-.inventario-table th {
-  font-weight: 600;
-  color: #a0aec0;
-  text-transform: uppercase;
+.ataques-list,
+.spell-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ataque-card,
+.spellcasting-panel,
+.spell-level-card,
+.empty-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.ataque-card-header,
+.spellcasting-header,
+.spell-level-header,
+.spell-modal-header,
+.spell-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ataque-card h3,
+.spell-level-card h3,
+.spellcasting-panel h3,
+.spell-modal h3 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.ataque-grid,
+.magias-info,
+.spell-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ataque-grid label,
+.ataque-notes,
+.magia-stat,
+.spell-form-grid label,
+.full-field,
+.spell-notes,
+.components-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #94a3b8;
   font-size: 12px;
+  font-weight: 600;
 }
 
-.add-ataque-form h3,
-.add-item-form h3,
-.add-habilidade-form h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #3b82f6;
+.ataque-grid span,
+.ataque-notes span,
+.magia-stat span,
+.spell-notes p {
+  color: #f8fafc;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #3b82f6;
 }
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
   align-items: center;
 }
 
-.magias-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
+.add-ataque-form {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 16px;
 }
 
-.magia-stat {
-  background-color: #2d3748;
-  border-radius: 8px;
-  padding: 15px;
-  text-align: center;
+.add-ataque-form h3 {
+  font-size: 16px;
+  margin: 0 0 12px;
+  color: #60a5fa;
 }
 
-.magia-stat label {
-  font-size: 12px;
-  color: #a0aec0;
-  margin-bottom: 5px;
-  display: block;
-}
-
-.stat-value {
-  font-size: 18px;
+.add-btn,
+.add-magia-btn,
+.secondary-btn,
+.remove-btn,
+.modal-close-btn,
+.spell-remove-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
   font-weight: 600;
 }
 
-.magias-empty {
-  background-color: #2d3748;
-  border-radius: 8px;
-  padding: 30px;
-  text-align: center;
-  color: #a0aec0;
+.add-btn,
+.add-magia-btn {
+  background: #2563eb;
+  color: white;
 }
 
-.add-magia-btn {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
+.secondary-btn {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.remove-btn,
+.modal-close-btn,
+.spell-remove-btn {
+  background: #7f1d1d;
+  color: #fecaca;
+}
+
+.spellcasting-header p,
+.spell-modal-header p {
+  margin: 4px 0 0;
+  color: #94a3b8;
   font-size: 14px;
-  margin-top: 15px;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.switch-row input,
+.checkbox-grid input {
+  width: auto;
+}
+
+.slots-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+.slots-row input {
+  width: 70px;
+}
+
+.spells-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.spell-card {
+  text-align: left;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 14px;
+  color: #e2e8f0;
+  cursor: pointer;
+}
+
+.spell-card h4 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.spell-card p {
+  margin: 6px 0 10px;
+  color: #94a3b8;
+}
+
+.spell-card-top span,
+.spell-tags small {
+  background: #1d4ed8;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.spell-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.spell-remove-btn {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.magias-empty-small,
+.empty-card {
+  color: #94a3b8;
+  text-align: center;
+}
+
+.magias-empty-small {
+  background: #0f172a;
+  border: 1px dashed #334155;
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 14px;
+}
+
+.spell-notes {
+  margin-top: 16px;
+}
+
+.spell-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.82);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.spell-modal {
+  width: min(980px, 100%);
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.checkbox-grid label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+}
+
+.components-box {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.components-box h4 {
+  margin: 0;
+  color: #f8fafc;
+}
+
+.full-field {
+  margin-top: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 720px) {
+  .ataques-magias-section {
+    gap: 14px;
+  }
+
+  .ataques-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ataques-tabs .tab-button {
+    width: 100%;
+  }
+
+  .ataque-card-header,
+  .spellcasting-header,
+  .spell-level-header,
+  .spell-modal-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .spell-modal-backdrop {
+    padding: 10px;
+  }
+
+  .spell-modal {
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button,
+  .add-magia-btn,
+  .add-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+
+  .spells-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
