@@ -1,9 +1,25 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import LoginForm from "@/components/auth/LoginForm";
 import "../styles/login.css";
 
 export default function LoginPage() {
+    const { user, loading } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loading && user) {
+            navigate("/perfil");
+        }
+    }, [loading, user, navigate]);
+
+    if (loading) {
+      return <div className="login-loading"><div className="spinner"></div></div>;
+    }
+
     return (
         <div className="login-container">
             <Navbar />

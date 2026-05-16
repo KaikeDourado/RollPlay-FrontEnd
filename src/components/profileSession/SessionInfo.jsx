@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchSecure } from "@/lib/fetchSecure";
+import { useAuth } from "@/contexts/AuthContext";
 import "./styles/SessionInfo.css";
 
 const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
@@ -7,17 +8,23 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
   const [copied, setCopied] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(sessionData.title);
-  const [description, setDescription] = useState(sessionData.description);
+  const [title, setTitle] = useState(sessionData?.name || sessionData?.title || "");
+  const [description, setDescription] = useState(sessionData?.description || "");
+  const [system, setSystem] = useState(sessionData?.system || "D&D 5e");
+
+  const { user } = useAuth();
 
   // Quando sessionData mudar (por exemplo, após salvar), atualiza os campos locais
   useEffect(() => {
-    setTitle(sessionData.title);
-    setDescription(sessionData.description);
-  }, [sessionData.title, sessionData.description]);
+    setTitle(sessionData?.name || sessionData?.title || "");
+    setDescription(sessionData?.description || "");
+    setSystem(sessionData?.system || "D&D 5e");
+  }, [sessionData]);
+
+  const getCampaignId = () => sessionData?.uid || sessionData?.id || localStorage.getItem('campaignUid');
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(sessionData.id);
+    navigator.clipboard.writeText(getCampaignId());
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -26,41 +33,41 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
 
   // Salva local e no back-end
   const handleSaveClick = async () => {
-    try {
-      const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
-      if (!token) {
-        alert("Você precisa estar logado para editar a campanha.");
-        return;
-      }
+    if (!user) {
+      alert("Você precisa estar logado para editar a campanha.");
+      return;
+    }
 
-      // Certificando-se de que o 'uid' da campanha está sendo enviado junto com os dados
+    try {
+      const campaignId = getCampaignId();
       const updatedData = {
-        uid: localStorage.getItem('campaignUid'),
-        title,
+        name: title,
         description,
+        system,
       };
 
-
-      // Envia para o back-end (ajuste a URL para o seu endpoint real)
-      const res = await axios.put(
-        `http://localhost:5000/api/campaign/update`,
-        updatedData,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const res = await fetchSecure(
+        `http://localhost:5000/campaigns/${campaignId}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(updatedData)
+        }
       );
 
-      if (res.data.success) {
-        // 2) Atualiza estado em ProfileSession para refletir as mudanças 
+      const data = await res.json();
+
+      if (res.ok && data.campaign) {
         if (onUpdateSessionData) {
-          onUpdateSessionData({ title, description });
+          onUpdateSessionData({ name: title, description, system });
         }
         setIsEditing(false);
       } else {
-        alert(res.data.message || "Falha ao salvar campanha.");
+        alert(data.message || "Falha ao salvar campanha.");
       }
     } catch (err) {
       console.error("Erro ao salvar campanha:", err);
       alert(
-        err.response?.data?.message ||
+        err.message ||
         "Erro ao conectar ao servidor. Tente novamente."
       );
     }
@@ -109,12 +116,32 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
           }}
         />
       ) : (
-        <h1 className="session-title-profileSession">{sessionData.title}</h1>
+        <h1 className="session-title-profileSession">{sessionData.name || sessionData.title}</h1>
       )}
 
       {/* 3) Sistema */}
       <div className="system-info-profileSession">
-        SISTEMA: {sessionData.system}
+        {isEditing ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <label htmlFor="system-edit" style={{ fontWeight: 'bold' }}>SISTEMA:</label>
+            <select
+              id="system-edit"
+              value={system}
+              onChange={(e) => setSystem(e.target.value)}
+              style={{
+                padding: '5px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '14px'
+              }}
+            >
+              <option value="D&D 5e">D&D 5e</option>
+              <option value="D&D 5.5e">D&D 5.5e</option>
+            </select>
+          </div>
+        ) : (
+          <>SISTEMA: {sessionData.system || "N/D"}</>
+        )}
       </div>
 
       {/* 4) Estatísticas: código da sala, jogadores, sessões e data */}
@@ -122,7 +149,7 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
         <div className="room-code-section-profileSession">
           <span className="room-code-label-profileSession">CÓDIGO:</span>
           <span className="room-code-value-profileSession">
-            {showCode ? sessionData.id : "************"}
+            {showCode ? getCampaignId() : "************"}
           </span>
           <button
             className="room-code-btn-profileSession"
@@ -152,23 +179,57 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
 
         <div className="stat-item-profileSession">
           <i className="stat-icon-profileSession">👥</i>
-          <span>{sessionData.playerCount} JOGADORES</span>
+          <span>{sessionData.players?.length ?? 0} JOGADORES</span>
         </div>
         <div className="stat-item-profileSession">
           <i className="stat-icon-profileSession">📅</i>
-          <span>{sessionData.sessionCount} SESSÕES</span>
+          <span>{sessionData.sessoes?.length ?? 0} SESSÕES</span>
         </div>
         <div className="stat-item-profileSession">
           <i className="stat-icon-profileSession">🗓️</i>
           <span>
             CRIADA EM{" "}
-            {isNaN(new Date(sessionData.createdAt.seconds * 1000))
-              ? "Data inválida"
-              : new Date(sessionData.createdAt.seconds * 1000).toLocaleDateString("pt-BR", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-              }).toUpperCase()}
+            {(() => {
+              const createdAt = sessionData.createdAt;
+              if (typeof createdAt === 'string') {
+                // Tenta parsear o formato brasileiro: "13 de maio de 2026 às 19:14:50 UTC-3"
+                const match = createdAt.match(/(\d{1,2}) de (\w+) de (\d{4}) às (\d{1,2}):(\d{2}):(\d{2}) UTC-(\d)/);
+                if (match) {
+                  const [, day, monthName, year, hour, minute, second, timezoneOffset] = match;
+                  const monthNames = {
+                    janeiro: 0, fevereiro: 1, março: 2, abril: 3, maio: 4, junho: 5,
+                    julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11
+                  };
+                  const month = monthNames[monthName.toLowerCase()];
+                  if (month !== undefined) {
+                    const date = new Date(year, month, day, hour, minute, second);
+                    return date.toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    }).toUpperCase();
+                  }
+                }
+                // Fallback para tentar parsear como data normal
+                const date = new Date(createdAt);
+                if (!isNaN(date.getTime())) {
+                  return date.toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  }).toUpperCase();
+                }
+              } else if (createdAt?.seconds) {
+                // Timestamp do Firestore
+                const date = new Date(createdAt.seconds * 1000);
+                return date.toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                }).toUpperCase();
+              }
+              return "Data inválida";
+            })()}
           </span>
         </div>
       </div>

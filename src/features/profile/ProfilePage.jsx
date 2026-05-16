@@ -5,8 +5,9 @@ import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
 import SessionModal from "@/components/forms/SessionModal";
 import EnterSessionModal from "@/components/forms/EnterSessionModal";
-import { authApi } from "@/lib/auth";
+import { useAuth } from "@/contexts/AuthContext";
 import { fetchSecure } from "@/lib/fetchSecure";
+import { authApi } from "@/lib/auth";
 import "./profile.css";
 
 export default function ProfilePage() {
@@ -21,6 +22,7 @@ export default function ProfilePage() {
   const [errorCharacters, setErrorCharacters] = useState("");
 
   const navigate = useNavigate();
+  const { user: authUser, loading: authLoading } = useAuth();
 
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [isEnterSessionModalOpen, setIsEnterSessionModalOpen] = useState(false);
@@ -31,14 +33,17 @@ export default function ProfilePage() {
 
   // ───────────── UseEffect para buscar usuário e campanhas ─────────────
   useEffect(() => {
+    if (authLoading) {
+      return;
+    }
+
     const fetchData = async () => {
       setLoading(true);
       setError('');
       try {
-        const currentUser = authApi.getCurrentUser();
-
-        if (!currentUser) {
-          throw new Error('Usuário não autenticado');
+        if (!authUser) {
+          navigate('/entrar');
+          return;
         }
 
         // Buscar dados completos do usuário no backend
@@ -47,7 +52,7 @@ export default function ProfilePage() {
           {
             method: 'GET',
           }
-        )
+        );
         const response = await userRes.json();
 
         // Os dados do usuário estão dentro de response.data
@@ -56,13 +61,13 @@ export default function ProfilePage() {
 
         // Mesclar dados do Firebase com dados do backend
         const userData = {
-          uid: currentUser.uid,
-          displayName: userDataFromBackend.displayName || currentUser.displayName,
-          email: userDataFromBackend.email || currentUser.email,
+          uid: authUser.uid,
+          displayName: userDataFromBackend.displayName || authUser.displayName,
+          email: userDataFromBackend.email || authUser.email,
           title: userDataFromBackend.title || '',
           bio: userDataFromBackend.bio || '',
-          userPhoto: userDataFromBackend.userPhoto || currentUser.userPhoto,
-          createdAt: new Date(currentUser.metadata?.creationTime).toISOString() || new Date().toISOString(),
+          userPhoto: userDataFromBackend.userPhoto || authUser.photoURL,
+          createdAt: new Date(authUser.metadata?.creationTime).toISOString() || new Date().toISOString(),
         };
 
         setUser(userData);
@@ -78,18 +83,16 @@ export default function ProfilePage() {
         const charactersRes = await fetchSecure(`http://localhost:5000/sheets/user/token`);
         const charactersData = await charactersRes.json();
         setCharacters(Array.isArray(charactersData) ? charactersData : charactersData.sheets || []);
-
       } catch (err) {
-        console.error('Erro ao buscar dados do usuário:', err.message);
+        console.error('Erro ao buscar dados do usuário:', err.message || err);
         setError('Não foi possível carregar os dados do usuário.');
-
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [navigate]);
+  }, [authLoading, authUser, navigate]);
 
 
   // ─────────────── Retornos condicionais ───────────────
@@ -125,7 +128,8 @@ export default function ProfilePage() {
     setEditData(user);
   };
 
-  const handleChange = (name, value) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setEditData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -146,12 +150,18 @@ export default function ProfilePage() {
           body: JSON.stringify(editData)
         }
       );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Erro ao salvar: ${response.statusText}`);
+      }
+
       const result = await response.json();
 
       setUser(editData);
       setEditing(false);
-      Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
     } catch (err) {
+      console.error('Erro ao salvar:', err);
       setError('Erro ao salvar perfil: ' + err.message);
     } finally {
       setSaving(false);
@@ -162,7 +172,6 @@ export default function ProfilePage() {
     try {
       await authApi.signOut();
       navigate("/");
-      setMenuOpen(false);
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
     }
@@ -205,8 +214,8 @@ export default function ProfilePage() {
             <img
               src={
                 editing
-                  ? editData.photoURL ?? "/imagens/default-profile-img.png"
-                  : user.photoURL || "/imagens/default-profile-img.png"
+                  ? editData.userPhoto ?? "/imagens/default-profile-img.png"
+                  : user.userPhoto || "/imagens/default-profile-img.png"
               }
               alt="Foto de perfil"
               className="profile-image"
@@ -230,7 +239,7 @@ export default function ProfilePage() {
                     if (file) {
                       const reader = new FileReader();
                       reader.onload = (ev) => {
-                        setEditData({ ...editData, photoURL: ev.target.result });
+                        setEditData({ ...editData, userPhoto: ev.target.result });
                       };
                       reader.readAsDataURL(file);
                     }
@@ -310,7 +319,6 @@ export default function ProfilePage() {
                 <button
                   className="profile-btn-edit"
                   onClick={handleCancelClick}
-                  style={{ marginLeft: "0.5rem" }}
                 >
                   CANCELAR
                 </button>
@@ -340,7 +348,7 @@ export default function ProfilePage() {
 
         <div className="profile-content">
           {/* ─── SUAS CAMPANHAS ─── */}
-          {/* <section className="profile-campaigns-section">
+          <section className="profile-campaigns-section">
             <h2>SUAS CAMPANHAS</h2>
             <button
               className="profile-btn-enter-session"
@@ -370,10 +378,9 @@ export default function ProfilePage() {
                     </div>
                     <div className="profile-campaign-info">
                       <h3>{c.sessionName}</h3>
-                      <p>SISTEMA: {c.system}</p>
+                      <p>CAMPANHA: {c.name}</p>
                       <p>
-                        {c.playersCount} / {c.maxPlayers} JOGADORES •{" "}
-                        {c.isActive ? "ATIVA" : "INATIVA"}
+                        {c.playersCount} JOGADORES
                       </p>
                     </div>
                   </Link>
@@ -387,7 +394,7 @@ export default function ProfilePage() {
             >
               CRIAR NOVA CAMPANHA
             </button>
-          </section> */}
+          </section>
 
           {/* ─── SEUS PERSONAGENS ─── */}
           {/* <section className="profile-characters-section">

@@ -1,0 +1,531 @@
+/* Seção combinada de Atributos, Perícias e Resistências */
+
+.atributos-pericias-resistencias-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.aprs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.aprs-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: rgba(45, 55, 72, 0.5);
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.subsection-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0 0 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== ATRIBUTOS ===== */
+.atributos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+.atributo-card {
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.atributo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.atributo-header {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.atributo-nome {
+  font-size: 11px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.atributo-valor {
+  font-size: 28px;
+  font-weight: 700;
+  color: #e2e8f0;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.atributo-valor input {
+  width: 50px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 5px;
+  height: 35px;
+  background-color: #1a202c;
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
+  color: #e2e8f0;
+}
+
+.atributo-modificador {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.atributo-save {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 6px 10px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.atributo-save:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+.atributo-save.proficiente {
+  background-color: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+.save-proficiente {
+  font-size: 14px;
+  color: #3b82f6;
+  width: 16px;
+}
+
+.save-label {
+  font-size: 10px;
+  color: #a0aec0;
+  flex: 1;
+  text-transform: uppercase;
+}
+
+.save-bonus {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+/* ===== PERÍCIAS ===== */
+.pericias-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.pericia-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background-color: #2d3748;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.pericia-item:hover {
+  background-color: #3d4758;
+  border-color: #3b82f6;
+}
+
+.pericia-item.proficiente {
+  border-left: 4px solid #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.pericia-proficiente {
+  font-size: 18px;
+  color: #3b82f6;
+  width: 20px;
+  text-align: center;
+  min-width: 20px;
+}
+
+.pericia-bonus {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3b82f6;
+  min-width: 40px;
+  text-align: center;
+}
+
+.pericia-nome {
+  flex: 1;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.pericia-atributo {
+  font-size: 11px;
+  color: #a0aec0;
+  text-align: right;
+}
+
+/* ===== DEATH SAVES ===== */
+.death-saves-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.death-saves-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.death-saves-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #cbd5e0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.death-saves-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.death-save-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #4a5568;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.death-save-circle.success {
+  color: #48bb78;
+}
+
+.death-save-circle.success.filled {
+  background-color: #48bb78;
+  border-color: #48bb78;
+  color: white;
+}
+
+.death-save-circle.failure {
+  color: #f56565;
+}
+
+.death-save-circle.failure.filled {
+  background-color: #f56565;
+  border-color: #f56565;
+  color: white;
+}
+
+.death-save-circle:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.death-save-circle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.death-save-clear {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid #718096;
+  background-color: #2d3748;
+  color: #a0aec0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.death-save-clear:hover {
+  background-color: #3d4758;
+  border-color: #cbd5e0;
+  color: #e2e8f0;
+}
+
+/* ===== RESISTÊNCIAS ===== */
+.resistances-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.resistance-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background-color: rgba(45, 55, 72, 0.5);
+  border-radius: 6px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.resistance-group h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+}
+
+.resistance-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.resistance-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #cbd5e0;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.resistance-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.resistance-item input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.resistance-item input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.resistance-item input:checked {
+  accent-color: #48bb78;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .atributos-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .atributo-card {
+    padding: 12px;
+    gap: 6px;
+  }
+
+  .atributo-header {
+    font-size: 16px;
+  }
+
+  .atributo-valor {
+    font-size: 24px;
+    min-height: 30px;
+  }
+
+  .atributo-valor input {
+    font-size: 20px;
+    width: 45px;
+    height: 30px;
+  }
+
+  .atributo-modificador {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .pericias-list {
+    grid-template-columns: 1fr;
+  }
+
+  .pericia-item {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .pericia-nome {
+    font-size: 13px;
+  }
+
+  .pericia-atributo {
+    font-size: 10px;
+  }
+
+  .death-saves-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .death-saves-display {
+    gap: 10px;
+  }
+
+  .death-save-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .resistances-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .resistance-list {
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 6px;
+  }
+
+  .aprs-subsection {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .atributos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .atributo-card {
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .atributo-header {
+    font-size: 14px;
+  }
+
+  .atributo-nome {
+    font-size: 10px;
+  }
+
+  .atributo-valor {
+    font-size: 20px;
+  }
+
+  .atributo-valor input {
+    font-size: 16px;
+    width: 40px;
+    height: 28px;
+  }
+
+  .atributo-modificador {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .atributo-save {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+
+  .pericias-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .pericia-item {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .pericia-nome {
+    font-size: 12px;
+  }
+
+  .pericia-bonus {
+    font-size: 12px;
+    min-width: 35px;
+  }
+
+  .death-save-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .subsection-title {
+    font-size: 16px;
+  }
+
+  .aprs-subsection {
+    padding: 12px;
+    border-left-width: 3px;
+  }
+
+  .resistance-group {
+    padding: 12px;
+  }
+
+  .resistance-group h4 {
+    font-size: 12px;
+  }
+
+  .resistance-list {
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    gap: 5px;
+  }
+
+  .resistance-item {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+}

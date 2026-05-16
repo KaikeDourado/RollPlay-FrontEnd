@@ -1,104 +1,153 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import { fetchSecure } from "@/lib/fetchSecure";
+import { useAuth } from "@/contexts/AuthContext";
+
 import FichaHeader from "@/components/sheet/FichaHeader";
 import VisaoGeralSection from "@/components/sheet/VisaoGeralSection";
-import AtributosSection from "@/components/sheet/AtributosSection";
-import PericiasProficienciasSection from "@/components/sheet/PericiasProficienciasSection";
+import AtributosPericiasResistenciasSection from "@/components/sheet/AtributosPericiasResistenciasSection";
 import AtaquesMagiasSection from "@/components/sheet/AtaquesMagiasSection";
 import InventarioSection from "@/components/sheet/InventarioSection";
 import HabilidadesSection from "@/components/sheet/HabilidadesSection";
-import PersonalidadeSection from "@/components/sheet/PersonalidadeSection";
+import ProficienciasSection from "@/components/sheet/ProficienciasSection";
 import AnotacoesSection from "@/components/sheet/AnotacoesSection";
 import Navbar from "@/components/global/Navbar";
+
 import "./styles/SheetPage.css";
+
+const normalizeSheet = (rawSheet) => {
+  if (!rawSheet) return null;
+
+  return {
+    ...rawSheet,
+    ...(rawSheet.sheetData || {}),
+    uid: rawSheet.uid || rawSheet.id || rawSheet.sheetData?.uid || id,
+  };
+};
 
 const FichaPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+
   const [editMode, setEditMode] = useState(false);
   const [activeTab, setActiveTab] = useState("visao-geral");
   const [mobileTabsOpen, setMobileTabsOpen] = useState(false);
   const [characterData, setCharacterData] = useState(null);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchCharacter = async () => {
       try {
-        const token =
-          localStorage.getItem("authToken") ||
-          sessionStorage.getItem("authToken");
-        if (!token) return;
+        setError("");
 
-        const res = await axios.get(
-          `http://localhost:5000/api/character/sheet/${id}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        if (authLoading) return;
 
-        if (res.status === 200 && res.data.result) {
-          setCharacterData(res.data.result);
-        } else {
-          console.error("Erro ao carregar ficha.");
+        if (!user) {
+          navigate("/entrar");
+          return;
         }
+
+        setPageLoading(true);
+
+        const sheetRes = await fetchSecure(`http://localhost:5000/sheets/${id}`, {
+          method: "GET",
+        });
+
+        const sheetData = await sheetRes.json();
+
+        if (!sheetRes.ok || !sheetData.sheet) {
+          throw new Error(sheetData.message || "Erro ao carregar ficha.");
+        }
+
+        setCharacterData(normalizeSheet(sheetData.sheet));
       } catch (err) {
         console.error("Erro na requisição da ficha:", err);
+        setError(err.message || "Erro ao carregar ficha.");
+      } finally {
+        setPageLoading(false);
       }
     };
 
     fetchCharacter();
-  }, [id]);
-
-  const handleEditToggle = () => {
-    if (editMode) {
-      updateCharacterOnServer(characterData);
-    }
-    setEditMode(!editMode);
-  };
+  }, [id, user, authLoading, navigate]);
 
   const handleLocalUpdate = (updatedData) => {
-    setCharacterData((prev) => ({ ...prev, ...updatedData }));
+    setCharacterData((prev) => ({
+      ...prev,
+      ...updatedData,
+    }));
   };
 
-  const updateCharacterOnServer = async (dataToSend) => {
+  const updateCharacterOnServer = async () => {
     try {
-      const token =
-        localStorage.getItem("authToken") ||
-        sessionStorage.getItem("authToken");
-      if (!token) return;
+      if (!characterData) return false;
+
+      setSaving(true);
 
       const payload = {
-        id: characterData.id,
-        ...dataToSend,
+        ...characterData,
+        uid: characterData.uid || id,
       };
 
-      const res = await axios.put(
-        "http://localhost:5000/api/character/update",
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await fetchSecure(`http://localhost:5000/sheets/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(payload),
+      });
 
-      if (res.status === 200 || res.status === 204) {
-        console.log("Ficha atualizada com sucesso.");
-        setEditMode(false);
-      } else {
-        console.warn("Falha ao atualizar ficha.");
+      const responseData = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(responseData?.message || "Falha ao atualizar ficha.");
       }
+
+      return true;
     } catch (err) {
       console.error("Erro ao atualizar ficha:", err);
+      alert(err.message || "Erro ao salvar ficha.");
+      return false;
+    } finally {
+      setSaving(false);
     }
+  };
+
+  const handleEditToggle = async () => {
+    if (editMode) {
+      const saved = await updateCharacterOnServer();
+
+      if (!saved) return;
+    }
+
+    setEditMode((prev) => !prev);
   };
 
   const tabs = [
     { id: "visao-geral", label: "Visão Geral", icon: "📋" },
-    { id: "atributos", label: "Atributos", icon: "💪" },
-    { id: "pericias", label: "Perícias", icon: "🎯" },
+    { id: "atributos-pericias", label: "Atributos & Perícias", icon: "💪" },
     { id: "ataques-magias", label: "Ataques & Magias", icon: "⚔️" },
     { id: "inventario", label: "Inventário", icon: "🎒" },
-    { id: "habilidades", label: "Habilidades", icon: "✨" },
-    { id: "personalidade", label: "Traços & Origem", icon: "🎭" },
+    { id: "proficiencias", label: "Proficiências", icon: "🛡️" },
+    { id: "tracos-origem", label: "Traços & Origem", icon: "🎭" },
     { id: "anotacoes", label: "Anotações", icon: "📝" },
   ];
 
-  if (!characterData) {
+  if (pageLoading || authLoading) {
     return <div className="ficha-loading">Carregando ficha...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="ficha-loading">
+        <p>{error}</p>
+        <button onClick={() => navigate("/fichas")}>Voltar</button>
+      </div>
+    );
+  }
+
+  if (!characterData) {
+    return <div className="ficha-loading">Ficha não encontrada.</div>;
   }
 
   return (
@@ -106,16 +155,18 @@ const FichaPage = () => {
       <Navbar />
 
       <FichaHeader
-        characterName={characterData.nome}
-        characterClass={`${characterData.raca} ${characterData.classe} ${characterData.nivel}`}
-        pvAtual={characterData.pvAtual}
-        pvTotal={characterData.pvTotal}
-        pvTemp={characterData.pvTemp}
+        characterName={characterData.name || "Personagem sem nome"}
+        characterBasic={`${characterData.race || ""} ${characterData.characterClass || ""} ${characterData.level || 1}`}
+        hp={{
+          current: characterData.hp?.current || 0,
+          max: characterData.hp?.max || 0,
+          temp: characterData.hp?.temp || 0,
+        }}
+        deathSaves={characterData.deathSaves}
         onEditToggle={handleEditToggle}
         editMode={editMode}
+        saving={saving}
       />
-
-
 
       <div className="ficha-tabs desktop-tabs">
         {tabs.map((tab) => (
@@ -163,71 +214,64 @@ const FichaPage = () => {
           />
         )}
 
-        {activeTab === "atributos" && (
-          <AtributosSection
-            atributos={characterData.atributos}
-            pericias={characterData.pericias}
-            nivel={characterData.nivel}
+        {activeTab === "atributos-pericias" && (
+          <AtributosPericiasResistenciasSection
+            attributes={characterData.attributes}
+            skills={characterData.skills}
+            deathSaves={characterData.deathSaves}
+            resistances={characterData.resistances || { damage: [], condition: [] }}
+            vulnerabilities={characterData.vulnerabilities || { damage: [], condition: [] }}
+            immunities={characterData.immunities || { damage: [], condition: [] }}
+            level={characterData.level}
             editMode={editMode}
-            onSaveAtributos={(atributos) =>
-              handleLocalUpdate({ atributos })
-            }
-            onSavePericias={(pericias) =>
-              handleLocalUpdate({ pericias })
-            }
-          />
-        )}
-
-        {activeTab === "pericias" && (
-          <PericiasProficienciasSection
-            pericias={characterData.pericias}
-            atributos={characterData.atributos}
-            nivel={characterData.nivel}
-            editMode={editMode}
-            onSave={(pericias) => handleLocalUpdate({ pericias })}
+            onSave={handleLocalUpdate}
           />
         )}
 
         {activeTab === "ataques-magias" && (
           <AtaquesMagiasSection
-            ataques={characterData.ataques}
-            magias={characterData.magias}
+            ataques={characterData.weapons}
+            magias={characterData.spellcasting}
             editMode={editMode}
-            onSave={(data) => handleLocalUpdate(data)}
+            onSave={handleLocalUpdate}
           />
         )}
 
         {activeTab === "inventario" && (
           <InventarioSection
-            inventario={characterData.inventario}
+            inventario={characterData.inventory}
             editMode={editMode}
-            onSave={(inventario) => handleLocalUpdate({ inventario })}
+            onSave={(inventory) => handleLocalUpdate({ inventory })}
           />
         )}
 
-        {activeTab === "habilidades" && (
+        {activeTab === "proficiencias" && (
+          <ProficienciasSection
+            equipmentProficiencies={characterData.equipmentProficiencies}
+            languages={characterData.languages}
+            editMode={editMode}
+            onSave={handleLocalUpdate}
+          />
+        )}
+
+        {activeTab === "tracos-origem" && (
           <HabilidadesSection
-            habilidades={characterData.habilidades}
+            features={characterData.features}
+            backstoryPersonality={characterData.backstoryPersonality}
+            ideals={characterData.ideals}
+            bonds={characterData.bonds}
+            flaws={characterData.flaws}
+            history={characterData.history}
             editMode={editMode}
-            onSave={(habilidades) => handleLocalUpdate({ habilidades })}
-          />
-        )}
-
-        {activeTab === "personalidade" && (
-          <PersonalidadeSection
-            personalidade={characterData.personalidade}
-            editMode={editMode}
-            onSave={(personalidade) =>
-              handleLocalUpdate({ personalidade })
-            }
+            onSave={handleLocalUpdate}
           />
         )}
 
         {activeTab === "anotacoes" && (
           <AnotacoesSection
-            anotacoes={characterData.anotacoes}
+            notes={characterData.notes}
             editMode={editMode}
-            onSave={(anotacoes) => handleLocalUpdate({ anotacoes })}
+            onSave={(notes) => handleLocalUpdate({ notes })}
           />
         )}
       </div>

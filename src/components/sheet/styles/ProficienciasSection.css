@@ -1,0 +1,259 @@
+/* Proficiências */
+
+.proficiencias-section {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.ep-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.ep-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: rgba(45, 55, 72, 0.5);
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.ep-subsection-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.proficiency-grid,
+.tools-grid,
+.extra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.proficiency-item,
+.extra-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: #2d3748;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.proficiency-item:hover,
+.extra-item:hover {
+  background-color: #3d4758;
+  border-color: #3b82f6;
+}
+
+.proficiency-item input,
+.extra-item input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.proficiency-item input:disabled,
+.extra-item input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.proficiency-item span,
+.extra-item span {
+  font-size: 14px;
+  color: #cbd5e0;
+  transition: color 0.2s ease;
+}
+
+.proficiency-item span.proficiente,
+.extra-item span.proficiente {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.proficiency-input {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #1a202c;
+  border: 2px solid #4a5568;
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.proficiency-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.custom-tool-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.custom-tool-input label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.custom-tool-input input {
+  background-color: #1a202c;
+  border: 2px solid #4a5568;
+  border-radius: 4px;
+  color: #e2e8f0;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.custom-tool-input input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tools-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.tools-summary strong {
+  font-size: 13px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tool-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(59, 130, 246, 0.2);
+  border: 1px solid #3b82f6;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.tool-remove {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  transition: all 0.2s ease;
+}
+
+.tool-remove:hover {
+  color: #f56565;
+  transform: scale(1.2);
+}
+
+/* Responsivo */
+
+@media (max-width: 768px) {
+  .proficiency-grid,
+  .tools-grid,
+  .extra-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .proficiency-item,
+  .extra-item {
+    padding: 8px 10px;
+  }
+
+  .proficiency-item span,
+  .extra-item span {
+    font-size: 13px;
+  }
+
+  .ep-subsection {
+    padding: 15px;
+  }
+
+  .ep-subsection-title {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .proficiency-grid,
+  .tools-grid,
+  .extra-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .proficiency-item,
+  .extra-item {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .proficiency-item span,
+  .extra-item span {
+    font-size: 12px;
+  }
+
+  .tools-list {
+    gap: 6px;
+  }
+
+  .tool-badge {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .ep-subsection {
+    padding: 12px;
+    border-left-width: 3px;
+    gap: 12px;
+  }
+
+  .ep-subsection-title {
+    font-size: 14px;
+  }
+
+  .custom-tool-input input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+}

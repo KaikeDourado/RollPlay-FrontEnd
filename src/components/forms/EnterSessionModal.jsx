@@ -1,74 +1,43 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { fetchSecure } from "@/lib/fetchSecure";
 import "./styles/EnterSessionModal.css";
 
 export default function EnterSessionModal({ isOpen, onClose }) {
   const [code, setCode] = useState("");
-  const [characters, setCharacters] = useState([]);
-  const [selectedCharacter, setSelectedCharacter] = useState("");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const fetchCharacters = async () => {
-      try {
-        const token =
-          localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
-        if (!token) return;
-
-        const res = await axios.get("http://localhost:5000/api/character/userSheets", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.data?.result) {
-          setCharacters(res.data.result);
-        }
-      } catch (err) {
-        console.error("Erro ao carregar personagens:", err);
-      }
-    };
-
-    fetchCharacters();
-  }, [isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!code || !selectedCharacter) {
-      setError("Informe o código da sessão e selecione uma ficha.");
+    if (!code) {
+      setError("Informe o código da sessão.");
       return;
     }
 
     try {
-      const token =
-        localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
-      if (!token) {
-        setError("Você precisa estar logado para entrar em uma sessão.");
-        return;
-      }
-
-      const res = await axios.post(
-        "http://localhost:5000/api/campaign/join",
+      const res = await fetchSecure(
+        "http://localhost:5000/campaigns/user/enter",
         {
-          code,
-          characterId: selectedCharacter,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
+          method: "PATCH",
+          body: JSON.stringify({
+            campaignUid: code.trim(),
+          }),
         }
       );
 
-      if (res.data.success) {
-        onClose(); // Agora sim, fecha só depois do sucesso
+      const data = await res.json();
+
+      if (res.ok && data.message) {
+        onClose();
       } else {
-        setError(res.data.message || "Falha ao entrar na sessão.");
+        setError(data.message || "Falha ao entrar na sessão.");
       }
     } catch (err) {
       console.error("Erro ao entrar na sessão:", err);
       setError(
-        err.response?.data?.message || "Não foi possível conectar. Tente novamente."
+        err.message ||
+        "Não foi possível conectar. Tente novamente."
       );
     }
   };
@@ -90,22 +59,6 @@ export default function EnterSessionModal({ isOpen, onClose }) {
             onChange={(e) => setCode(e.target.value)}
             required
           />
-
-          <label htmlFor="characterSheet">Escolha sua ficha:</label>
-          <select
-            id="characterSheet"
-            name="characterSheet"
-            value={selectedCharacter}
-            onChange={(e) => setSelectedCharacter(e.target.value)}
-            required
-          >
-            <option value="">Selecione uma ficha</option>
-            {characters.map((char) => (
-              <option key={char.id } value={char.id }>
-                {char.nome || "Sem Nome"}
-              </option>
-            ))}
-          </select>
 
           {error && <p className="enter-session-error">{error}</p>}
 

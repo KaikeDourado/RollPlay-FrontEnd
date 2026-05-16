@@ -14,7 +14,8 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError('');
     setLoading(true);
 
@@ -31,7 +32,39 @@ export default function LoginForm() {
       window.location.href = '/';
     } catch (err) {
       console.error('Login error:', err);
-      setError(err?.message || 'Falha no login. Verifique suas credenciais.');
+
+      // Mapear códigos de erro do Firebase para mensagens amigáveis
+      let errorMessage = 'Falha no login. Verifique suas credenciais.';
+
+      if (err.code) {
+        switch (err.code) {
+          case 'auth/user-not-found':
+            errorMessage = 'Usuário não encontrado. Verifique o email digitado.';
+            break;
+          case 'auth/wrong-password':
+            errorMessage = 'Senha incorreta. Tente novamente.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Email inválido. Verifique o formato do email.';
+            break;
+          case 'auth/user-disabled':
+            errorMessage = 'Esta conta foi desativada. Entre em contato com o suporte.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Muitas tentativas de login. Tente novamente mais tarde.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Erro de conexão. Verifique sua internet e tente novamente.';
+            break;
+          case 'auth/email-not-verified':
+            errorMessage = 'Email não verificado. Verifique sua caixa de entrada.';
+            break;
+          default:
+            errorMessage = 'Erro inesperado. Tente novamente.';
+        }
+      }
+
+      setError(errorMessage);
       setLoading(false);
     }
   };
@@ -85,7 +118,7 @@ export default function LoginForm() {
 
         {error && <p className="login-form-error">{error}</p>}
 
-        <button className="login-btn-entrar" disabled={loading} type="submit" onClick={handleSubmit}>
+        <button className="login-btn-entrar" disabled={loading} type="submit">
           {loading ? 'Entrando...' : 'Entrar'}
         </button>
       </form>

@@ -42,16 +42,15 @@
     color: white;
     cursor: pointer;
     font-size: 1rem;
+    transition: color 0.2s ease;
 }
 
 .nav-links button:hover {
     color: #ccc;
-    padding-top: 0.15rem;
 }
 
 .nav-links .btn-logout:hover {
     color: #ff5252;
-    padding-top: 0.15rem;
 }
 
 /* TODO: Talvez colocar o nome do usuário ou algo assim */

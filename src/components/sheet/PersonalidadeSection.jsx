@@ -2,10 +2,10 @@
 
 import "./styles/PersonalidadeSection.css"
 
-const PersonalidadeSection = ({ personalidade, editMode, onSave }) => {
+const PersonalidadeSection = ({ backstoryPersonality, ideals, bonds, flaws, history, editMode, onSave }) => {
   const handleChange = (field, value) => {
     if (editMode) {
-      onSave({ ...personalidade, [field]: value })
+      onSave({ [field]: value })
     }
   }
 
@@ -23,12 +23,12 @@ const PersonalidadeSection = ({ personalidade, editMode, onSave }) => {
           {editMode ? (
             <textarea
               className="personalidade-textarea"
-              value={personalidade.tracos || ""}
-              onChange={(e) => handleChange("tracos", e.target.value)}
+              value={backstoryPersonality || ""}
+              onChange={(e) => handleChange("backstoryPersonality", e.target.value)}
               placeholder="Adicione os traços de personalidade do seu personagem..."
             />
           ) : (
-            <div className="personalidade-text">{personalidade.tracos}</div>
+            <div className="personalidade-text">{backstoryPersonality}</div>
           )}
         </div>
 
@@ -38,12 +38,12 @@ const PersonalidadeSection = ({ personalidade, editMode, onSave }) => {
           {editMode ? (
             <textarea
               className="personalidade-textarea"
-              value={personalidade.ideais || ""}
-              onChange={(e) => handleChange("ideais", e.target.value)}
+              value={ideals || ""}
+              onChange={(e) => handleChange("ideals", e.target.value)}
               placeholder="Adicione os ideais do seu personagem..."
             />
           ) : (
-            <div className="personalidade-text">{personalidade.ideais}</div>
+            <div className="personalidade-text">{ideals}</div>
           )}
         </div>
 
@@ -53,12 +53,12 @@ const PersonalidadeSection = ({ personalidade, editMode, onSave }) => {
           {editMode ? (
             <textarea
               className="personalidade-textarea"
-              value={personalidade.ligacoes || ""}
-              onChange={(e) => handleChange("ligacoes", e.target.value)}
+              value={bonds || ""}
+              onChange={(e) => handleChange("bonds", e.target.value)}
               placeholder="Adicione as ligações do seu personagem..."
             />
           ) : (
-            <div className="personalidade-text">{personalidade.ligacoes}</div>
+            <div className="personalidade-text">{bonds}</div>
           )}
         </div>
 
@@ -68,12 +68,12 @@ const PersonalidadeSection = ({ personalidade, editMode, onSave }) => {
           {editMode ? (
             <textarea
               className="personalidade-textarea"
-              value={personalidade.defeitos || ""}
-              onChange={(e) => handleChange("defeitos", e.target.value)}
+              value={flaws || ""}
+              onChange={(e) => handleChange("flaws", e.target.value)}
               placeholder="Adicione os defeitos do seu personagem..."
             />
           ) : (
-            <div className="personalidade-text">{personalidade.defeitos}</div>
+            <div className="personalidade-text">{flaws}</div>
           )}
         </div>
       </div>
@@ -84,12 +84,12 @@ const PersonalidadeSection = ({ personalidade, editMode, onSave }) => {
         {editMode ? (
           <textarea
             className="personalidade-textarea historia-textarea"
-            value={personalidade.historia || ""}
-            onChange={(e) => handleChange("historia", e.target.value)}
+            value={history || ""}
+            onChange={(e) => handleChange("history", e.target.value)}
             placeholder="Adicione a história do seu personagem..."
           />
         ) : (
-          <div className="personalidade-text">{personalidade.historia}</div>
+          <div className="personalidade-text">{history}</div>
         )}
       </div>
 

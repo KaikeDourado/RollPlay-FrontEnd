@@ -2,7 +2,7 @@
 
 import "./styles/AnotacoesSection.css"
 
-const AnotacoesSection = ({ anotacoes, editMode, onSave }) => {
+const AnotacoesSection = ({ notes, editMode, onSave }) => {
   const handleChange = (e) => {
     if (editMode) {
       onSave(e.target.value)
@@ -20,12 +20,12 @@ const AnotacoesSection = ({ anotacoes, editMode, onSave }) => {
         {editMode ? (
           <textarea
             className="anotacoes-textarea"
-            value={anotacoes}
+            value={notes}
             onChange={handleChange}
             placeholder="Adicione anotações sobre seu personagem aqui..."
           />
         ) : (
-          <div className="anotacoes-text">{anotacoes}</div>
+          <div className="anotacoes-text">{notes}</div>
         )}
       </div>
     </div>
