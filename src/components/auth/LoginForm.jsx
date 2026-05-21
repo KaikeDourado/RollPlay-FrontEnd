@@ -41,11 +41,8 @@ export default function LoginForm() {
           case 'auth/user-not-found':
             errorMessage = 'Usuário não encontrado. Verifique o email digitado.';
             break;
-          case 'auth/wrong-password':
-            errorMessage = 'Senha incorreta. Tente novamente.';
-            break;
-          case 'auth/invalid-email':
-            errorMessage = 'Email inválido. Verifique o formato do email.';
+          case 'auth/invalid-credential':
+            errorMessage = 'Email ou senha incorretos. Tente novamente.';
             break;
           case 'auth/user-disabled':
             errorMessage = 'Esta conta foi desativada. Entre em contato com o suporte.';

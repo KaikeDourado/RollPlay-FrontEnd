@@ -204,94 +204,6 @@
   text-align: right;
 }
 
-/* ===== DEATH SAVES ===== */
-.death-saves-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.death-saves-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.death-saves-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #cbd5e0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.death-saves-display {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.death-save-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid #4a5568;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-.death-save-circle.success {
-  color: #48bb78;
-}
-
-.death-save-circle.success.filled {
-  background-color: #48bb78;
-  border-color: #48bb78;
-  color: white;
-}
-
-.death-save-circle.failure {
-  color: #f56565;
-}
-
-.death-save-circle.failure.filled {
-  background-color: #f56565;
-  border-color: #f56565;
-  color: white;
-}
-
-.death-save-circle:hover:not(:disabled) {
-  transform: scale(1.1);
-}
-
-.death-save-circle:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.death-save-clear {
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  border: 1px solid #718096;
-  background-color: #2d3748;
-  color: #a0aec0;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s ease;
-}
-
-.death-save-clear:hover {
-  background-color: #3d4758;
-  border-color: #cbd5e0;
-  color: #e2e8f0;
-}
-
 /* ===== RESISTÊNCIAS ===== */
 .resistances-container {
   display: grid;
@@ -407,21 +319,6 @@
     font-size: 10px;
   }
 
-  .death-saves-container {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .death-saves-display {
-    gap: 10px;
-  }
-
-  .death-save-circle {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
-
   .resistances-container {
     grid-template-columns: 1fr;
     gap: 15px;
@@ -494,12 +391,6 @@
   .pericia-bonus {
     font-size: 12px;
     min-width: 35px;
-  }
-
-  .death-save-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
   }
 
   .subsection-title {

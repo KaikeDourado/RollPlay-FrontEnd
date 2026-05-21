@@ -155,6 +155,7 @@ const FichaPage = () => {
       <Navbar />
 
       <FichaHeader
+        characterImage={characterData.characterImage}
         characterName={characterData.name || "Personagem sem nome"}
         characterBasic={`${characterData.race || ""} ${characterData.characterClass || ""} ${characterData.level || 1}`}
         hp={{
@@ -163,11 +164,17 @@ const FichaPage = () => {
           temp: characterData.hp?.temp || 0,
         }}
         deathSaves={characterData.deathSaves}
+        ac={characterData.ac?.value || 10}
+        passivePerception={characterData.passivePerception}
+        speed={characterData.speed}
+        attributes={characterData.attributes}
         onEditToggle={handleEditToggle}
         editMode={editMode}
         saving={saving}
+        onSave={handleLocalUpdate}
       />
 
+      {/* TABs de navegação */}
       <div className="ficha-tabs desktop-tabs">
         {tabs.map((tab) => (
           <button

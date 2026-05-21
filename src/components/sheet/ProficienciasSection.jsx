@@ -1,5 +1,6 @@
 "use client"
-// FIXME: não ta funcionando o editar
+
+import { useState, useEffect } from "react"
 import "./styles/ProficienciasSection.css"
 
 const ARMOR_TYPES = ["Leve", "Média", "Pesada"]
@@ -32,6 +33,12 @@ const ProficienciasSection = ({
   editMode,
   onSave,
 }) => {
+  const [languagesInput, setLanguagesInput] = useState((languages || []).join(", "))
+
+  useEffect(() => {
+    setLanguagesInput((languages || []).join(", "))
+  }, [languages])
+
   const handleToggleProficiency = (category, type) => {
     if (!editMode) return
 
@@ -100,9 +107,36 @@ const ProficienciasSection = ({
     e.target.value = ""
   }
 
-  const handleLanguagesChange = (e) => {
+  const handleCustomToolAdd = (e) => {
+    if (e.key !== "Enter" || !editMode) return
+
+    const value = e.target.value.trim()
+    if (!value) return
+
+    const tools = equipmentProficiencies.tools || []
+    if (tools.includes(value)) {
+      e.target.value = ""
+      return
+    }
+
+    onSave({
+      equipmentProficiencies: {
+        ...equipmentProficiencies,
+        tools: [...tools, value],
+      },
+    })
+
+    e.target.value = ""
+  }
+
+  const handleLanguagesInputChange = (e) => {
     if (!editMode) return
-    const list = e.target.value
+    setLanguagesInput(e.target.value)
+  }
+
+  const handleLanguagesInputSave = () => {
+    if (!editMode) return
+    const list = languagesInput
       .split(',')
       .map((item) => item.trim())
       .filter(Boolean)
@@ -124,8 +158,10 @@ const ProficienciasSection = ({
               className="proficiency-input"
               type="text"
               placeholder="Ex: Comum, Élfico, Anão"
-              value={(languages || []).join(', ')}
-              onChange={handleLanguagesChange}
+              value={languagesInput}
+              onChange={handleLanguagesInputChange}
+              onBlur={handleLanguagesInputSave}
+              onKeyDown={(e) => e.key === 'Enter' && handleLanguagesInputSave()}
             />
           ) : (
             <div className="info-value">{(languages || []).join(', ') || 'Nenhum'}</div>

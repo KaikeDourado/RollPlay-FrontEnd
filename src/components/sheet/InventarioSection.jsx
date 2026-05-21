@@ -14,6 +14,14 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
     pp: 0,
   }
 
+  const coinImages = {
+    cp: "/imagens/pc.png",
+    sp: "/imagens/pe.png",
+    ep: "/imagens/pl.png",
+    gp: "/imagens/po.png",
+    pp: "/imagens/pp.png",
+  }
+
   const [novoItem, setNovoItem] = useState({
     name: "",
     quantity: 1,
@@ -67,6 +75,22 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
     onSave(updatedInventory)
   }
 
+  const handleCoinChange = (coinKey, value) => {
+    if (!editMode) return
+
+    const updatedCoins = {
+      ...coins,
+      [coinKey]: Number.parseInt(value) || 0,
+    }
+
+    const updatedInventory = {
+      ...inventario,
+      coins: updatedCoins,
+    }
+
+    onSave(updatedInventory)
+  }
+
   const handleItemChange = (e) => {
     const { name, value } = e.target
 
@@ -112,37 +136,29 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
         </div>
 
         <div className="moedas">
-
-          <div className="moeda">
-            <span className="moeda-icon">🥇</span>
-            <span className="moeda-label">PP: </span>
-            <span className="moeda-valor">{coins.pp}</span>
-          </div>
-
-          <div className="moeda">
-            <span className="moeda-icon">🟡</span>
-            <span className="moeda-label">PO: </span>
-            <span className="moeda-valor">{coins.gp}</span>
-          </div>
-
-          <div className="moeda">
-            <span className="moeda-icon">⚪</span>
-            <span className="moeda-label">PE: </span>
-            <span className="moeda-valor">{coins.ep}</span>
-          </div>
-
-          <div className="moeda">
-            <span className="moeda-icon">🥈</span>
-            <span className="moeda-label">PP: </span>
-            <span className="moeda-valor">{coins.sp}</span>
-          </div>
-
-          <div className="moeda">
-            <span className="moeda-icon">🥉</span>
-            <span className="moeda-label">PC: </span>
-            <span className="moeda-valor">{coins.cp}</span>
-          </div>
-
+          {[
+            { key: "pp", label: "PP" },
+            { key: "gp", label: "GP" },
+            { key: "ep", label: "EP" },
+            { key: "sp", label: "SP" },
+            { key: "cp", label: "CP" },
+          ].map((c) => (
+            <div className="moeda" key={c.key}>
+              <img src={coinImages[c.key]} alt={c.label} />
+              <span className="moeda-label">{c.label}:</span>
+              {editMode ? (
+                <input
+                  className="moeda-input"
+                  type="number"
+                  min="0"
+                  value={coins[c.key] || 0}
+                  onChange={(e) => handleCoinChange(c.key, e.target.value)}
+                />
+              ) : (
+                <span className="moeda-valor">{coins[c.key] || 0}</span>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -153,6 +169,7 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
           <thead>
             <tr>
               <th>Item</th>
+              <th>Descrição</th>
               <th>Qtd</th>
               <th>Peso</th>
 
@@ -164,7 +181,7 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
 
             {equipment.length === 0 ? (
               <tr>
-                <td colSpan={editMode ? 4 : 3}>
+                <td colSpan={editMode ? 5 : 4}>
                   Nenhum item no inventário.
                 </td>
               </tr>
@@ -173,6 +190,7 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
                 <tr key={index}>
 
                   <td>{item?.name}</td>
+                    <td className="item-desc">{item?.description || "-"}</td>
 
                   <td>
                     {editMode ? (
@@ -220,48 +238,61 @@ const InventarioSection = ({ inventario, editMode, onSave }) => {
           <h3>Adicionar Item</h3>
 
           <div className="form-row">
+            <div className="field">
+              <label className="form-label">Nome</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Nome do Item"
+                value={novoItem.name}
+                onChange={handleItemChange}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Nome do Item"
-              value={novoItem.name}
-              onChange={handleItemChange}
-            />
+            <div className="field">
+              <label className="form-label">Quantidade</label>
+              <input
+                type="number"
+                name="quantity"
+                placeholder="Qtd"
+                value={novoItem.quantity}
+                onChange={handleItemChange}
+                min="1"
+              />
+            </div>
 
-            <input
-              type="number"
-              name="quantity"
-              placeholder="Qtd"
-              value={novoItem.quantity}
-              onChange={handleItemChange}
-              min="1"
-            />
+            <div className="field">
+              <label className="form-label">Peso (kg)</label>
+              <input
+                type="number"
+                name="weight"
+                placeholder="Peso (kg)"
+                value={novoItem.weight}
+                onChange={handleItemChange}
+                step="0.1"
+                min="0"
+              />
+            </div>
 
-            <input
-              type="number"
-              name="weight"
-              placeholder="Peso (kg)"
-              value={novoItem.weight}
-              onChange={handleItemChange}
-              step="0.1"
-              min="0"
-            />
+            <div className="field">
+              <label className="form-label">Descrição</label>
+              <input
+                type="text"
+                name="description"
+                placeholder="Descrição"
+                value={novoItem.description}
+                onChange={handleItemChange}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="description"
-              placeholder="Descrição"
-              value={novoItem.description}
-              onChange={handleItemChange}
-            />
-
-            <button
-              className="add-btn"
-              onClick={handleAddItem}
-            >
-              Adicionar
-            </button>
+            <div className="field field-button">
+              <button
+                className="add-btn"
+                onClick={handleAddItem}
+              >
+                Adicionar
+              </button>
+            </div>
           </div>
         </div>
       )}

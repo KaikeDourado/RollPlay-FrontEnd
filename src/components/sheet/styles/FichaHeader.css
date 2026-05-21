@@ -1,32 +1,27 @@
 /* Estilos gerais da FichaHeader */
 .ficha-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 33px 20px;
+  position: relative;
+  padding: 28px 16px 16px;
   background-color: #1e293b;
   border-radius: 12px;
-  margin: 20px 12px;
+  margin: 16px 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  /* Para posicionar o botão no canto superior direito */
 }
 
-/* Botão de Editar Ficha */
 .edit-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   background-color: #3b82f6;
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 6px 12px;
-  font-size: 12px;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -36,122 +31,246 @@
 }
 
 .edit-icon {
-  font-size: 14px;
+  font-size: 12px;
 }
 
-/* Bloco de Pontos de Vida */
-.pv-block {
+/* Layout principal */
+.header-content {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  gap: 16px;
+  margin-top: 0;
+}
+
+/* ===== ESQUERDA: Foto e Info Básica ===== */
+.header-left {
+  display: flex;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.portrait-section {
+  position: relative;
+}
+
+.portrait-placeholder {
+  width: 100px;
+  height: 100px;
   background-color: #2d3748;
   border-radius: 8px;
-  padding: 10px;
-  border: 1px solid #4a5568;
-  gap: 20px;
-}
-
-/* Coluna esquerda: Botões e input */
-.pv-controls {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid #4a5568;
 }
 
-.pv-label {
+.portrait-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portrait-icon {
+  font-size: 50px;
+}
+
+.portrait-edit {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.portrait-edit-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.portrait-url-input {
+  display: flex;
+  gap: 4px;
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.portrait-url-input input {
+  background-color: #1a202c;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 11px;
+  min-width: 180px;
+}
+
+.portrait-url-input button {
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
   font-size: 11px;
   font-weight: 600;
-  color: #a0aec0;
-}
-
-.pv-input {
-  width: 100%;
-  padding: 6px;
-  border: 1px solid #4a5568;
-  border-radius: 6px;
-  background-color: #1e293b;
-  color: #e2e8f0;
-  font-size: 12px;
-}
-
-.pv-button {
-  padding: 7px;
-  font-size: 12px;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.heal-button {
+.confirm-btn {
   background-color: #10b981;
   color: white;
 }
 
-.heal-button:hover {
-  background-color: #059669;
-}
-
-.damage-button {
+.cancel-btn {
   background-color: #ef4444;
   color: white;
 }
 
-.damage-button:hover {
-  background-color: #dc2626;
-}
-
-/* Coluna direita: Valores de PV */
-.pv-values {
+.character-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
 }
 
-.pv-item {
-  font-size: 11px;
-  color: #e2e8f0;
-  border: 1px solid #4a5568;
-  border-radius: 6px;
-  padding: 6px;
-}
-
-.pv-value {
+.character-info h1 {
+  margin: 0;
+  font-size: 20px;
   font-weight: 700;
   color: #3b82f6;
 }
-.death-saves-header {
+
+.character-basic {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #a0aec0;
+}
+
+/* ===== DIREITA: PV e Stats ===== */
+.header-right {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #15202b;
-  border: 1px solid #334155;
+  gap: 10px;
+  flex: 1;
+  align-items: flex-end;
+}
+
+.pv-display {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pv-clickable {
+  background-color: #2d3748;
+  border: 2px solid #4a5568;
   border-radius: 8px;
+  padding: 8px 12px;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 90px;
+  text-align: center;
+}
+
+.pv-clickable:hover {
+  border-color: #3b82f6;
+  background-color: #374151;
+}
+
+.pv-label {
+  font-size: 10px;
+  color: #a0aec0;
+  margin-bottom: 2px;
+}
+
+.pv-main {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.pv-temp {
+  font-size: 11px;
+  color: #fbbf24;
+  margin-top: 2px;
+}
+
+.quick-stats {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.stat-box {
+  background-color: #2d3748;
+  border-radius: 6px;
+  padding: 6px 8px;
+  text-align: center;
+  min-width: 50px;
+  border: 1px solid #4a5568;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: #a0aec0;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+/* Testes de Morte */
+.death-saves-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  width: 100%;
+  max-width: 320px;
 }
 
 .death-saves-label {
-  font-size: 11px;
-  color: #94a3b8;
+  font-size: 10px;
+  color: #a0aec0;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
 .death-saves-line {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.death-save-divider {
+  width: 1px;
+  height: 12px;
+  background-color: #4a5568;
+  margin: 0 2px;
 }
 
 .death-save-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 1px solid #4a5568;
+  border: 1.5px solid #4a5568;
   background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.death-save-dot:disabled {
+  cursor: not-allowed;
 }
 
 .death-save-dot.success.filled {
@@ -164,96 +283,370 @@
   border-color: #f56565;
 }
 
-.death-save-dot.success {
-  background-color: transparent;
-}
-
-.death-save-dot.failure {
-  background-color: transparent;
-}
-/* Estilos para o retrato e título */
-.character-portrait {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-right: 10px;
-}
-
-.portrait-placeholder {
-  width: 150px;
-  height: 150px;
-  background-color: #2d3748;
-  border-radius: 50%;
+/* Modal de Dano/Cura */
+.damage-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  z-index: 1000;
 }
 
-.portrait-icon {
-  font-size: 80px;
+.damage-modal {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 12px;
+  padding: 20px;
+  min-width: 280px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.upload-portrait-btn {
+.damage-modal h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #e2e8f0;
+}
+
+.damage-modal input {
+  width: 100%;
+  background-color: #1a202c;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  color: #e2e8f0;
+  padding: 10px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.damage-modal input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-heal,
+.modal-damage {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-heal {
+  background-color: #10b981;
+  color: white;
+}
+
+.modal-heal:hover {
+  background-color: #059669;
+}
+
+.modal-damage {
+  background-color: #ef4444;
+  color: white;
+}
+
+.modal-damage:hover {
+  background-color: #dc2626;
+}
+
+.modal-close {
+  width: 100%;
   background-color: #4a5568;
   color: white;
   border: none;
   border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.ficha-title {
+.modal-close:hover {
+  background-color: #5a6578;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.modal-field {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.ficha-title h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: #3b82f6;
-}
-
-.ficha-title h2 {
-  margin: 5px 0 0;
-  font-size: 16px;
-  font-weight: 400;
+.modal-field label {
+  font-size: 11px;
   color: #a0aec0;
 }
 
-/* Responsividade */
+.modal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.modal-row label {
+  font-size: 11px;
+  color: #a0aec0;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.modal-secondary {
+  flex: 1;
+  min-width: 90px;
+  padding: 8px 10px;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  background-color: #334155;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-secondary:hover {
+  background-color: #3f5167;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 1024px) {
+  .header-content {
+    flex-direction: column;
+  }
+
+  .header-right {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .death-saves-container {
+    flex: 1;
+    align-items: center;
+  }
+}
+
 @media (max-width: 768px) {
   .ficha-header {
+    padding: 24px 12px 12px;
+    margin: 12px 8px;
+  }
+
+  .edit-button {
+    top: 6px;
+    right: 6px;
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .header-content {
     flex-direction: column;
-    gap: 15px;
-    text-align: center;
-    margin: 15px 0;
+    gap: 12px;
+    margin-top: 28px;
   }
 
-  .ficha-title {
-    display: block;
-  }
-
-  .character-portrait {
-    margin: 0;
+  .header-left {
+    gap: 10px;
   }
 
   .portrait-placeholder {
-    margin: auto;
+    width: 80px;
+    height: 80px;
   }
 
-  .pv-block {
+  .portrait-icon {
+    font-size: 40px;
+  }
+
+  .character-info h1 {
+    font-size: 18px;
+  }
+
+  .character-basic {
+    font-size: 12px;
+  }
+
+  .header-right {
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    gap: 10px;
+    align-items: flex-start;
   }
 
-  .pv-controls {
+  .death-saves-container {
+    align-items: flex-start;
+  }
+
+  .pv-display {
+    justify-content: flex-start;
+  }
+
+  .pv-clickable {
+    min-width: 80px;
+    padding: 8px 12px;
+  }
+
+  .quick-stats {
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .stat-box {
+    flex: 1;
+    min-width: auto;
+    padding: 6px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+  }
+
+  .stat-value {
+    font-size: 13px;
+  }
+
+  .death-saves-container {
+    justify-content: flex-start;
     width: 100%;
   }
 
-  .pv-values {
-    text-align: center;
+  .death-saves-label {
+    font-size: 9px;
+  }
+
+  .death-save-dot {
+    width: 11px;
+    height: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ficha-header {
+    padding: 24px 10px 10px;
+    margin: 10px 6px;
+  }
+
+  .edit-button {
+    top: 4px;
+    right: 4px;
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .header-content {
+    margin-top: 24px;
+  }
+
+  .header-left {
+    gap: 8px;
+    flex: 1;
+  }
+
+  .portrait-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
+  }
+
+  .portrait-icon {
+    font-size: 35px;
+  }
+
+  .character-info h1 {
+    font-size: 16px;
+  }
+
+  .character-basic {
+    font-size: 11px;
+  }
+
+  .header-right {
+    gap: 8px;
+    align-items: center;
+  }
+
+  .pv-clickable {
+    min-width: 70px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .pv-main {
+    font-size: 14px;
+  }
+
+  .quick-stats {
+    gap: 4px;
+  }
+
+  .stat-box {
+    padding: 5px 6px;
+    min-width: 40px;
+  }
+
+  .stat-label {
+    font-size: 8px;
+  }
+
+  .stat-value {
+    font-size: 12px;
+  }
+
+  .death-saves-container {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .death-saves-label {
+    font-size: 8px;
+  }
+
+  .death-save-dot {
+    width: 10px;
+    height: 10px;
+    border-width: 1px;
+  }
+
+  .death-save-divider {
+    height: 10px;
+    margin: 0 1px;
+  }
+
+  .damage-modal {
+    min-width: 240px;
+    padding: 16px;
+  }
+
+  .modal-heal,
+  .modal-damage {
+    padding: 8px;
+    font-size: 12px;
   }
 }
