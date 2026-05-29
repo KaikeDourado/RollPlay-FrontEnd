@@ -58,6 +58,10 @@
     text-decoration: underline;
 }
 
+.login-form-error {
+    color: rgb(200, 62, 62);
+}
+
 .remember-me {
     display: flex;
     align-items: center;

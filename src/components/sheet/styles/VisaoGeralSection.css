@@ -16,6 +16,10 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #4a5568;
 }
 
 .info-group.full-width {
@@ -47,6 +51,8 @@
   font-size: 16px;
   font-weight: 500;
   padding: 8px 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* CA, Iniciativa e Deslocamento */
@@ -63,6 +69,7 @@
   border-radius: 8px;
   padding: 15px;
   text-align: center;
+  border: 1px solid #4a5568;
 }
 
 .derivado-label {
@@ -166,8 +173,27 @@
 
 @media (max-width: 480px) {
   .visao-geral-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+  }
+
+  /* Nome em uma linha (full-width) */
+  .visao-geral-grid .info-group:nth-child(1) {
+    grid-column: 1 / -1;
+  }
+
+  /* Raça, Classe, Nível na segunda linha (3 colunas) */
+  .visao-geral-grid .info-group:nth-child(2),
+  .visao-geral-grid .info-group:nth-child(3),
+  .visao-geral-grid .info-group:nth-child(4) {
+    grid-column: span 1;
+  }
+
+  /* Alinhamento, Experiência, Antecedente na terceira linha (3 colunas) */
+  .visao-geral-grid .info-group:nth-child(5),
+  .visao-geral-grid .info-group:nth-child(6),
+  .visao-geral-grid .info-group:nth-child(7) {
+    grid-column: span 1;
   }
 
   .atributos-derivados {
@@ -195,5 +221,14 @@
 
   .info-group input {
     font-size: 12px;
+  }
+
+  .info-group {
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .info-value {
+    font-size: 14px;
   }
 }
