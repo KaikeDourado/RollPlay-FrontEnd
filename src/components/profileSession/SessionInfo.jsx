@@ -58,7 +58,7 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
       };
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignId}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignId}`,
         {
           method: 'PUT',
           body: JSON.stringify(updatedData)
@@ -97,7 +97,7 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
     try {
       const campaignId = getCampaignId();
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignId}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignId}`,
         {
           method: 'DELETE'
         }

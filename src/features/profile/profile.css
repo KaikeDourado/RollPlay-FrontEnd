@@ -2,14 +2,15 @@
     background-color: #131525;
     color: #ffffff;
     line-height: 1.6;
+    min-height: 100vh;
 }
 
 .profile-main h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.profile-main h2,
+.profile-main h3,
+.profile-main h4,
+.profile-main h5,
+.profile-main h6 {
     font-weight: 700;
     margin-bottom: 1rem;
 }
@@ -25,13 +26,14 @@ h6 {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
-    height: 100vh;
+    min-height: calc(100vh - 120px);
+    height: auto;
+    align-items: flex-start;
 }
 
-/* Profile Sidebar */
 .profile-sidebar {
     flex: 0 0 350px;
-    max-height: 750px;
+    max-width: 350px;
     background-color: #020717;
     border-radius: 8px;
     padding: 2rem;
@@ -39,6 +41,16 @@ h6 {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.profile-info,
+.profile-bio,
+.profile-stats,
+.profile-actions {
+    width: 100%;
+    min-width: 0;
 }
 
 .profile-image-container {
@@ -103,6 +115,7 @@ h6 {
 }
 
 .profile-bio-text {
+    box-sizing: border-box;
     width: 100%;
     background-color: #020717;
     border-radius: 8px;
@@ -113,6 +126,10 @@ h6 {
     max-height: 200px;
     overflow: auto;
     word-break: break-word;
+}
+
+.profile-bio-text p {
+    margin: 0;
 }
 
 .profile-bio h3 {
@@ -136,6 +153,7 @@ h6 {
 
 .profile-actions {
     width: 100%;
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -444,6 +462,13 @@ h6 {
     resize: none;
 }
 
+.profile-input,
+.profile-bio-text textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
 .profile-input:focus,
 .profile-bio-text textarea:focus {
     border-color: #3a3dff;
@@ -483,11 +508,13 @@ h6 {
 @media (max-width: 1200px) {
     .profile-main {
         flex-direction: column;
+        min-height: auto;
     }
 
     .profile-sidebar {
         flex: 0 0 auto;
         width: 100%;
+        max-width: none;
     }
 }
 

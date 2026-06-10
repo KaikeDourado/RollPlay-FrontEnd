@@ -11,13 +11,13 @@ export default function EnterSessionModal({ isOpen, onClose }) {
     setError("");
 
     if (!code) {
-      setError("Informe o código da sessão.");
+      setError("Informe o código da campanha.");
       return;
     }
 
     try {
       const res = await fetchSecure(
-        "http://localhost:5000/campaigns/user/enter",
+        "https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/user/enter",
         {
           method: "PATCH",
           body: JSON.stringify({
@@ -31,10 +31,10 @@ export default function EnterSessionModal({ isOpen, onClose }) {
       if (res.ok && data.message) {
         onClose();
       } else {
-        setError(data.message || "Falha ao entrar na sessão.");
+        setError(data.message || "Falha ao entrar na campanha.");
       }
     } catch (err) {
-      console.error("Erro ao entrar na sessão:", err);
+      console.error("Erro ao entrar na campanha:", err);
       setError(
         err.message ||
         "Não foi possível conectar. Tente novamente."
@@ -50,11 +50,11 @@ export default function EnterSessionModal({ isOpen, onClose }) {
         <button className="close-btn" onClick={onClose}>
           &times;
         </button>
-        <h2>Entrar em uma Sessão</h2>
+        <h2>Entrar em uma campanha</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Digite o código da sessão"
+            placeholder="Digite o código da campanha"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required

@@ -17,7 +17,7 @@ const NotesTab = ({ campaignUid }) => {
   const fetchNotes = async () => {
     try {
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`
       );
 
       if (res.ok) {
@@ -57,7 +57,7 @@ const NotesTab = ({ campaignUid }) => {
           ];
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`,
         {
           method: 'PUT',
           body: JSON.stringify({ notas: updatedNotes })
@@ -86,7 +86,7 @@ const NotesTab = ({ campaignUid }) => {
       const updatedNotes = notes.filter(note => note.id !== noteId);
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`,
         {
           method: 'PUT',
           body: JSON.stringify({ notas: updatedNotes })

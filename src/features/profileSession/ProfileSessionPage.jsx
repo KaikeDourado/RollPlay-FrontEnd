@@ -52,7 +52,7 @@ export default function ProfileSession() {
     const fetchSession = async () => {
       try {
         const res = await fetchSecure(
-          `http://localhost:5000/campaigns/${campaignUid}`
+          `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`
         );
 
         const data = await res.json();

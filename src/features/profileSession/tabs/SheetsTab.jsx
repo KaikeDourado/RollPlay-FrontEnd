@@ -18,7 +18,7 @@ const SheetsTab = ({ campaignUid, sessionData, refreshTrigger }) => {
     if (userNames[uid]) return userNames[uid];
 
     try {
-      const response = await fetchSecure(`http://localhost:5000/users/${uid}`, {
+      const response = await fetchSecure(`https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/users/${uid}`, {
         method: 'GET',
       });
 
@@ -41,8 +41,8 @@ const SheetsTab = ({ campaignUid, sessionData, refreshTrigger }) => {
 
     try {
       const endpoint = isMaster
-        ? `http://localhost:5000/sheets/campaign/${campaignUid}`
-        : `http://localhost:5000/sheets/token/${campaignUid}`;
+        ? `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/sheets/campaign/${campaignUid}`
+        : `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/sheets/token/${campaignUid}`;
 
       const response = await fetchSecure(endpoint, {
         method: 'GET',
