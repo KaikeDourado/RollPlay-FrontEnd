@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
 import LoginPage from "@/features/auth/pages/LoginPage";
+import RecoveryPasswordPage from "@/features/auth/pages/RecoveryPasswordPage";
 import HomePage from "@/features/home/HomePage";
 import ProfilePage from "@/features/profile/ProfilePage";
 import SheetPage from "@/features/sheet/SheetPage";
@@ -14,6 +15,7 @@ function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/registrar" element={<RegisterPage />} />
       <Route path="/entrar" element={<LoginPage />} />
+      <Route path="/recuperar-senha" element={<RecoveryPasswordPage />} />
       <Route path="/perfil" element={<ProfilePage />} />
       <Route path="/sheet/:id" element={<SheetPage />} />
       <Route path="/profile-session/:campaignUid" element={<ProfileSessionPage />} />

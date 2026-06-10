@@ -1,22 +1,25 @@
 import { authApi } from './auth';
 
-export async function fetchSecure(url, init = {}) {
+export async function fetchSecure(url, init = {}, withAuth = true) {
   try {
     console.log('Iniciando requisição segura para:', url);
     console.log('Método:', init.method || 'GET');
-    
-    const token = await authApi.getIdToken(false);
-    console.log('Token obtido com sucesso');
-    console.log('Token:', token);
-    
+
     const headers = {
       ...init.headers,
-      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     };
 
-    console.log('Fazendo requisição com token válido');
-    
+    if (withAuth) {
+      console.log('Tentando obter token para requisição segura');
+      const token = await authApi.getIdToken(false);
+      console.log('Token obtido com sucesso');
+      headers.Authorization = `Bearer ${token}`;
+      console.log('Fazendo requisição com token válido');
+    } else {
+      console.log('Fazendo requisição sem token de autenticação');
+    }
+
     const response = await fetch(url, {
       ...init,
       headers
@@ -43,6 +46,11 @@ export async function fetchSecure(url, init = {}) {
 
     // Se o status for 401, significa token inválido/expirado
     if (response.status === 401) {
+      if (!withAuth) {
+        console.warn('401 recebido em requisição sem autenticação');
+        return response;
+      }
+
       console.warn('Token inválido ou expirado (401), tentando renovar');
       
       try {

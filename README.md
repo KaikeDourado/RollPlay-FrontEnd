@@ -1,12 +1,12 @@
 # Roll & Play
 
-Este projeto é um site tabletop que atua como gerenciador de mesas e fichas de RPG, com um enfoque educacional. Seu objetivo é auxiliar na educação de maneira geral, proporcionando mesas educacionais e outras funcionalidades voltadas para o aprendizado.
+Este projeto é um site tabletop que atua como gerenciador de mesas e fichas de RPG. Seu objetivo é auxiliar mestres e jogadores de maneira geral, proporcionando a unificação de diversas ferramentas em uma só.
 
 ## 🎯 Objetivos
 
 - Gerenciar mesas e fichas de RPG de forma eficiente.
-- Oferecer recursos educacionais integrados ao sistema de RPG.
-- Facilitar a criação e administração de campanhas educativas.
+- Oferecer recursos modernos integrados ao sistema de RPG.
+- Facilitar a criação e administração de campanhas.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -22,10 +22,6 @@ Este projeto é um site tabletop que atua como gerenciador de mesas e fichas de 
 - `package.json`: Gerenciamento de dependências e scripts do projeto.
 - `vite.config.js`: Configurações específicas do Vite.
 
-## 🧠 Contribuições Educacionais
-
-O projeto visa integrar elementos educacionais nas campanhas de RPG, permitindo que mestres e jogadores explorem conteúdos pedagógicos de forma lúdica e interativa. Essa abordagem busca enriquecer o processo de ensino-aprendizagem por meio da gamificação.
-
 ## 👥 Colaboradores
 
 - [Sérgio Reis](https://github.com/serbiow)
@@ -38,4 +34,4 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
 
-Para mais informações, acesse o repositório oficial: [Front-End - PI 4º Semestre](https://github.com/KaikeDourado/Front-End---Pi-4-Semestre)
+Para mais informações, acesse o repositório oficial: [Roll & Play - FrontEnd](https://github.com/KaikeDourado/RollPlay-FrontEnd)

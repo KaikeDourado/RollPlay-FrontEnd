@@ -88,6 +88,7 @@ h6 {
     border-radius: 8px;
     min-height: 400px;
     max-width: 700px;
+    opacity: 0.75;
 }
 
 /* Features Section */
@@ -110,7 +111,7 @@ h6 {
 
 .home-features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
@@ -179,16 +180,6 @@ h6 {
     opacity: 0.9;
 }
 
-.home-about-badge {
-    display: inline-block;
-    background-color: #4a4dff;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-}
-
 .home-about-list {
     margin-bottom: 2rem;
     list-style: none;
@@ -247,7 +238,7 @@ h6 {
 
 .home-faq-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2rem;
     position: relative;
     z-index: 1;
@@ -307,6 +298,20 @@ h6 {
 
     .home-about {
         flex-direction: column;
+    }
+
+    .home-features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    .home-features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-faq-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 

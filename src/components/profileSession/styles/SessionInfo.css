@@ -122,6 +122,19 @@
   .edit-campaign-button-profileSession:hover {
     background-color: #1a2035;
   }
+
+  .delete-campaign-button-profileSession {
+    background-color: #1b0c0c;
+    color: #ffb3b3;
+    border: 1px solid #ff5c5c;
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: 100%;
+  }
+
+  .delete-campaign-button-profileSession:hover {
+    background-color: #500909;
+  }
   
   .edit-icon-profileSession {
     transition: transform 0.2s ease;

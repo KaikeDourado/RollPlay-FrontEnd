@@ -8,10 +8,32 @@ const SheetsTab = ({ campaignUid, sessionData, refreshTrigger }) => {
   const [sheets, setSheets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [userNames, setUserNames] = useState({});
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const isMaster = sessionData?.userUid === user?.uid;
+
+  const fetchUserName = async (uid) => {
+    if (userNames[uid]) return userNames[uid];
+
+    try {
+      const response = await fetchSecure(`http://localhost:5000/users/${uid}`, {
+        method: 'GET',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const displayName = data.data?.displayName || uid;
+        setUserNames(prev => ({ ...prev, [uid]: displayName }));
+        return displayName;
+      }
+    } catch (err) {
+      console.error(`Erro ao buscar nome do usuário ${uid}:`, err);
+    }
+
+    return uid;
+  };
 
   const loadSheets = async () => {
     setLoading(true);
@@ -40,6 +62,12 @@ const SheetsTab = ({ campaignUid, sessionData, refreshTrigger }) => {
       }
 
       setSheets(filteredSheets);
+
+      // Buscar nomes dos donos das fichas
+      if (isMaster) {
+        const uniqueUids = [...new Set(filteredSheets.map(sheet => sheet.userUid))];
+        uniqueUids.forEach(uid => fetchUserName(uid));
+      }
     } catch (err) {
       console.error('Erro ao buscar fichas:', err);
       setError(err.message || 'Não foi possível carregar as fichas da campanha.');
@@ -69,12 +97,12 @@ const SheetsTab = ({ campaignUid, sessionData, refreshTrigger }) => {
             </div>
           )}
         </div>
-        <button
+        {/* <button
           className="refresh-sheets-button-profileSession"
           onClick={loadSheets}
         >
           Atualizar
-        </button>
+        </button> */}
       </div>
 
       {loading ? (
@@ -101,7 +129,7 @@ const SheetsTab = ({ campaignUid, sessionData, refreshTrigger }) => {
                 </div>
                 {isMaster && (
                   <div className="sheet-owner-profileSession">
-                    Dono: {sheet.userUid}
+                    Dono: {userNames[sheet.userUid] || sheet.userUid}
                   </div>
                 )}
               </div>
