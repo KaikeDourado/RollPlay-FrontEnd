@@ -4,13 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../../lib/auth';
 import './styles/loginForm.css';
 
-//TODO: O usuário só faz login com email verificado, fazer um alert para avisar caso 
-//back end retorne o erro de email
-
 export default function LoginForm() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -101,17 +97,6 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <div className="remember-me">
-          <input
-            id="remember"
-            name="remember"
-            type="checkbox"
-            checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
-          />
-          <label htmlFor="remember">Lembrar de mim</label>
-        </div>
 
         {error && <p className="login-form-error">{error}</p>}
 

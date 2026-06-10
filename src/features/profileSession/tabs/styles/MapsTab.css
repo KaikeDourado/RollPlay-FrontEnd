@@ -228,3 +228,52 @@
 .map-form .form-actions button:last-of-type:hover {
   background: rgba(100, 116, 139, 0.2);
 }
+.image-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.image-fullscreen-content {
+  position: relative;
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #111827;
+}
+
+.image-fullscreen-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 95vh;
+  object-fit: contain;
+}
+
+.fullscreen-close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-close-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}

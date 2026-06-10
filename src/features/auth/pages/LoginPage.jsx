@@ -32,7 +32,7 @@ export default function LoginPage() {
                         <div className="login-image-text">
                             <h2>SUA AVENTURA COMEÇA AQUI</h2>
                             <p>
-                                ROLL & PLAY É UMA PLATAFORMA GRATUITA PARA JOGADORES DE RPG DE MESA.
+                                ROLL & PLAY É UMA PLATAFORMA PARA JOGADORES E MESTRES DE RPG DE MESA.
                                 CRIE PERSONAGENS, ORGANIZE SESSÕES E ROLE DADOS - TUDO EM UM SÓ LUGAR.
                             </p>
                         </div>

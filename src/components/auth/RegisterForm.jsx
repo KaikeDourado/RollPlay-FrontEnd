@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { FaDiceD20 } from 'react-icons/fa';
+import { FaDiceD20, FaCheck, FaTimes } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles/registerForm.css';
-
-//TODO: Criar um alert para o usuário verificar o email
 
 export default function RegisterForm() {
   const [form, setForm] = useState({
@@ -15,7 +13,9 @@ export default function RegisterForm() {
     terms: false
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const navigate = useNavigate();
 
   function calculatePasswordStrength(password) {
@@ -31,12 +31,34 @@ export default function RegisterForm() {
     return Math.min(strength, 5);
   }
 
+  function validatePassword(password) {
+    return (
+      password.length >= 8 &&
+      /[a-z]/.test(password) &&
+      /[A-Z]/.test(password) &&
+      /[0-9]/.test(password) &&
+      /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    );
+  }
+
+  function getPasswordRequirements(password) {
+    return {
+      minLength: password.length >= 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSpecial: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    };
+  }
+
   function handleChange(e) {
     const { name, type, value, checked } = e.target;
     
     if (name === 'password') {
       setPasswordStrength(calculatePasswordStrength(value));
     }
+    
+    setAttemptedSubmit(false);
     
     setForm(prev => ({
       ...prev,
@@ -47,6 +69,12 @@ export default function RegisterForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+    setSuccess('');
+
+    if (!validatePassword(form.password) || !form.terms) {
+      setAttemptedSubmit(true);
+      return;
+    }
 
     if (form.password !== form.confirmPassword) {
       setError('As senhas não conferem');
@@ -67,8 +95,16 @@ export default function RegisterForm() {
       );
 
       if (response.status === 201) {
-        alert('Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
-        navigate('/entrar');
+        setSuccess('Usuário criado com sucesso!');
+        setForm({
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          terms: false
+        });
+        setPasswordStrength(0);
+        setTimeout(() => navigate('/entrar'), 3000);
       } else {
         setError(response.data.message || 'Erro ao criar conta');
       }
@@ -145,13 +181,53 @@ export default function RegisterForm() {
               </p>
             </div>
           )}
-          <p className="register-form-note">
-            ✓ Mínimo 8 caracteres {form.password.length >= 8 ? '✓' : ''}<br/>
-            ✓ Maiúscula {/[A-Z]/.test(form.password) ? '✓' : ''}<br/>
-            ✓ Minúscula {/[a-z]/.test(form.password) ? '✓' : ''}<br/>
-            ✓ Número {/[0-9]/.test(form.password) ? '✓' : ''}<br/>
-            ✓ Caractere especial {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(form.password) ? '✓' : ''}
-          </p>
+          {form.password && (
+            <div className="password-requirements">
+              <div className="requirements-title">Requisitos de senha:</div>
+              <div className="requirements-list">
+                <div className={`requirement ${getPasswordRequirements(form.password).minLength ? 'complete' : 'incomplete'}`}>
+                  {getPasswordRequirements(form.password).minLength ? (
+                    <FaCheck className="icon-check" />
+                  ) : (
+                    <FaTimes className="icon-x" />
+                  )}
+                  <span>Mínimo 8 caracteres</span>
+                </div>
+                <div className={`requirement ${getPasswordRequirements(form.password).hasUppercase ? 'complete' : 'incomplete'}`}>
+                  {getPasswordRequirements(form.password).hasUppercase ? (
+                    <FaCheck className="icon-check" />
+                  ) : (
+                    <FaTimes className="icon-x" />
+                  )}
+                  <span>Maiúscula</span>
+                </div>
+                <div className={`requirement ${getPasswordRequirements(form.password).hasLowercase ? 'complete' : 'incomplete'}`}>
+                  {getPasswordRequirements(form.password).hasLowercase ? (
+                    <FaCheck className="icon-check" />
+                  ) : (
+                    <FaTimes className="icon-x" />
+                  )}
+                  <span>Minúscula</span>
+                </div>
+                <div className={`requirement ${getPasswordRequirements(form.password).hasNumber ? 'complete' : 'incomplete'}`}>
+                  {getPasswordRequirements(form.password).hasNumber ? (
+                    <FaCheck className="icon-check" />
+                  ) : (
+                    <FaTimes className="icon-x" />
+                  )}
+                  <span>Número</span>
+                </div>
+                <div className={`requirement ${getPasswordRequirements(form.password).hasSpecial ? 'complete' : 'incomplete'}`}>
+                  {getPasswordRequirements(form.password).hasSpecial ? (
+                    <FaCheck className="icon-check" />
+                  ) : (
+                    <FaTimes className="icon-x" />
+                  )}
+                  <span>Caractere especial (!@#$%^&*)</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="register-form-group">
@@ -183,9 +259,22 @@ export default function RegisterForm() {
         </div>
 
         {error && <p className="register-form-error">{error}</p>}
+        {success && <p className="register-form-success">{success}</p>}
 
-        <button type="submit" className="register-form-submit">
-          Criar conta gratuita
+        {attemptedSubmit && (!form.terms || !validatePassword(form.password)) && (
+          <p className="register-form-warning">
+            {!validatePassword(form.password) && '⚠️ Complete todos os requisitos de senha'}
+            {!form.terms && !validatePassword(form.password) && ' e '}
+            {!form.terms && 'aceite os termos'}
+          </p>
+        )}
+
+        <button 
+          type="submit" 
+          className="register-form-submit"
+          disabled={!form.terms || !validatePassword(form.password)}
+        >
+          Criar conta de gratuita
         </button>
       </form>
 

@@ -210,6 +210,16 @@
     background: #2563eb;
 }
 
+.register-form-submit:disabled {
+    background: #6b7280;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.register-form-submit:disabled:hover {
+    background: #6b7280;
+}
+
 .register-form-footer {
     text-align: center;
     margin-top: 1.5rem;
@@ -220,4 +230,102 @@
 .register-form-footer a {
     color: #3b82f6;
     text-decoration: none;
+}
+
+.register-form-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.register-form-error {
+    color: #e06975;
+    background-color: #ffe0e6;
+    border: 1px solid #ffb3c1;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Password Requirements Styles */
+.password-requirements {
+    background: #0d2137;
+    border: 1px solid #1e3a50;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.requirements-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #64b5f6;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.requirements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+}
+
+.requirement.incomplete {
+    color: #ef5350;
+}
+
+.requirement.incomplete:hover {
+    background: rgba(239, 83, 80, 0.1);
+}
+
+.requirement.complete {
+    color: #66bb6a;
+}
+
+.requirement.complete:hover {
+    background: rgba(102, 187, 106, 0.1);
+}
+
+.icon-check {
+    color: #66bb6a;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.icon-x {
+    color: #ef5350;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.register-form-warning {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    color: #856404;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+    font-weight: 500;
 }

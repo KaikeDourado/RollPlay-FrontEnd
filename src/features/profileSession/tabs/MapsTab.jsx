@@ -14,6 +14,7 @@ const MapsTab = ({ campaignUid }) => {
     description: '',
     imageUrl: ''
   });
+  const [fullscreenImage, setFullscreenImage] = useState(null);
 
   const { user } = useAuth();
 
@@ -193,7 +194,7 @@ const MapsTab = ({ campaignUid }) => {
             <div key={map.id} className="map-card-profileSession">
               <div className="map-image-container-profileSession">
                 <img
-                  src={map.imageUrl || "/placeholder.svg"}
+                  src={map.imageUrl || "/imagens/default-map-img.png"}
                   alt={map.title}
                   className="map-thumbnail-profileSession"
                 />
@@ -213,7 +214,12 @@ const MapsTab = ({ campaignUid }) => {
                 <p className="map-description-profileSession">{map.description}</p>
               </div>
               <div className="map-actions-profileSession">
-                <button className="view-map-button-profileSession">Ver Mapa</button>
+                <button
+                  className="view-map-button-profileSession"
+                  onClick={() => setFullscreenImage(map.imageUrl || '/imagens/default-map-img.png')}
+                >
+                  Ver Mapa
+                </button>
                 <button
                   className="delete-map-button-profileSession"
                   onClick={() => deleteMap(map.id)}
@@ -224,6 +230,14 @@ const MapsTab = ({ campaignUid }) => {
             </div>
           ))
         )}
+      {fullscreenImage && (
+        <div className="image-fullscreen-overlay" onClick={() => setFullscreenImage(null)}>
+          <div className="image-fullscreen-content" onClick={(e) => e.stopPropagation()}>
+            <button className="fullscreen-close-button" onClick={() => setFullscreenImage(null)}>×</button>
+            <img src={fullscreenImage} alt="Imagem do mapa" />
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

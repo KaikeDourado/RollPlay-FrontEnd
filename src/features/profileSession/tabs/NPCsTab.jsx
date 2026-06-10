@@ -15,6 +15,7 @@ const NPCsTab = ({ campaignUid }) => {
     description: '',
     avatar: ''
   });
+  const [fullscreenImage, setFullscreenImage] = useState(null);
 
   const { user } = useAuth();
 
@@ -200,7 +201,7 @@ const NPCsTab = ({ campaignUid }) => {
           npcs.map(npc => (
             <div key={npc.id} className="npc-card-profileSession">
               <div className="npc-avatar-profileSession">
-                <img src={npc.avatar || "/placeholder.svg"} alt={npc.name} />
+                <img src={npc.avatar || "/imagens/default-npc-img.png"} alt={npc.name} />
               </div>
               <div className="npc-info-profileSession">
                 <h3 className="npc-name-profileSession">{npc.name}</h3>
@@ -208,7 +209,12 @@ const NPCsTab = ({ campaignUid }) => {
                 <p className="npc-description-profileSession">{npc.description}</p>
               </div>
               <div className="npc-actions-profileSession">
-                <button className="view-npc-button-profileSession">Ver Detalhes</button>
+                <button
+                  className="view-npc-button-profileSession"
+                  onClick={() => setFullscreenImage(npc.avatar || '/imagens/default-npc-img.png')}
+                >
+                  Ver Imagem
+                </button>
                 <button
                   className="edit-npc-button-profileSession"
                   onClick={() => editNpc(npc)}
@@ -225,6 +231,14 @@ const NPCsTab = ({ campaignUid }) => {
             </div>
           ))
         )}
+      {fullscreenImage && (
+        <div className="image-fullscreen-overlay" onClick={() => setFullscreenImage(null)}>
+          <div className="image-fullscreen-content" onClick={(e) => e.stopPropagation()}>
+            <button className="fullscreen-close-button" onClick={() => setFullscreenImage(null)}>×</button>
+            <img src={fullscreenImage} alt="Imagem NPC" />
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

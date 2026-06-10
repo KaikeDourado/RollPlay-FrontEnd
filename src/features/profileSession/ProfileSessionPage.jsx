@@ -8,7 +8,7 @@ import SessionInfo from "@/components/profileSession/SessionInfo";
 import TabNavigation from "@/components/profileSession/TabNavigation";
 import PlayersTab from "./tabs/PlayersTab";
 import SheetsTab from "./tabs/SheetsTab";
-import SessionsTab from "./tabs/SessionsTab";
+//import SessionsTab from "./tabs/SessionsTab";
 import NotesTab from "./tabs/NotesTab";
 import MapsTab from "./tabs/MapsTab";
 import NPCsTab from "./tabs/NPCsTab";
@@ -111,8 +111,9 @@ export default function ProfileSession() {
         return <PlayersTab campaignUid={campaignUid} sessionData={sessionData} onSheetCreated={handleSheetCreated} />;
       case "FICHAS":
         return <SheetsTab campaignUid={campaignUid} sessionData={sessionData} refreshTrigger={sheetsRefreshTrigger} />;
-      case "SESSÕES":
-        return <SessionsTab campaignUid={campaignUid} />;
+      // TODO: implementar depois
+      // case "SESSÕES":
+      //   return <SessionsTab campaignUid={campaignUid} />;
       case "NOTAS":
         return <NotesTab campaignUid={campaignUid} />;
       case "MAPAS":

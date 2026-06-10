@@ -25,11 +25,13 @@ h6 {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
+    height: 100vh;
 }
 
 /* Profile Sidebar */
 .profile-sidebar {
     flex: 0 0 350px;
+    max-height: 750px;
     background-color: #020717;
     border-radius: 8px;
     padding: 2rem;
@@ -84,6 +86,15 @@ h6 {
 .profile-title {
     color: #8D8D95;
     margin-bottom: 1.5rem;
+}
+
+.profile-input-label {
+    width: 100%;
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: left;
 }
 
 .profile-bio {
@@ -169,6 +180,18 @@ h6 {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.profile-btn-delete {
+    background-color: transparent;
+    border: 1px solid #ff5c5c;
+    color: #ffb3b3;
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.profile-btn-delete:hover {
+    background-color: rgba(255, 92, 92, 0.15);
 }
 
 .profile-campaigns-section,
@@ -439,23 +462,23 @@ h6 {
 }
 
 .profile-btn-create-character {
-  background-color: #60A5FA;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  display: block;
-  margin: 0 auto;
-  cursor: pointer;
+    background-color: #60A5FA;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
 }
 
 .profile-btn-create-character:hover {
-  background-color: #3a3dff;
-  transform: translateY(-2px);
+    background-color: #3a3dff;
+    transform: translateY(-2px);
 }
-    
+
 /* Responsividade */
 @media (max-width: 1200px) {
     .profile-main {
@@ -522,7 +545,7 @@ h6 {
         background-color: #357ab8;
     }
 
-    
+
 
 }
 

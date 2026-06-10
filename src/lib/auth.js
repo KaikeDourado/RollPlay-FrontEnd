@@ -1,6 +1,7 @@
 import { app, auth } from '../config/firebase';
 import {
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
@@ -38,6 +39,17 @@ export const authApi = {
       return token;
     } catch (error) {
       console.error('Erro ao obter token:', error);
+      throw error;
+    }
+  },
+
+  async resetPassword(email) {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log('Email de recuperação enviado para:', email);
+      return { email };
+    } catch (error) {
+      console.error('Erro ao enviar email de recuperação:', error);
       throw error;
     }
   },

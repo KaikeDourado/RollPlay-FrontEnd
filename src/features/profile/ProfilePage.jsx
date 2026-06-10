@@ -26,6 +26,8 @@ export default function ProfilePage() {
 
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [isEnterSessionModalOpen, setIsEnterSessionModalOpen] = useState(false);
+  const VISIBLE_COUNT = 4;
+  const [pageIndex, setPageIndex] = useState(0);
 
   // ─────────────── Hooks de edição ───────────────
   const [editing, setEditing] = useState(false);
@@ -93,6 +95,12 @@ export default function ProfilePage() {
 
     fetchData();
   }, [authLoading, authUser, navigate]);
+
+  // Ajusta a página atual caso o número de campanhas mude
+  useEffect(() => {
+    const pageCount = Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT));
+    setPageIndex(prev => (prev >= pageCount ? pageCount - 1 : prev));
+  }, [campaigns]);
 
 
   // ─────────────── Retornos condicionais ───────────────
@@ -177,6 +185,35 @@ export default function ProfilePage() {
     }
   };
 
+  const handleDeleteProfile = async () => {
+    if (!authUser) {
+      alert('Você precisa estar logado para excluir seu perfil.');
+      return;
+    }
+
+    if (!window.confirm('Tem certeza que deseja excluir seu perfil? Essa ação não pode ser desfeita.')) {
+      return;
+    }
+
+    try {
+      const res = await fetchSecure(`http://localhost:5000/users/${authUser.uid}`, {
+        method: 'DELETE'
+      });
+
+      if (res.ok) {
+        await authApi.signOut();
+        alert('Perfil excluído com sucesso.');
+        navigate('/');
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Falha ao excluir perfil.');
+      }
+    } catch (err) {
+      console.error('Erro ao excluir perfil:', err);
+      alert(err.message || 'Erro ao excluir perfil. Tente novamente.');
+    }
+  };
+
   const handleCreateCharacter = async () => {
     try {
       const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
@@ -220,39 +257,15 @@ export default function ProfilePage() {
               alt="Foto de perfil"
               className="profile-image"
             />
-            {editing && (
-              <>
-                <label
-                  htmlFor="profile-image-upload"
-                  className="edit-profile-image"
-                  title="Alterar foto"
-                >
-                  ✎
-                </label>
-                <input
-                  id="profile-image-upload"
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = (ev) => {
-                        setEditData({ ...editData, userPhoto: ev.target.result });
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
-                />
-              </>
-            )}
+            {/* Ao editar, agora exibimos a URL da imagem em vez de upload de arquivo */}
           </div>
 
           <div className="profile-info">
             {editing ? (
               <>
+                <label htmlFor="displayName" className="profile-input-label">Nome</label>
                 <input
+                  id="displayName"
                   type="text"
                   name="displayName"
                   value={editData.displayName || ""}
@@ -260,13 +273,25 @@ export default function ProfilePage() {
                   className="profile-input"
                   placeholder="Nome"
                 />
+                <label htmlFor="title" className="profile-input-label">Título</label>
                 <input
+                  id="title"
                   type="text"
                   name="title"
                   value={editData.title || ""}
                   onChange={handleChange}
                   className="profile-input"
                   placeholder="Título"
+                />
+                <label htmlFor="userPhoto" className="profile-input-label">URL da imagem de perfil</label>
+                <input
+                  id="userPhoto"
+                  type="text"
+                  name="userPhoto"
+                  value={editData.userPhoto || ""}
+                  onChange={(e) => setEditData(prev => ({ ...prev, userPhoto: e.target.value }))}
+                  className="profile-input"
+                  placeholder="URL da imagem de perfil"
                 />
               </>
             ) : (
@@ -296,11 +321,12 @@ export default function ProfilePage() {
 
           <div className="profile-stats">
             <div className="profile-stat-item">
-              🎲 <span>{campaignsCount} CAMPANHAS CRIADAS</span>
+              🎲 <span>PARTICIPANDO DE {campaignsCount} CAMPANHAS</span>
             </div>
-            <div className="profile-stat-item">
+            {/* TODO: Talvez implementar depois */}
+            {/* <div className="profile-stat-item">
               🛡️ <span>{charactersCount} PERSONAGENS CRIADOS</span>
-            </div>
+            </div> */}
             <div className="profile-stat-item">
               📅 <span>MEMBRO DESDE {memberYear}</span>
             </div>
@@ -337,6 +363,12 @@ export default function ProfilePage() {
             >
               SAIR DA CONTA
             </button>
+            <button
+              className="profile-btn-delete"
+              onClick={handleDeleteProfile}
+            >
+              EXCLUIR PERFIL
+            </button>
           </div>
 
           {error && editing && (
@@ -350,13 +382,39 @@ export default function ProfilePage() {
           {/* ─── SUAS CAMPANHAS ─── */}
           <section className="profile-campaigns-section">
             <h2>SUAS CAMPANHAS</h2>
-            <button
-              className="profile-btn-enter-session"
-              style={{ position: "absolute", top: "2rem", right: "2rem" }}
-              onClick={() => setIsEnterSessionModalOpen(true)}
-            >
-              ENTRAR EM UMA SESSÃO
-            </button>
+            <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem", display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <button
+                className="profile-btn-enter-session"
+                onClick={() => setIsEnterSessionModalOpen(true)}
+                style={{ padding: '0.5rem 0.75rem' }}
+              >
+                ENTRAR
+              </button>
+              <button
+                className="profile-btn-enter-session"
+                onClick={() => setPageIndex(p => Math.max(0, p - 1))}
+                aria-label="Anterior"
+                style={{ padding: '0.5rem 0.75rem' }}
+                disabled={pageIndex === 0}
+              >
+                ◀
+              </button>
+              <button
+                className="profile-btn-enter-session"
+                onClick={() => {
+                  const pageCount = Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT));
+                  setPageIndex(p => Math.min(pageCount - 1, p + 1));
+                }}
+                aria-label="Próximo"
+                style={{ padding: '0.5rem 0.75rem' }}
+                disabled={pageIndex >= Math.max(0, Math.ceil(campaigns.length / VISIBLE_COUNT) - 1)}
+              >
+                ▶
+              </button>
+              <div style={{ color: '#fff', fontSize: '0.85rem', marginLeft: '0.4rem' }}>
+                {campaigns.length === 0 ? '0 / 0' : `${Math.min(pageIndex + 1, Math.ceil(campaigns.length / VISIBLE_COUNT))} / ${Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT))}`}
+              </div>
+            </div>
 
             <div className="profile-section-divider"></div>
 
@@ -364,27 +422,32 @@ export default function ProfilePage() {
               {campaigns.length === 0 ? (
                 <p>Você ainda não criou nenhuma campanha.</p>
               ) : (
-                campaigns.map((c) => (
-                  <Link
-                    key={c.uid}
-                    to={`/profile-session/${c.uid}`}
-                    className="profile-campaign-card"
-                  >
-                    <div className="profile-campaign-image">
-                      <img
-                        src={c.imageUrl || "/imagens/default-campaign-img.png"}
-                        alt={c.sessionName}
-                      />
-                    </div>
-                    <div className="profile-campaign-info">
-                      <h3>{c.sessionName}</h3>
-                      <p>CAMPANHA: {c.name}</p>
-                      <p>
-                        {c.playersCount} JOGADORES
-                      </p>
-                    </div>
-                  </Link>
-                ))
+                (() => {
+                  const start = pageIndex * VISIBLE_COUNT;
+                  const visible = campaigns.slice(start, start + VISIBLE_COUNT);
+
+                  return visible.map((c) => (
+                    <Link
+                      key={c.uid}
+                      to={`/profile-session/${c.uid}`}
+                      className="profile-campaign-card"
+                    >
+                      <div className="profile-campaign-image">
+                        <img
+                          src={c.imageUrl || "/imagens/default-campaign-img.png"}
+                          alt={c.sessionName}
+                        />
+                      </div>
+                      <div className="profile-campaign-info">
+                        <h3>{c.sessionName}</h3>
+                        <p>CAMPANHA: {c.name}</p>
+                        <p>
+                          {c.playersCount} JOGADORES
+                        </p>
+                      </div>
+                    </Link>
+                  ));
+                })()
               )}
             </div>
 
