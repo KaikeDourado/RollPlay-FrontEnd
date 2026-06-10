@@ -13,7 +13,7 @@ import NotesTab from "./tabs/NotesTab";
 import MapsTab from "./tabs/MapsTab";
 import NPCsTab from "./tabs/NPCsTab";
 import ChatTab from "./tabs/ChatTab";
-import "./ProfileSession.css";
+import "./profileSession.css";
 
 export default function ProfileSession() {
   // 1) Lê o "uid" da campanha a partir dos params
