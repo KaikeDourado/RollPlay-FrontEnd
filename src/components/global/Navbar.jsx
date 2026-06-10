@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles/navbar.css";
-import SessionModal from "../forms/sessionModal";
+import SessionModal from "../forms/SessionModal";
 import EnterSessionModal from "../forms/EnterSessionModal";
 import { authApi } from "../../lib/auth";
 import { useAuth } from "../../contexts/AuthContext";
