@@ -29,6 +29,8 @@ O projeto visa integrar elementos educacionais nas campanhas de RPG, permitindo 
 ## 👥 Colaboradores
 
 - [Sérgio Reis](https://github.com/serbiow)
+- [Kaike Dourado](https://github.com/kaikedourado)
+- [Luan Oliveira](https://github.com/Luan-tcpn)
 
 ## 📄 Licença
 
