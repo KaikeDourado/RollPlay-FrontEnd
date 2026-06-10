@@ -89,7 +89,7 @@ export default function RegisterForm() {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/users/',
+        'https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/users/',
         payload,
         { headers: { 'Content-Type': 'application/json' } }
       );

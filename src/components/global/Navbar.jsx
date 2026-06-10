@@ -72,12 +72,12 @@ export default function Navbar() {
                 openModal();
               }}
             >
-              Criar Sessão
+              Criar Campanha
             </button>
             <SessionModal isOpen={isModalOpen} onClose={closeModal} />
 
             <button onClick={() => setIsEnterModalOpen(true)}>
-              Entrar na Sessão
+              Entrar por Código de Convite
             </button>
             <EnterSessionModal
               isOpen={isEnterModalOpen}

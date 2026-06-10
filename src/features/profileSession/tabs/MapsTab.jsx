@@ -22,7 +22,7 @@ const MapsTab = ({ campaignUid }) => {
   const fetchMaps = async () => {
     try {
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`
       );
 
       if (res.ok) {
@@ -61,7 +61,7 @@ const MapsTab = ({ campaignUid }) => {
           ];
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`,
         {
           method: 'PUT',
           body: JSON.stringify({ mapas: updatedMaps })
@@ -90,7 +90,7 @@ const MapsTab = ({ campaignUid }) => {
       const updatedMaps = maps.filter(map => map.id !== mapId);
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`,
         {
           method: 'PUT',
           body: JSON.stringify({ mapas: updatedMaps })

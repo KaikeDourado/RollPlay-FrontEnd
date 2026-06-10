@@ -89,7 +89,7 @@ const ChatTab = ({ campaignUid }) => {
         }
 
         const res = await fetchSecure(
-            `http://localhost:5000/campaigns/${campaignUid}/chat?${params.toString()}`
+            `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}/chat?${params.toString()}`
         );
 
         if (!res.ok) {
@@ -163,7 +163,7 @@ const ChatTab = ({ campaignUid }) => {
 
         try {
             const res = await fetchSecure(
-                `http://localhost:5000/campaigns/${campaignUid}/chat`,
+                `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}/chat`,
                 {
                     method: 'POST',
                     body: JSON.stringify({

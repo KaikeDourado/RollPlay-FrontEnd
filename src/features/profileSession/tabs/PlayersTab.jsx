@@ -24,7 +24,7 @@ const PlayersTab = ({ campaignUid, sessionData, onSheetCreated }) => {
     
     try {
       const response = await fetchSecure(
-        `http://localhost:5000/sheets`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/sheets`,
         {
           method: 'POST',
           body: JSON.stringify({

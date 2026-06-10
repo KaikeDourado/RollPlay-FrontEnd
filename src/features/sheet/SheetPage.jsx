@@ -52,7 +52,7 @@ const FichaPage = () => {
 
         setPageLoading(true);
 
-        const sheetRes = await fetchSecure(`http://localhost:5000/sheets/${id}`, {
+        const sheetRes = await fetchSecure(`https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/sheets/${id}`, {
           method: "GET",
         });
 
@@ -92,7 +92,7 @@ const FichaPage = () => {
         uid: characterData.uid || id,
       };
 
-      const res = await fetchSecure(`http://localhost:5000/sheets/${id}`, {
+      const res = await fetchSecure(`https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/sheets/${id}`, {
         method: "PATCH",
         body: JSON.stringify(payload),
       });

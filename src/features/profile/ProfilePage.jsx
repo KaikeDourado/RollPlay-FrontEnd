@@ -50,7 +50,7 @@ export default function ProfilePage() {
 
         // Buscar dados completos do usuário no backend
         const userRes = await fetchSecure(
-          `http://localhost:5000/users/token`,
+          `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/users/token`,
           {
             method: 'GET',
           }
@@ -77,12 +77,12 @@ export default function ProfilePage() {
         setEditData(userData);
 
         // Buscar campanhas
-        const campaignsRes = await fetchSecure(`http://localhost:5000/campaigns/user/token`);
+        const campaignsRes = await fetchSecure(`https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/user/token`);
         const campaignsData = await campaignsRes.json();
         setCampaigns(Array.isArray(campaignsData) ? campaignsData : campaignsData.campaigns || []);
 
         // Buscar personagens
-        const charactersRes = await fetchSecure(`http://localhost:5000/sheets/user/token`);
+        const charactersRes = await fetchSecure(`https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/sheets/user/token`);
         const charactersData = await charactersRes.json();
         setCharacters(Array.isArray(charactersData) ? charactersData : charactersData.sheets || []);
       } catch (err) {
@@ -152,7 +152,7 @@ export default function ProfilePage() {
 
     try {
       const response = await fetchSecure(
-        `http://localhost:5000/users/${user.uid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/users/${user.uid}`,
         {
           method: 'PUT',
           body: JSON.stringify(editData)
@@ -196,7 +196,7 @@ export default function ProfilePage() {
     }
 
     try {
-      const res = await fetchSecure(`http://localhost:5000/users/${authUser.uid}`, {
+      const res = await fetchSecure(`https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/users/${authUser.uid}`, {
         method: 'DELETE'
       });
 
@@ -222,7 +222,7 @@ export default function ProfilePage() {
         return;
       }
 
-      const res = await axios.post("http://localhost:5000/api/character/create", {}, {
+      const res = await axios.post("https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/api/character/create", {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -321,7 +321,7 @@ export default function ProfilePage() {
 
           <div className="profile-stats">
             <div className="profile-stat-item">
-              🎲 <span>PARTICIPANDO DE {campaignsCount} CAMPANHAS</span>
+              🎲 <span>PARTICIPANDO DE {campaignsCount} CAMPANHA(S)</span>
             </div>
             {/* TODO: Talvez implementar depois */}
             {/* <div className="profile-stat-item">

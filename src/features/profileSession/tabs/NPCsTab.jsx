@@ -23,7 +23,7 @@ const NPCsTab = ({ campaignUid }) => {
   const fetchNpcs = async () => {
     try {
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`
       );
 
       if (res.ok) {
@@ -62,7 +62,7 @@ const NPCsTab = ({ campaignUid }) => {
           ];
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`,
         {
           method: 'PUT',
           body: JSON.stringify({ npcs: updatedNpcs })
@@ -91,7 +91,7 @@ const NPCsTab = ({ campaignUid }) => {
       const updatedNpcs = npcs.filter(npc => npc.id !== npcId);
 
       const res = await fetchSecure(
-        `http://localhost:5000/campaigns/${campaignUid}`,
+        `https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/${campaignUid}`,
         {
           method: 'PUT',
           body: JSON.stringify({ npcs: updatedNpcs })

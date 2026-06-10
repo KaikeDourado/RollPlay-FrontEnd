@@ -32,7 +32,7 @@ const SessionModal = ({ isOpen, onClose }) => {
     try {
       // 1) Envia para o API Gateway
       const res = await fetchSecure(
-        'http://localhost:5000/campaigns/',
+        'https://rollplayapi-fbb4e7a9hqa3ehds.eastus-01.azurewebsites.net/campaigns/',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -48,7 +48,7 @@ const SessionModal = ({ isOpen, onClose }) => {
 
       if (res.ok && data.campaign) {
         console.log('Campanha criada:', data.campaign);
-        setSuccess('✓ Sessão criada com sucesso!');
+        setSuccess('✓ campanha criada com sucesso!');
         setFormData({ sessionName: '', description: '', system: 'D&D 5e' });
 
         // Fecha o modal após 2 segundos
@@ -79,7 +79,7 @@ const SessionModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="session-form">
 
           <div>
-            <label htmlFor="sessionName">Nome da Sessão:</label>
+            <label htmlFor="sessionName">Nome da campanha:</label>
             <input
               type="text"
               id="sessionName"
@@ -122,7 +122,7 @@ const SessionModal = ({ isOpen, onClose }) => {
           {success && <p className="session-success">{success}</p>}
 
           <button type="submit" disabled={loading}>
-            {loading ? 'Criando...' : 'Criar Sessão'}
+            {loading ? 'Criando...' : 'Criar campanha'}
           </button>
         </form>
       </div>
