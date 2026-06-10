@@ -31,7 +31,3 @@ Este projeto é um site tabletop que atua como gerenciador de mesas e fichas de 
 ## 📄 Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
-
----
-
-Para mais informações, acesse o repositório oficial: [Roll & Play - FrontEnd](https://github.com/KaikeDourado/RollPlay-FrontEnd)
