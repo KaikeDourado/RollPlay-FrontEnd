@@ -98,6 +98,7 @@
 .profile-title {
     color: #8D8D95;
     margin-bottom: 1.5rem;
+    margin-top: -25px;
 }
 
 .profile-input-label {
@@ -294,6 +295,7 @@
     z-index: 2;
     box-shadow: 0 2px 8px 0 #0002;
     cursor: pointer;
+    margin: 0 3px 0 3px;
 }
 
 .profile-btn-enter-session:hover {
@@ -504,6 +506,29 @@
     transform: translateY(-2px);
 }
 
+.profile-content {
+    min-width: 0;
+    width: 100%;
+}
+
+.profile-campaigns-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.profile-campaign-card {
+    min-width: 0;
+}
+
+.profile-campaign-info {
+    min-width: 0;
+}
+
+.profile-campaign-info h3,
+.profile-campaign-info p {
+    overflow-wrap: anywhere;
+}
+
 /* Responsividade */
 @media (max-width: 1200px) {
     .profile-main {
@@ -515,6 +540,11 @@
         flex: 0 0 auto;
         width: 100%;
         max-width: none;
+    }
+
+    .profile-campaigns-section {
+        max-width: none;
+        width: 100%;
     }
 }
 
@@ -582,6 +612,12 @@
     .profile-characters-section,
     .profile-sessions-section {
         padding: 0.7rem;
+    }
+
+    .profile-campaigns-section>div[style*="absolute"] {
+        position: static !important;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
     }
 
     .profile-input,
