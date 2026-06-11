@@ -297,7 +297,8 @@ export default function ProfilePage() {
             ) : (
               <>
                 <h2 className="profile-name">{user.displayName}</h2>
-                <p className="profile-title">{user.title || "MESTRE DE RPG"}</p>
+                <p className="profile-title">{user.title || "Player de RPG"}</p>
+                <p className="profile-email">{user.email}</p>
               </>
             )}
           </div>
@@ -381,38 +382,40 @@ export default function ProfilePage() {
         <div className="profile-content">
           {/* ─── SUAS CAMPANHAS ─── */}
           <section className="profile-campaigns-section">
-            <h2>SUAS CAMPANHAS</h2>
-            <div style={{ position: "absolute", top: "1.5rem", right: "1.5rem", display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-              <button
-                className="profile-btn-enter-session"
-                onClick={() => setIsEnterSessionModalOpen(true)}
-                style={{ padding: '0.5rem 0.75rem' }}
-              >
-                ENTRAR
-              </button>
-              <button
-                className="profile-btn-enter-session"
-                onClick={() => setPageIndex(p => Math.max(0, p - 1))}
-                aria-label="Anterior"
-                style={{ padding: '0.5rem 0.75rem' }}
-                disabled={pageIndex === 0}
-              >
-                ◀
-              </button>
-              <button
-                className="profile-btn-enter-session"
-                onClick={() => {
-                  const pageCount = Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT));
-                  setPageIndex(p => Math.min(pageCount - 1, p + 1));
-                }}
-                aria-label="Próximo"
-                style={{ padding: '0.5rem 0.75rem' }}
-                disabled={pageIndex >= Math.max(0, Math.ceil(campaigns.length / VISIBLE_COUNT) - 1)}
-              >
-                ▶
-              </button>
-              <div style={{ color: '#fff', fontSize: '0.85rem', marginLeft: '0.4rem' }}>
-                {campaigns.length === 0 ? '0 / 0' : `${Math.min(pageIndex + 1, Math.ceil(campaigns.length / VISIBLE_COUNT))} / ${Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT))}`}
+            <div className="profile-campaigns-header">
+              <h2>SUAS CAMPANHAS</h2>
+              <div className="profile-campaigns-controls">
+                <button
+                  className="profile-btn-enter-session"
+                  onClick={() => setIsEnterSessionModalOpen(true)}
+                  style={{ padding: '0.5rem 0.75rem' }}
+                >
+                  ENTRAR POR CONVITE
+                </button>
+                <button
+                  className="profile-btn-enter-session"
+                  onClick={() => setPageIndex(p => Math.max(0, p - 1))}
+                  aria-label="Anterior"
+                  style={{ padding: '0.5rem 0.75rem' }}
+                  disabled={pageIndex === 0}
+                >
+                  ◀
+                </button>
+                <button
+                  className="profile-btn-enter-session"
+                  onClick={() => {
+                    const pageCount = Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT));
+                    setPageIndex(p => Math.min(pageCount - 1, p + 1));
+                  }}
+                  aria-label="Próximo"
+                  style={{ padding: '0.5rem 0.75rem' }}
+                  disabled={pageIndex >= Math.max(0, Math.ceil(campaigns.length / VISIBLE_COUNT) - 1)}
+                >
+                  ▶
+                </button>
+                <div style={{ color: '#fff', fontSize: '0.85rem', marginLeft: '0.4rem' }}>
+                  {campaigns.length === 0 ? '0 / 0' : `${Math.min(pageIndex + 1, Math.ceil(campaigns.length / VISIBLE_COUNT))} / ${Math.max(1, Math.ceil(campaigns.length / VISIBLE_COUNT))}`}
+                </div>
               </div>
             </div>
 
