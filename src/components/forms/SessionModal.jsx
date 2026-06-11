@@ -54,6 +54,7 @@ const SessionModal = ({ isOpen, onClose }) => {
         // Fecha o modal após 2 segundos
         setTimeout(() => {
           onClose();
+          location.reload()
           setSuccess('');
         }, 2000);
       } else {

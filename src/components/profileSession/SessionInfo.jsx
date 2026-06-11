@@ -116,6 +116,9 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
     }
   };
 
+  const campaignOwner = sessionData?.ownerName || "Não informado";
+  const isCampaignOwner = user?.uid === sessionData?.userUid;
+
   return (
     <div className="session-info-profileSession">
       {/* 1) Imagem de mapa */}
@@ -222,21 +225,16 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
               alt={showCode ? "Ocultar código" : "Mostrar código"}
             />
           </button>
-          <button
-            className="room-code-btn-profileSession"
-            onClick={handleCopy}
-            title="Copiar código"
-          >
-            <img
-              src={copied ? "/imagens/copiado.png" : "/imagens/copiar.png"}
-              alt={copied ? "Código copiado" : "Copiar código"}
-            />
-          </button>
+        </div>
+
+        <div className="stat-item-profileSession">
+          <i className="stat-icon-profileSession">👑</i>
+          <span>MESTRE: {campaignOwner}</span>
         </div>
 
         <div className="stat-item-profileSession">
           <i className="stat-icon-profileSession">👥</i>
-          <span>{sessionData.players?.length ?? 0} JOGADORES</span>
+          <span>{sessionData.players?.length ?? 0} JOGADOR(ES)</span>
         </div>
         {/* TODO: implementar depois */}
         {/* <div className="stat-item-profileSession">
@@ -316,38 +314,42 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
       </div>
 
       {/* 6) Botões editar/salvar/cancelar */}
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-        <button
-          className="edit-campaign-button-profileSession"
-          onClick={isEditing ? handleSaveClick : handleEditClick}
-          style={{ flex: isEditing ? 1 : 'unset' }}
-        >
-          <span className="edit-icon-profileSession">
-            {isEditing ? "💾" : "📝"}
-          </span>
-          {isEditing ? "SALVAR" : "EDITAR CAMPANHA"}
-        </button>
-        {isEditing && (
+      {isCampaignOwner && (
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <button
             className="edit-campaign-button-profileSession"
-            onClick={handleCancelClick}
-            style={{ backgroundColor: '#b22222', borderColor: '#8b0000' }}
+            onClick={isEditing ? handleSaveClick : handleEditClick}
+            style={{ flex: isEditing ? 1 : 'unset' }}
           >
-            <span className="edit-icon-profileSession">✖</span>
-            CANCELAR
+            <span className="edit-icon-profileSession">
+              {isEditing ? "💾" : "📝"}
+            </span>
+            {isEditing ? "SALVAR" : "EDITAR CAMPANHA"}
           </button>
-        )}
-        {!isEditing && (
-          <button
-            className="delete-campaign-button-profileSession"
-            onClick={handleDeleteCampaign}
-            style={{ backgroundColor: '#b22222', borderColor: '#8b0000' }}
-          >
-            <span className="edit-icon-profileSession">🗑️</span>
-            EXCLUIR CAMPANHA
-          </button>
-        )}
-      </div>
+
+          {isEditing && (
+            <button
+              className="edit-campaign-button-profileSession"
+              onClick={handleCancelClick}
+              style={{ backgroundColor: '#b22222', borderColor: '#8b0000' }}
+            >
+              <span className="edit-icon-profileSession">✖</span>
+              CANCELAR
+            </button>
+          )}
+
+          {!isEditing && (
+            <button
+              className="delete-campaign-button-profileSession"
+              onClick={handleDeleteCampaign}
+              style={{ backgroundColor: '#b22222', borderColor: '#8b0000' }}
+            >
+              <span className="edit-icon-profileSession">🗑️</span>
+              EXCLUIR CAMPANHA
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
