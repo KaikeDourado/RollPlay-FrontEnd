@@ -88,6 +88,23 @@
   transform: scale(0.98);
 }
 
+.master-highlight-profileSession {
+  border-left: 4px solid #facc15;
+  border-color: #facc15;
+}
+
+.players-count-profileSession {
+  color: #9ca3af;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.empty-players-profileSession {
+  color: #9ca3af;
+  font-style: italic;
+  margin-top: 8px;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .players-tab-profileSession {
@@ -108,22 +125,22 @@
     font-size: 1.5rem;
   }
 }
-}
+
 
 @media (max-width: 768px) {
   .tab-header-profileSession {
     margin-bottom: 15px;
   }
-  
+
   .tab-title-profileSession {
     font-size: 18px;
   }
-  
+
   .invite-button-profileSession {
     padding: 6px 12px;
     font-size: 12px;
   }
-  
+
   .players-grid-profileSession {
     gap: 15px;
   }
@@ -133,7 +150,7 @@
   .players-grid-profileSession {
     grid-template-columns: 1fr;
   }
-  
+
   .tab-title-profileSession {
     font-size: 16px;
   }
