@@ -445,7 +445,7 @@ export default function ProfilePage() {
                         <h3>{c.sessionName}</h3>
                         <p>CAMPANHA: {c.name}</p>
                         <p>
-                          {c.playersCount} JOGADORES
+                          {c.playersCount} JOGADOR(ES)
                         </p>
                       </div>
                     </Link>

@@ -236,7 +236,7 @@ const SessionInfo = ({ sessionData, onUpdateSessionData }) => {
 
         <div className="stat-item-profileSession">
           <i className="stat-icon-profileSession">👥</i>
-          <span>{sessionData.players?.length ?? 0} JOGADORES</span>
+          <span>{sessionData.players?.length ?? 0} JOGADOR(ES)</span>
         </div>
         {/* TODO: implementar depois */}
         {/* <div className="stat-item-profileSession">
